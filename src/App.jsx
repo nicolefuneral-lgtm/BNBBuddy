@@ -279,8 +279,17 @@ function AuthModal({ onClose, onLogin }) {
         onLogin({ name: name || email.split("@")[0], email, role, avatar: "https://i.pravatar.cc/80?img=12", isNew: true });
       } else {
         const user = await signIn({ email, password });
-        const profile = await getProfile(user.id);
-        onLogin({ ...profile, avatar: profile.avatar_url || "https://i.pravatar.cc/80?img=12", isNew: false });
+        let profile = null;
+        try { profile = await getProfile(user.id); } catch(e) {}
+        onLogin({
+          id: user.id,
+          name: profile?.name || name || email.split("@")[0],
+          email,
+          role: profile?.role || "buddy",
+          avatar: profile?.avatar_url || "https://i.pravatar.cc/80?img=12",
+          isNew: !profile,
+          ...(profile || {}),
+        });
       }
     } catch (e) {
       setError(e.message || "Something went wrong");
@@ -827,8 +836,11 @@ export default function App() {
       if (session) {
         try {
           const profile = await getProfile(session.user.id);
-          setUser({ ...profile, avatar: profile.avatar_url || "https://i.pravatar.cc/80?img=12" });
-        } catch (e) {}
+          if (profile) setUser({ ...profile, avatar: profile.avatar_url || "https://i.pravatar.cc/80?img=12" });
+          else setUser({ id: session.user.id, email: session.user.email, name: session.user.email.split("@")[0], role: "buddy", avatar: "https://i.pravatar.cc/80?img=12", isNew: true });
+        } catch (e) {
+          setUser({ id: session.user.id, email: session.user.email, name: session.user.email.split("@")[0], role: "buddy", avatar: "https://i.pravatar.cc/80?img=12", isNew: true });
+        }
       }
     });
   }, []);
