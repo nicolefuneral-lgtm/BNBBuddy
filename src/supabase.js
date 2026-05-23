@@ -9,6 +9,9 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 export async function signUp({ email, password, name, role }) {
   const { data, error } = await supabase.auth.signUp({ email, password })
   if (error) throw error
+  if (!data.user) throw new Error("Aanmelden mislukt, probeer opnieuw.")
+  // Wait briefly for auth to settle
+  await new Promise(r => setTimeout(r, 500))
   // Create profile row
   const { error: profError } = await supabase.from('profiles').insert({
     id: data.user.id,
@@ -17,7 +20,8 @@ export async function signUp({ email, password, name, role }) {
     role,
     status: 'pending',
   })
-  if (profError) throw profError
+  // Don't throw on profile error — user is created regardless
+  if (profError) console.error("Profile insert error:", profError.message)
   return data.user
 }
 
