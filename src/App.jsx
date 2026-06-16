@@ -859,6 +859,7 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [showAuth, setShowAuth] = useState(false);
   const [authMode, setAuthMode] = useState("login");
+  const [emailConfirmed, setEmailConfirmed] = useState(false);
   const [screen, setScreen] = useState("browse");
   const [tab, setTab] = useState("browse");
   const [viewProfile, setViewProfile] = useState(null);
