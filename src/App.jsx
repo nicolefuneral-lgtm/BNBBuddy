@@ -11,18 +11,18 @@ const PROFILES = [
   {
     id: 1, name: "Sofia", age: 28, city: "Amsterdam", country: "🇳🇱 Netherlands",
     tagline: "Slow travel & strong coffee", role: "buddy", verified: true,
-    bio: "I've been living out of a suitcase for 3 years — not because I'm lost, but because I keep finding places worth staying. Looking for a travel buddy who appreciates farmers markets over tourist traps.",
+    bio: "I've been living out van a suitcase for 3 years — not because I'm lost, but because I keep finding places worth staying. Op zoek naar a travel buddy who appreciates farmers markets over tourist traps.",
     interests: ["Hiking", "Photography", "Local cuisine", "Jazz bars"],
     languages: ["English", "Dutch", "Spanish"],
     avatar: "https://i.pravatar.cc/400?img=47",
     photos: ["https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80","https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=400&q=80"],
     travelStyle: "Slow explorer", nextDestination: "Lisbon, Portugal",
-    tripDuration: "2–4 weeks", budget: "Mid-range", lookingFor: "Co-traveller & local host",
+    tripDuration: "2–4 weeks", budget: "Mid-range", lookingFor: "Co-reiziger & local host",
   },
   {
     id: 2, name: "Marcus", age: 31, city: "Berlin", country: "🇩🇪 Germany",
     tagline: "Cosy rooms, big adventures nearby", role: "owner", verified: true,
-    bio: "Former software engineer who turned a 200-year-old farmhouse into a boutique BnB. Every guest gets a hand-written local map and a jar of homemade jam.",
+    bio: "Former software engineer who turned a 200-year-old farmhouse into a boutique BnB. Every guest gets a hand-written local map and a jar van homemade jam.",
     interests: ["Rock climbing", "Street art", "Tech meetups", "Cycling"],
     languages: ["English", "German", "Portuguese"],
     avatar: "https://i.pravatar.cc/400?img=68",
@@ -33,7 +33,7 @@ const PROFILES = [
     hostingSince: "2021",
   },
   {
-    id: 3, name: "Yuki", age: 26, city: "Tokyo", country: "🇯🇵 Japan",
+    id: 3, name: "Yuki", age: 26, city: "Totkyo", country: "🇯🇵 Japan",
     tagline: "Ramen routes & mountain huts", role: "buddy", verified: false,
     bio: "I work remotely as a designer and spend half my year in Japan, the other half wherever the seasons are best. I love quiet moments — a misty mountain trail, a tiny ramen shop at midnight.",
     interests: ["Onsen", "Illustration", "Night markets", "Bouldering"],
@@ -46,14 +46,14 @@ const PROFILES = [
   {
     id: 4, name: "Diego", age: 34, city: "Buenos Aires", country: "🇦🇷 Argentina",
     tagline: "Casa con sabor — a home with flavour", role: "owner", verified: true,
-    bio: "Chef by trade, host by passion. I converted the ground floor of my colonial home into a cosy guesthouse. Guests wake up to freshly baked medialunas and can join my cooking evenings.",
+    bio: "Chef by trade, host by passion. I converted the ground floor van my colonial home into a cosy guesthouse. Guests wake up to freshly baked medialunas and can join my cooking evenings.",
     interests: ["Cooking", "Dance", "Trekking", "Wine"],
     languages: ["Spanish", "English", "Italian"],
     avatar: "https://i.pravatar.cc/400?img=57",
     photos: ["https://images.unsplash.com/photo-1483347756197-71ef80e95f73?w=400&q=80","https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=400&q=80"],
     propertyName: "Casa Sabor", propertyType: "Colonial Guesthouse",
     rooms: 2, pricePerNight: "$40–$60",
-    amenities: ["Home-cooked breakfast", "Cooking classes", "Rooftop terrace", "City tours"],
+    amenities: ["Home-cooked breakfast", "Cooking classes", "Rooftop terrace", "Stad tours"],
     hostingSince: "2019",
   },
   {
@@ -70,7 +70,7 @@ const PROFILES = [
   {
     id: 6, name: "Lena", age: 27, city: "Stockholm", country: "🇸🇪 Sweden",
     tagline: "A writer's retreat in the forest", role: "owner", verified: false,
-    bio: "Environmental researcher with a converted cabin on the edge of a pine forest. Ideal for solo travellers who need peace, or couples who want to hike and stargaze.",
+    bio: "Environmental researcher with a converted cabin on the edge van a pine forest. Ideal for solo reizigers who need peace, or couples who want to hike and stargaze.",
     interests: ["Ecology", "Nordic skiing", "Poetry readings", "Coffee ritual"],
     languages: ["Swedish", "English", "German"],
     avatar: "https://i.pravatar.cc/400?img=44",
@@ -83,7 +83,7 @@ const PROFILES = [
 ];
 
 const MESSAGES_INIT = {
-  1: [{ from: "them", text: "Hey! Saw you're heading to Lisbon too 🌊" }, { from: "me", text: "Yes! End of October — perfect weather" }],
+  1: [{ from: "them", text: "Hey! Saw you're heading to Lisbon too 🌊" }, { from: "me", text: "Yes! End van October — perfect weather" }],
   2: [{ from: "them", text: "Tbilisi is incredible — have you been?" }],
   4: [{ from: "them", text: "I made kokotxas last week. You'd love it." }, { from: "me", text: "Send the recipe!! 😭" }],
 };
@@ -92,7 +92,7 @@ const INTERESTS_LIST = ["Hiking","Photography","Cooking","Cycling","Surfing","Mu
 const LANGUAGES_LIST = ["English","Dutch","German","French","Spanish","Italian","Portuguese","Japanese","Arabic","Swedish","Polish","Turkish"];
 const VAARDIGHEDEN = ["Kamers schoonmaken","Tuin onderhouden","Dieren verzorgen","Koken","Rijbewijs","Reserveringen bijhouden","In en uitchecken","Gasten informeren over bestemming","Sleutelbeheer","Administratie bijhouden","Kleine reparaties","Zwembad onderhouden","Boodschappen doen","Babysitter/kinderopvang"];
 const PROPERTY_TYPES = ["Private room","Entire apartment","Farmhouse B&B","Cabin / Retreat","Boutique guesthouse","Villa","Treehouse","Houseboat"];
-const AMENITIES_LIST = ["Breakfast included","WiFi","Parking","Garden","Pool","Sauna","Bike rental","Kitchen","Pets allowed","EV charger","Workspace","City tours"];
+const AMENITIES_LIST = ["Breakfast included","WiFi","Parking","Garden","Pool","Sauna","Bike rental","Kitchen","Pets allowed","EV charger","Workspace","Stad tours"];
 const MAANDEN = ["Januari","Februari","Maart","April","Mei","Juni","Juli","Augustus","September","Oktober","November","December"];
 const DURATIONS = ["Weekend","1 week","1-2 weeks","2-4 weeks","1+ month","Flexible"];
 const AANTAL_PERSONEN = ["Ik kom alleen","Ik kom met partner"];
@@ -303,27 +303,27 @@ function AuthModal({ onClose, onLogin, initialMode = "login" }) {
     <div className="modal-bg" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
         <div className="modal-handle" />
-        <h2>{mode === "login" ? "Welcome back" : "Join BnbBuddy"}</h2>
-        <p className="sub">{mode === "login" ? "Log in to see full profiles & chat" : "Tell us who you are to get started"}</p>
+        <h2>{mode === "login" ? "Welkom terug" : "Word lid van BnbBuddy"}</h2>
+        <p className="sub">{mode === "login" ? "Log in om volledige profielen te zien en te chatten" : "Vertel ons wie je bent om te beginnen"}</p>
         {mode === "signup" && (
           <>
-            <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 10 }}>I am a…</div>
+            <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 10 }}>Ik ben een…</div>
             <div className="role-cards">
               <div className={`role-card ${role === "owner" ? "sel" : ""}`} onClick={() => setRole("owner")}>
                 <div className="rck">✓</div>
                 <div className="ri">🏡</div>
-                <div className="rt">BnB Owner</div>
-                <div className="rd">I host travellers and want to connect with the right guests</div>
+                <div className="rt">BnB Eigenaar</div>
+                <div className="rd">Ik verhuur en wil verbinding maken met de juiste gasten</div>
               </div>
               <div className={`role-card ${role === "buddy" ? "sel" : ""}`} onClick={() => setRole("buddy")}>
                 <div className="rck">✓</div>
                 <div className="ri">🎒</div>
                 <div className="rt">Buddy</div>
-                <div className="rd">I'm a traveller looking for a stay or travel companion</div>
+                <div className="rd">I'm a reiziger looking for a stay or travel companion</div>
               </div>
             </div>
-            {!role && <div style={{ fontSize: 12, color: "#C4622D", marginBottom: 8 }}>Please select a role to continue</div>}
-            <div className="field"><label>Your name</label><input placeholder="First name" value={name} onChange={e => setName(e.target.value)} /></div>
+            {!role && <div style={{ fontSize: 12, color: "#C4622D", marginBottom: 8 }}>Selecteer een rol om door te gaan</div>}
+            <div className="field"><label>Jouw naam</label><input placeholder="Voornaam" value={name} onChange={e => setName(e.target.value)} /></div>
           </>
         )}
         <div className="field"><label>Email</label><input type="email" placeholder="you@email.com" value={email} onChange={e => setEmail(e.target.value)} /></div>
@@ -352,13 +352,13 @@ function AuthModal({ onClose, onLogin, initialMode = "login" }) {
         </div>
         {error && <div style={{ fontSize: 13, color: "#C4622D", marginBottom: 8, padding: "8px 12px", background: "#FEF3EC", borderRadius: 8 }}>{error}</div>}
         <button className="btn-main" onClick={submit} style={{ opacity: (mode === "signup" && !role) || loading ? 0.5 : 1 }}>
-          {loading ? "Please wait…" : mode === "login" ? "Log in" : "Create account"} →
+          {loading ? "Even geduld…" : mode === "login" ? "Inloggen" : "Account aanmaken"} →
         </button>
-        <button className="btn-ghost" onClick={onClose}>Continue browsing</button>
+        <button className="btn-ghost" onClick={onClose}>Verder browsen</button>
         <div className="modal-toggle">
-          {mode === "login" ? "New here? " : "Already have an account? "}
+          {mode === "login" ? "Nieuw hier? " : "Al een account? "}
           <button onClick={() => { setMode(mode === "login" ? "signup" : "login"); setRole(null); }}>
-            {mode === "login" ? "Create account" : "Log in"}
+            {mode === "login" ? "Account aanmaken" : "Inloggen"}
           </button>
         </div>
       </div>
@@ -368,47 +368,47 @@ function AuthModal({ onClose, onLogin, initialMode = "login" }) {
 
 // ── PROFILE CARD ──────────────────────────────────────────────────────────────
 function ProfileCard({ profile, isLoggedIn, onView, onLogin }) {
-  const isOwner = profile.role === "owner";
+  const isOwner = profiel aanmaken.role === "owner";
   return (
     <div className="card" onClick={() => onView(profile)}>
       <div className="card-img">
-        <img src={profile.avatar} alt={profile.name} />
-        {profile.verified && <span className="badge-verified">✓ Verified</span>}
+        <img src={profiel aanmaken.avatar} alt={profiel aanmaken.name} />
+        {profiel aanmaken.verified && <span className="badge-verified">✓ Verified</span>}
         <div className="card-overlay">
-          <h3>{profile.name}{!isOwner ? `, ${profile.age}` : ""}</h3>
-          <div className="loc">{profile.country} · {profile.city}</div>
+          <h3>{profiel aanmaken.name}{!isOwner ? `, ${profiel aanmaken.age}` : ""}</h3>
+          <div className="loc">{profiel aanmaken.country} · {profiel aanmaken.city}</div>
         </div>
       </div>
       <div className="card-body">
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, marginBottom: 10 }}>
-          <div className="card-tagline">"{profile.tagline}"</div>
-          <span className={`role-badge ${profile.role}`}>{isOwner ? "🏡 Owner" : "🎒 Buddy"}</span>
+          <div className="card-tagline">"{profiel aanmaken.tagline}"</div>
+          <span className={`role-badge ${profiel aanmaken.role}`}>{isOwner ? "🏡 Eigenaar" : "🎒 Buddy"}</span>
         </div>
         {isOwner ? (
           <>
             <div className="snap-row">
-              <span className="snap owner">🏠 {profile.propertyType}</span>
-              <span className="snap owner">🛏 {profile.rooms} room{profile.rooms > 1 ? "s" : ""}</span>
-              <span className="snap owner">💶 {profile.pricePerNight}</span>
+              <span className="snap owner">🏠 {profiel aanmaken.propertyType}</span>
+              <span className="snap owner">🛏 {profiel aanmaken.rooms} room{profiel aanmaken.rooms > 1 ? "s" : ""}</span>
+              <span className="snap owner">💶 {profiel aanmaken.pricePerNight}</span>
             </div>
-            <div className="tags">{(profile.amenities || []).slice(0, 3).map(a => <span className="tag" key={a}>{a}</span>)}</div>
+            <div className="tags">{(profiel aanmaken.amenities || []).slice(0, 3).map(a => <span className="tag" key={a}>{a}</span>)}</div>
           </>
         ) : (
           <>
             <div className="snap-row">
-              <span className="snap buddy">✈ {profile.nextDestination}</span>
-              <span className="snap buddy">⏱ {profile.tripDuration}</span>
+              <span className="snap buddy">✈ {profiel aanmaken.nextDestination}</span>
+              <span className="snap buddy">⏱ {profiel aanmaken.tripDuration}</span>
             </div>
-            <div className="snap-row" style={{ marginTop: 4 }}>
-              <span className="snap buddy">💰 {profile.budget}</span>
-              <span className="snap buddy">🤝 {profile.lookingFor}</span>
+            <div className="snap-row" style={{ marginTotp: 4 }}>
+              <span className="snap buddy">💰 {profiel aanmaken.budget}</span>
+              <span className="snap buddy">🤝 {profiel aanmaken.lookingFor}</span>
             </div>
-            <div className="tags">{(profile.interests || []).slice(0, 3).map(t => <span className="tag" key={t}>{t}</span>)}</div>
+            <div className="tags">{(profiel aanmaken.interests || []).slice(0, 3).map(t => <span className="tag" key={t}>{t}</span>)}</div>
           </>
         )}
         {!isLoggedIn && (
           <div className="lock-bar">
-            <button className="btn-lock" onClick={e => { e.stopPropagation(); onLogin(); }}>🔒 Log in to read bio & chat</button>
+            <button className="btn-lock" onClick={e => { e.stopPropagation(); onLogin(); }}>🔒 Login voor volledig profiel</button>
           </div>
         )}
       </div>
@@ -418,95 +418,95 @@ function ProfileCard({ profile, isLoggedIn, onView, onLogin }) {
 
 // ── FULL PROFILE ──────────────────────────────────────────────────────────────
 function FullProfile({ profile, onBack, onChat, isLoggedIn, onLogin }) {
-  const isOwner = profile.role === "owner";
+  const isOwner = profiel aanmaken.role === "owner";
   return (
     <div className="prof-wrap">
       <div className="prof-hero">
         <button className="back-btn" onClick={onBack}>←</button>
-        <img src={profile.avatar} alt={profile.name} />
+        <img src={profiel aanmaken.avatar} alt={profiel aanmaken.name} />
         <div className="prof-hero-over">
-          <h2>{profile.name}{!isOwner ? `, ${profile.age}` : ""}</h2>
-          <div className="subloc">{profile.country} · {profile.city}</div>
-          <span className={`role-badge ${profile.role}`} style={{ marginTop: 8, display: "inline-flex" }}>
-            {isOwner ? "🏡 BnB Owner" : "🎒 Buddy"}
+          <h2>{profiel aanmaken.name}{!isOwner ? `, ${profiel aanmaken.age}` : ""}</h2>
+          <div className="subloc">{profiel aanmaken.country} · {profiel aanmaken.city}</div>
+          <span className={`role-badge ${profiel aanmaken.role}`} style={{ marginTotp: 8, display: "inline-flex" }}>
+            {isOwner ? "🏡 BnB Eigenaar" : "🎒 Buddy"}
           </span>
         </div>
-        {profile.verified && <span className="badge-verified" style={{ position: "absolute", top: 14, right: 14 }}>✓ Verified</span>}
+        {profiel aanmaken.verified && <span className="badge-verified" style={{ position: "absolute", top: 14, right: 14 }}>✓ Verified</span>}
       </div>
 
       <div className="stat-row">
         {isOwner ? (
           <>
-            <div className="stat"><div className="sl">Property</div><div className="sv">{profile.propertyType}</div></div>
-            <div className="stat"><div className="sl">Rooms</div><div className="sv">{profile.rooms}</div></div>
-            <div className="stat"><div className="sl">Price/night</div><div className="sv">{profile.pricePerNight}</div></div>
-            <div className="stat"><div className="sl">Since</div><div className="sv">{profile.hostingSince}</div></div>
+            <div className="stat"><div className="sl">Property</div><div className="sv">{profiel aanmaken.propertyType}</div></div>
+            <div className="stat"><div className="sl">Rooms</div><div className="sv">{profiel aanmaken.rooms}</div></div>
+            <div className="stat"><div className="sl">Price/night</div><div className="sv">{profiel aanmaken.pricePerNight}</div></div>
+            <div className="stat"><div className="sl">Since</div><div className="sv">{profiel aanmaken.hostingSince}</div></div>
           </>
         ) : (
           <>
-            <div className="stat"><div className="sl">Next trip</div><div className="sv">{profile.nextDestination}</div></div>
-            <div className="stat"><div className="sl">Duration</div><div className="sv">{profile.tripDuration}</div></div>
-            <div className="stat"><div className="sl">Budget</div><div className="sv">{profile.budget}</div></div>
-            <div className="stat"><div className="sl">Style</div><div className="sv">{profile.travelStyle}</div></div>
+            <div className="stat"><div className="sl">Next trip</div><div className="sv">{profiel aanmaken.nextDestination}</div></div>
+            <div className="stat"><div className="sl">Duration</div><div className="sv">{profiel aanmaken.tripDuration}</div></div>
+            <div className="stat"><div className="sl">Budget</div><div className="sv">{profiel aanmaken.budget}</div></div>
+            <div className="stat"><div className="sl">Style</div><div className="sv">{profiel aanmaken.travelStyle}</div></div>
           </>
         )}
       </div>
 
       <div style={{ padding: "0 20px", display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 4 }}>
-        {(profile.languages || []).map(l => <span className="tag sage" key={l}>🌐 {l}</span>)}
+        {(profiel aanmaken.languages || []).map(l => <span className="tag sage" key={l}>🌐 {l}</span>)}
       </div>
 
       {isOwner && (
         <div className="prof-sec">
-          <h4>🏡 {profile.propertyName}</h4>
-          <div className="tags">{(profile.amenities || []).map(a => <span className="tag" key={a}>{a}</span>)}</div>
+          <h4>🏡 {profiel aanmaken.propertyName}</h4>
+          <div className="tags">{(profiel aanmaken.amenities || []).map(a => <span className="tag" key={a}>{a}</span>)}</div>
         </div>
       )}
       {!isOwner && (
         <div className="prof-sec">
-          <h4>Looking for</h4>
-          <p style={{ color: "#C4622D", fontWeight: 500 }}>🤝 {profile.lookingFor}</p>
+          <h4>Op zoek naar</h4>
+          <p style={{ color: "#C4622D", fontWeight: 500 }}>🤝 {profiel aanmaken.lookingFor}</p>
         </div>
       )}
 
-      <div className="prof-sec" style={{ marginTop: 16 }}>
-        <h4>About {profile.name}</h4>
+      <div className="prof-sec" style={{ marginTotp: 16 }}>
+        <h4>Over {profiel aanmaken.name}</h4>
         {isLoggedIn ? (
-          <p>{profile.bio}</p>
+          <p>{profiel aanmaken.bio}</p>
         ) : (
           <div style={{ position: "relative" }}>
-            <p style={{ lineHeight: 1.7, fontSize: 14 }}>{(profile.bio || "").split(" ").slice(0, 28).join(" ")}…</p>
-            <div style={{ position: "relative", marginTop: 4 }}>
+            <p style={{ lineHeight: 1.7, fontSize: 14 }}>{(profiel aanmaken.bio || "").split(" ").slice(0, 28).join(" ")}…</p>
+            <div style={{ position: "relative", marginTotp: 4 }}>
               <p style={{ lineHeight: 1.7, fontSize: 14, filter: "blur(3.5px)", userSelect: "none", maskImage: "linear-gradient(to bottom,black 0%,transparent 100%)", WebkitMaskImage: "linear-gradient(to bottom,black 0%,transparent 100%)" }}>
-                {(profile.bio || "").split(" ").slice(28).join(" ")}
+                {(profiel aanmaken.bio || "").split(" ").slice(28).join(" ")}
               </p>
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, display: "flex", justifyContent: "center", paddingBottom: 4 }}>
-                <button className="btn-lock" onClick={onLogin} style={{ fontSize: 13, padding: "9px 20px" }}>🔒 Log in to read more</button>
+                <button className="btn-lock" onClick={onLogin} style={{ fontSize: 13, padding: "9px 20px" }}>🔒 Login voor meer</button>
               </div>
             </div>
           </div>
         )}
       </div>
 
-      <div className="prof-sec" style={{ marginTop: 16 }}>
-        <h4>Interests</h4>
-        <div className="tags">{(profile.interests || []).map(t => <span className="tag" key={t}>{t}</span>)}</div>
+      <div className="prof-sec" style={{ marginTotp: 16 }}>
+        <h4>Interesses</h4>
+        <div className="tags">{(profiel aanmaken.interests || []).map(t => <span className="tag" key={t}>{t}</span>)}</div>
       </div>
 
-      <div className="prof-sec" style={{ marginTop: 16 }}>
-        <h4>{isOwner ? "Property photos" : "Travel photos"}</h4>
-        <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
-          {profile.photos.map((p, i) => (
+      <div className="prof-sec" style={{ marginTotp: 16 }}>
+        <h4>{isOwner ? "Foto's van het pand" : "Reisfoto's"}</h4>
+        <div style={{ display: "flex", gap: 10, marginTotp: 10 }}>
+          {profiel aanmaken.photos.map((p, i) => (
             <img key={i} src={p} alt="photo" style={{ width: "calc(50% - 5px)", aspectRatio: "1", objectFit: "cover", borderRadius: 14 }} />
           ))}
         </div>
       </div>
 
       <div className="action-bar">
-        <button className="btn-msg-out" onClick={onBack}>← Back</button>
+        <button className="btn-msg-out" onClick={onBack}>← Terug</button>
         {isLoggedIn
-          ? <button className="btn-like" onClick={() => onChat(profile)}>💬 Message</button>
-          : <button className="btn-like" onClick={onLogin}>🔒 Log in to chat</button>
+          ? <button className="btn-like" onClick={() => onChat(profile)}>💬 Bericht</button>
+          : <button className="btn-like" onClick={onLogin}>🔒 Login om te chatten</button>
         }
       </div>
     </div>
@@ -518,20 +518,20 @@ function ChatView({ profile, messages, onBack, onSend }) {
   const [input, setInput] = useState("");
   const endRef = useRef(null);
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
-  const send = () => { if (!input.trim()) return; onSend(profile.id, input.trim()); setInput(""); };
+  const send = () => { if (!input.trim()) return; onSend(profiel aanmaken.id, input.trim()); setInput(""); };
   return (
     <div className="chat-wrap">
       <div className="chat-head">
         <button className="chat-back" onClick={onBack}>←</button>
-        <img src={profile.avatar} alt={profile.name} />
-        <div><div className="chat-name">{profile.name}</div><div className="chat-status">● Online</div></div>
+        <img src={profiel aanmaken.avatar} alt={profiel aanmaken.name} />
+        <div><div className="chat-name">{profiel aanmaken.name}</div><div className="chat-status">● Online</div></div>
       </div>
       <div className="chat-msgs">
         {(messages || []).map((m, i) => <div key={i} className={`bubble ${m.from === "me" ? "me" : "them"}`}>{m.text}</div>)}
         <div ref={endRef} />
       </div>
       <div className="chat-input">
-        <input placeholder={`Message ${profile.name}…`} value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && send()} />
+        <input placeholder={`Bericht aan ${profiel aanmaken.name}…`} value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && send()} />
         <button className="send-btn" onClick={send}>➤</button>
       </div>
     </div>
@@ -541,7 +541,7 @@ function ChatView({ profile, messages, onBack, onSend }) {
 // ── MATCHES ───────────────────────────────────────────────────────────────────
 function MatchesTab({ matches, onOpenChat }) {
   if (!matches.length) return (
-    <div className="empty"><div className="ei">🌍</div><h3>No matches yet</h3><p>Browse profiles and start conversations. Your travel buddy is out there!</p></div>
+    <div className="empty"><div className="ei">🌍</div><h3>Nog geen matches</h3><p>Bekijk profielen en start gesprekken. Jouw reismaatje is er!</p></div>
   );
   return (
     <div className="matches-list">
@@ -560,66 +560,66 @@ function MatchesTab({ matches, onOpenChat }) {
 }
 
 // ── MULTI SELECT ──────────────────────────────────────────────────────────────
-function MultiSelect({ options, selected, onToggle, max }) {
+function MultiSelect({ options, selected, onTotggle, max }) {
   return (
     <div className="ms">
       {options.map(o => {
         const on = selected.includes(o);
         const disabled = max && !on && selected.length >= max;
-        return <button key={o} className={on ? "on" : ""} onClick={() => !disabled && onToggle(o)} style={{ opacity: disabled ? 0.4 : 1 }}>{o}</button>;
+        return <button key={o} className={on ? "on" : ""} onClick={() => !disabled && onTotggle(o)} style={{ opacity: disabled ? 0.4 : 1 }}>{o}</button>;
       })}
     </div>
   );
 }
 
 // ── PHOTO UPLOAD ──────────────────────────────────────────────────────────────
-function PhotoStep({ avatar, photos, isOwner, onAvatar, onPhotos }) {
+function PhotoStep({ avatar, photos, isOwner, onAvatar, onFoto's }) {
   const MAX = 6;
   const readFile = f => new Promise(res => { const r = new FileReader(); r.onload = e => res(e.target.result); r.readAsDataURL(f); });
   const handleAvatar = async e => { const f = e.target.files[0]; if (f) onAvatar(await readFile(f)); };
-  const handlePhotos = async e => {
+  const handleFoto's = async e => {
     const files = Array.from(e.target.files).slice(0, MAX - photos.length);
     const results = await Promise.all(files.map(readFile));
-    onPhotos([...photos, ...results]);
+    onFoto's([...photos, ...results]);
   };
   return (
     <div>
-      <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, marginBottom: 6 }}>Add your photos</h2>
-      <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>A profile photo helps people recognise you. {isOwner ? "Property" : "Travel"} photos help you stand out.</p>
+      <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, marginBottom: 6 }}>Voeg foto's toe</h2>
+      <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Een profielfoto helpt mensen jou te herkennen. {isOwner ? "Pand" : "Travel"} photos help you stand out.</p>
       <div style={{ marginBottom: 28 }}>
-        <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 12 }}>Profile photo</div>
+        <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 12 }}>Profielfoto</div>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <div style={{ position: "relative" }}>
             <div className="avatar-ring">{avatar ? <img src={avatar} alt="av" /> : <span style={{ fontSize: 28 }}>👤</span>}</div>
             <label className="av-plus">＋<input type="file" accept="image/*" onChange={handleAvatar} style={{ display: "none" }} /></label>
           </div>
           <div>
-            <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 4 }}>{avatar ? "Looking great! 🎉" : "Upload a clear photo of yourself"}</div>
-            <div style={{ fontSize: 12, color: "#8A7968" }}>Square photos work best.</div>
+            <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 4 }}>{avatar ? "Ziet er geweldig uit! 🎉" : "Upload een duidelijke foto van jezelf"}</div>
+            <div style={{ fontSize: 12, color: "#8A7968" }}>Vierkante foto's werken het beste.</div>
           </div>
         </div>
       </div>
       <div>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
-          <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", textTransform: "uppercase", letterSpacing: "0.5px" }}>{isOwner ? "Property photos" : "Travel photos"}</div>
+          <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", textTransform: "uppercase", letterSpacing: "0.5px" }}>{isOwner ? "Foto's van het pand" : "Reisfoto's"}</div>
           <div style={{ fontSize: 12, color: "#8A7968" }}>{photos.length}/{MAX}</div>
         </div>
         <div className="photo-grid">
           {photos.map((src, i) => (
             <div className="photo-cell" key={i}>
               <img src={src} alt="" />
-              <button className="photo-del" onClick={() => onPhotos(photos.filter((_, j) => j !== i))}>✕</button>
+              <button className="photo-del" onClick={() => onFoto's(photos.filter((_, j) => j !== i))}>✕</button>
             </div>
           ))}
           {photos.length < MAX && (
             <label className="photo-add">
               <span style={{ fontSize: 22, color: "#C4622D" }}>＋</span>
-              <span style={{ fontSize: 11, color: "#8A7968" }}>Add photo</span>
-              <input type="file" accept="image/*" multiple onChange={handlePhotos} style={{ display: "none" }} />
+              <span style={{ fontSize: 11, color: "#8A7968" }}>Foto toevoegen</span>
+              <input type="file" accept="image/*" multiple onChange={handleFoto's} style={{ display: "none" }} />
             </label>
           )}
         </div>
-        {!photos.length && <p style={{ fontSize: 12, color: "#8A7968", marginTop: 10, fontStyle: "italic" }}>Photos are optional but profiles with photos get 3× more matches!</p>}
+        {!photos.length && <p style={{ fontSize: 12, color: "#8A7968", marginTotp: 10, fontStyle: "italic" }}>Foto's are optional but profiles with photos get 3× more matches!</p>}
       </div>
     </div>
   );
@@ -631,13 +631,13 @@ function CreateProfile({ user, onDone }) {
   const STEPS = 6;
   const [step, setStep] = useState(1);
   const titles = isOwner
-    ? ["Basic info", "Your story", "Your property", "Amenities & price", "Interests", "Photos"]
-    : ["Basic info", "Your story", "Travel plans", "Preferences", "Interests", "Photos"];
+    ? ["Basisgegevens", "Jouw verhaal", "Jouw pand", "Voorzieningen & prijs", "Interesses", "Foto's"]
+    : ["Basisgegevens", "Jouw verhaal", "Travel plans", "Preferences", "Interesses", "Foto's"];
   const [form, setForm] = useState({
     tagline: "", bio: "", city: "", country: "", age: "",
     languages: [], interests: [],
     vaardigheden: [], bestemmingen: "", tripDuration: "", maanden: [], aantalPersonen: [], overigeTaal: "", overigeInteresse: "",
-    propertyName: "", propertyType: "", rooms: "", priceFrom: "", priceTo: "", amenities: [], houseRules: "",
+    propertyName: "", propertyType: "", rooms: "", priceVan: "", priceTot: "", amenities: [], houseRules: "",
     avatar: null, photos: [],
   });
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
@@ -658,9 +658,9 @@ function CreateProfile({ user, onDone }) {
         {step > 1 && <button onClick={() => setStep(s => s - 1)} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#8A7968" }}>←</button>}
         <div>
           <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 18 }}>{titles[step - 1]}</div>
-          <div style={{ fontSize: 12, color: "#8A7968" }}>Step {step} of {STEPS}</div>
+          <div style={{ fontSize: 12, color: "#8A7968" }}>Stap {step} van {STEPS}</div>
         </div>
-        <span className={`role-badge ${user.role}`} style={{ marginLeft: "auto" }}>{isOwner ? "🏡 Owner" : "🎒 Buddy"}</span>
+        <span className={`role-badge ${user.role}`} style={{ marginLeft: "auto" }}>{isOwner ? "🏡 Eigenaar" : "🎒 Buddy"}</span>
       </div>
       <div style={{ padding: "24px 20px" }}>
         <div className="step-bar">
@@ -671,53 +671,53 @@ function CreateProfile({ user, onDone }) {
 
         {step === 1 && (
           <div>
-            <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, marginBottom: 6 }}>Hey {user.name}! 👋</h2>
-            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Let's set up your {isOwner ? "host" : "traveller"} profile.</p>
-            {!isOwner && <div className="field"><label>Your age</label><input type="number" placeholder="e.g. 28" value={form.age} onChange={e => set("age", e.target.value)} /></div>}
-            <div className="field"><label>City</label><input placeholder="e.g. Amsterdam" value={form.city} onChange={e => set("city", e.target.value)} /></div>
-            <div className="field"><label>Country</label><input placeholder="e.g. Netherlands" value={form.country} onChange={e => set("country", e.target.value)} /></div>
+            <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, marginBottom: 6 }}>Hoi {user.name}! 👋</h2>
+            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Laten we jouw {isOwner ? "host" : "reiziger"} profiel aanmaken.</p>
+            {!isOwner && <div className="field"><label>Jouw leeftijd</label><input type="number" placeholder="bijv. 28" value={form.age} onChange={e => set("age", e.target.value)} /></div>}
+            <div className="field"><label>Stad</label><input placeholder="bijv. Amsterdam" value={form.city} onChange={e => set("city", e.target.value)} /></div>
+            <div className="field"><label>Land</label><input placeholder="bijv. Nederland" value={form.country} onChange={e => set("country", e.target.value)} /></div>
           </div>
         )}
 
         {step === 2 && (
           <div>
-            <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, marginBottom: 6 }}>Tell your story</h2>
-            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>This is what people see on your profile.</p>
+            <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, marginBottom: 6 }}>Vertel je verhaal</h2>
+            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>This is what people see on your profiel aanmaken.</p>
             <div className="field">
               <label>Tagline — one catchy line about you</label>
               <input placeholder={isOwner ? "e.g. Cosy rooms, big adventures" : "e.g. Slow travel & strong coffee"} value={form.tagline} onChange={e => set("tagline", e.target.value)} maxLength={60} />
-              <div style={{ fontSize: 11, color: "#8A7968", marginTop: 4 }}>{form.tagline.length}/60</div>
+              <div style={{ fontSize: 11, color: "#8A7968", marginTotp: 4 }}>{form.tagline.length}/60</div>
             </div>
             <div className="field">
-              <label>About you</label>
-              <textarea placeholder={isOwner ? "Tell guests about your place…" : "What kind of traveller are you?…"} value={form.bio} onChange={e => set("bio", e.target.value)} rows={5} maxLength={400}
+              <label>Over you</label>
+              <textarea placeholder={isOwner ? "Tell guests about your place…" : "What kind van reiziger are you?…"} value={form.bio} onChange={e => set("bio", e.target.value)} rows={5} maxLength={400}
                 style={{ width: "100%", padding: "13px 16px", border: "1.5px solid #F2E4CC", borderRadius: 14, background: "white", fontFamily: "'DM Sans',sans-serif", fontSize: 14, outline: "none", resize: "none", lineHeight: 1.6 }} />
-              <div style={{ fontSize: 11, color: "#8A7968", marginTop: 4 }}>{form.bio.length}/400</div>
+              <div style={{ fontSize: 11, color: "#8A7968", marginTotp: 4 }}>{form.bio.length}/400</div>
             </div>
           </div>
         )}
 
         {step === 3 && isOwner && (
           <div>
-            <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, marginBottom: 6 }}>Your property</h2>
-            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Tell guests what you're offering.</p>
-            <div className="field"><label>Property name</label><input placeholder="e.g. Casa Sabor" value={form.propertyName} onChange={e => set("propertyName", e.target.value)} /></div>
+            <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, marginBottom: 6 }}>Jouw pand</h2>
+            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Vertel gasten wat je aanbiedt.</p>
+            <div className="field"><label>Naam van het pand</label><input placeholder="bijv. Casa Sabor" value={form.propertyName} onChange={e => set("propertyName", e.target.value)} /></div>
             <div className="field">
-              <label>Property type</label>
+              <label>Type pand</label>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                 {PROPERTY_TYPES.map(t => <button key={t} onClick={() => set("propertyType", t)} style={sb(t, form.propertyType)}>{t}</button>)}
               </div>
             </div>
-            <div className="field"><label>Number of rooms</label><input type="number" min="1" placeholder="e.g. 3" value={form.rooms} onChange={e => set("rooms", e.target.value)} /></div>
+            <div className="field"><label>Number van rooms</label><input type="number" min="1" placeholder="bijv. 3" value={form.rooms} onChange={e => set("rooms", e.target.value)} /></div>
             <div className="field">
-              <label>Price per night (€) — from / to</label>
+              <label>Prijs per nacht (€) — van / tot</label>
               <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                <input type="number" placeholder="From" value={form.priceFrom} onChange={e => set("priceFrom", e.target.value)} style={{ flex: 1 }} />
+                <input type="number" placeholder="Van" value={form.priceVan} onChange={e => set("priceVan", e.target.value)} style={{ flex: 1 }} />
                 <span style={{ color: "#8A7968" }}>–</span>
-                <input type="number" placeholder="To" value={form.priceTo} onChange={e => set("priceTo", e.target.value)} style={{ flex: 1 }} />
+                <input type="number" placeholder="Tot" value={form.priceTot} onChange={e => set("priceTot", e.target.value)} style={{ flex: 1 }} />
               </div>
             </div>
-            <div className="field"><label>House rules (optional)</label><input placeholder="e.g. No smoking, check-in after 15:00" value={form.houseRules} onChange={e => set("houseRules", e.target.value)} /></div>
+            <div className="field"><label>Huisregels (optioneel)</label><input placeholder="bijv. Niet roken, inchecken na 15:00" value={form.houseRules} onChange={e => set("houseRules", e.target.value)} /></div>
           </div>
         )}
 
@@ -727,7 +727,7 @@ function CreateProfile({ user, onDone }) {
             <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Welke bestemmingen hebben jouw voorkeur?</p>
             <div className="field">
               <label>Vaardigheden (wat breng jij mee)</label>
-              <MultiSelect options={VAARDIGHEDEN} selected={form.vaardigheden} onToggle={v => tog("vaardigheden", v)} />
+              <MultiSelect options={VAARDIGHEDEN} selected={form.vaardigheden} onTotggle={v => tog("vaardigheden", v)} />
             </div>
           </div>
         )}
@@ -735,8 +735,8 @@ function CreateProfile({ user, onDone }) {
         {step === 4 && isOwner && (
           <div>
             <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, marginBottom: 6 }}>Amenities</h2>
-            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>What do you offer guests?</p>
-            <MultiSelect options={AMENITIES_LIST} selected={form.amenities} onToggle={v => tog("amenities", v)} />
+            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Wat bied je gasten aan?</p>
+            <MultiSelect options={AMENITIES_LIST} selected={form.amenities} onTotggle={v => tog("amenities", v)} />
           </div>
         )}
 
@@ -749,11 +749,11 @@ function CreateProfile({ user, onDone }) {
                 {DURATIONS.map(d => <button key={d} onClick={() => set("tripDuration", d)} style={sb(d, form.tripDuration)}>{d}</button>)}
               </div>
             </div>
-            <div className="field" style={{ marginTop: 20 }}>
+            <div className="field" style={{ marginTotp: 20 }}>
               <label>Maanden</label>
-              <MultiSelect options={MAANDEN} selected={form.maanden} onToggle={v => tog("maanden", v)} />
+              <MultiSelect options={MAANDEN} selected={form.maanden} onTotggle={v => tog("maanden", v)} />
             </div>
-            <div className="field" style={{ marginTop: 20 }}>
+            <div className="field" style={{ marginTotp: 20 }}>
               <label>Aantal personen</label>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                 {AANTAL_PERSONEN.map(a => <button key={a} onClick={() => set("aantalPersonen", a)} style={sb(a, form.aantalPersonen)}>{a}</button>)}
@@ -764,33 +764,33 @@ function CreateProfile({ user, onDone }) {
 
         {step === 5 && (
           <div>
-            <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, marginBottom: 6 }}>Almost there!</h2>
-            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Add your languages and interests.</p>
+            <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, marginBottom: 6 }}>Bijna klaar!</h2>
+            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Voeg je talen en interesses toe.</p>
             <div className="field">
-              <label>Languages you speak</label>
-              <MultiSelect options={LANGUAGES_LIST} selected={form.languages} onToggle={v => tog("languages", v)} />
+              <label>Talen die je spreekt</label>
+              <MultiSelect options={LANGUAGES_LIST} selected={form.languages} onTotggle={v => tog("languages", v)} />
               <input placeholder="Overige taal..." value={form.overigeTaal} onChange={e => set("overigeTaal", e.target.value)}
-                style={{ marginTop: 10, width: "100%", padding: "10px 16px", border: "1.5px solid #F2E4CC", borderRadius: 14, fontFamily: "'DM Sans',sans-serif", fontSize: 14, outline: "none" }} />
+                style={{ marginTotp: 10, width: "100%", padding: "10px 16px", border: "1.5px solid #F2E4CC", borderRadius: 14, fontFamily: "'DM Sans',sans-serif", fontSize: 14, outline: "none" }} />
             </div>
-            <div className="field" style={{ marginTop: 20 }}>
-              <label>Interests (pick up to 6)</label>
-              <MultiSelect options={INTERESTS_LIST} selected={form.interests} onToggle={v => tog("interests", v)} max={6} />
+            <div className="field" style={{ marginTotp: 20 }}>
+              <label>Interesses (pick up to 6)</label>
+              <MultiSelect options={INTERESTS_LIST} selected={form.interests} onTotggle={v => tog("interests", v)} max={6} />
               <input placeholder="Overige interesse..." value={form.overigeInteresse} onChange={e => set("overigeInteresse", e.target.value)}
-                style={{ marginTop: 10, width: "100%", padding: "10px 16px", border: "1.5px solid #F2E4CC", borderRadius: 14, fontFamily: "'DM Sans',sans-serif", fontSize: 14, outline: "none" }} />
+                style={{ marginTotp: 10, width: "100%", padding: "10px 16px", border: "1.5px solid #F2E4CC", borderRadius: 14, fontFamily: "'DM Sans',sans-serif", fontSize: 14, outline: "none" }} />
             </div>
           </div>
         )}
 
         {step === 6 && (
-          <PhotoStep avatar={form.avatar} photos={form.photos} isOwner={isOwner}
-            onAvatar={v => set("avatar", v)} onPhotos={v => set("photos", v)} />
+          <PhotoStap avatar={form.avatar} photos={form.photos} isOwner={isOwner}
+            onAvatar={v => set("avatar", v)} onFoto's={v => set("photos", v)} />
         )}
 
-        <div style={{ marginTop: 32, display: "flex", gap: 12 }}>
-          {step > 1 && <button className="btn-ghost" onClick={() => setStep(s => s - 1)} style={{ flex: 1 }}>← Back</button>}
+        <div style={{ marginTotp: 32, display: "flex", gap: 12 }}>
+          {step > 1 && <button className="btn-ghost" onClick={() => setStep(s => s - 1)} style={{ flex: 1 }}>← Terug</button>}
           {step < STEPS
-            ? <button className="btn-main" onClick={() => ok() && setStep(s => s + 1)} style={{ flex: 2, opacity: ok() ? 1 : 0.45 }}>Continue →</button>
-            : <button className="btn-main" onClick={() => onDone(form)} style={{ flex: 2 }}>Submit profile 🎉</button>
+            ? <button className="btn-main" onClick={() => ok() && setStep(s => s + 1)} style={{ flex: 2, opacity: ok() ? 1 : 0.45 }}>Verder →</button>
+            : <button className="btn-main" onClick={() => onDone(form)} style={{ flex: 2 }}>Profiel indienen 🎉</button>
           }
         </div>
       </div>
@@ -803,22 +803,22 @@ function UnderReview({ user, onBrowse }) {
   return (
     <div className="review-wrap">
       <div style={{ fontSize: 64, marginBottom: 24 }}>🌍</div>
-      <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: 26, marginBottom: 12 }}>You're on your way, {user.name}!</h1>
-      <p style={{ fontSize: 15, color: "#8A7968", lineHeight: 1.7, marginBottom: 8 }}>Your profile has been submitted and is currently <strong style={{ color: "#C4622D" }}>under review</strong>.</p>
-      <p style={{ fontSize: 14, color: "#8A7968", lineHeight: 1.7, marginBottom: 32 }}>We check every profile to keep BnbBuddy safe and welcoming. You'll receive an email within <strong>24–48 hours</strong>.</p>
+      <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: 26, marginBottom: 12 }}>Je bent onderweg, {user.name}!</h1>
+      <p style={{ fontSize: 15, color: "#8A7968", lineHeight: 1.7, marginBottom: 8 }}>Je profiel is ingediend en wordt momenteel <strong style={{ color: "#C4622D" }}>beoordeeld</strong>.</p>
+      <p style={{ fontSize: 14, color: "#8A7968", lineHeight: 1.7, marginBottom: 32 }}>We controleren elk profiel om BnbBuddy veilig en gastvrij te houden. Je ontvangt binnen <strong>24–48 uur</strong>.</p>
       <div className="review-box">
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
           <span style={{ fontSize: 20 }}>⏳</span>
-          <span style={{ fontSize: 14, fontWeight: 500 }}>What happens next</span>
+          <span style={{ fontSize: 14, fontWeight: 500 }}>Wat gebeurt er nu</span>
         </div>
-        {["Your profile is reviewed by our team", "You get an email once it's approved", "Your profile goes live in the community", "Start connecting with matches!"].map((s, i) => (
+        {["Jouw profiel wordt beoordeeld door ons team", "Je ontvangt een e-mail zodra het is goedgekeurd", "Jouw profiel verschijnt in de community", "Begin met verbinden met matches!"].map((s, i) => (
           <div className="review-step" key={i}>
             <div className="review-num">{i + 1}</div>
             <span style={{ fontSize: 13, color: "#8A7968", lineHeight: 1.5 }}>{s}</span>
           </div>
         ))}
       </div>
-      <button className="btn-main" onClick={onBrowse} style={{ width: "100%" }}>Browse profiles in the meantime →</button>
+      <button className="btn-main" onClick={onBrowse} style={{ width: "100%" }}>Bekijk alvast profielen →</button>
     </div>
   );
 }
@@ -915,7 +915,7 @@ export default function App() {
       if (session) {
         try {
           const profile = await getProfile(session.user.id);
-          if (profile) setUser({ ...profile, avatar: profile.avatar_url || "https://i.pravatar.cc/80?img=12" });
+          if (profile) setUser({ ...profile, avatar: profiel aanmaken.avatar_url || "https://i.pravatar.cc/80?img=12" });
           else setUser({ id: session.user.id, email: session.user.email, name: session.user.email.split("@")[0], role: "buddy", avatar: "https://i.pravatar.cc/80?img=12", isNew: true });
         } catch (e) {
           setUser({ id: session.user.id, email: session.user.email, name: session.user.email.split("@")[0], role: "buddy", avatar: "https://i.pravatar.cc/80?img=12", isNew: true });
@@ -952,8 +952,8 @@ export default function App() {
           property_name: form.propertyName,
           property_type: form.propertyType,
           rooms: form.rooms ? parseInt(form.rooms) : null,
-          price_from: form.priceFrom ? parseFloat(form.priceFrom) : null,
-          price_to: form.priceTo ? parseFloat(form.priceTo) : null,
+          price_from: form.priceVan ? parseFloat(form.priceVan) : null,
+          price_to: form.priceTot ? parseFloat(form.priceTot) : null,
           amenities: form.amenities,
           house_rules: form.houseRules,
         });
@@ -1009,9 +1009,9 @@ export default function App() {
         <div className="nav-actions">
           {user ? (
             <>
-              <span style={{ fontSize: 13, color: "#8A7968" }}>Hi, {user.name}</span>
+              <span style={{ fontSize: 13, color: "#8A7968" }}>Hoi, {user.name}</span>
               <span className={`role-badge ${user.role}`} style={{ fontSize: 10, padding: "3px 8px" }}>{user.role === "owner" ? "🏡" : "🎒"}</span>
-              <button className="btn-nav" onClick={() => setScreen("create-profile")} style={{ fontSize: 12, padding: "5px 10px" }}>+ Profile</button>
+              <button className="btn-nav" onClick={() => setScreen("create-profile")} style={{ fontSize: 12, padding: "5px 10px" }}>+ Profiel</button>
               <img src={user.avatar} alt="me" className="nav-avatar" />
             </>
           ) : (
@@ -1031,30 +1031,30 @@ export default function App() {
           <>
             {!user && (
               <div className="hero">
-                <h1>Find your <em>travel</em> companion</h1>
-                <p>Connect with BnB owners and fellow travelers who match your style and destination.</p>
+                <h1>Vind je <em>reismaatje</em></h1>
+                <p>Kom in contact met BnB Eigenaren en Buddy's die bij jouw stijl en bestemming passen.</p>
                 <button className="btn-hero" onClick={openSignup}>Word gratis lid ✈</button>
               </div>
             )}
             <div className="sec-head">
-              <h2>Explore profiles</h2>
-              <span style={{ fontSize: 12, color: "#8A7968" }}>{filtered.length} found</span>
+              <h2>Bekijk profielen</h2>
+              <span style={{ fontSize: 12, color: "#8A7968" }}>{filtered.length} gevonden</span>
             </div>
             <div className="filter-pills">
-              <button className={`pill ${roleFilter === "all" ? "active" : ""}`} onClick={() => setRoleFilter("all")}>🌍 Everyone</button>
-              <button className={`pill ${roleFilter === "owner" ? "active" : ""}`} onClick={() => setRoleFilter("owner")}>🏡 BnB Owners</button>
-              <button className={`pill ${roleFilter === "buddy" ? "active" : ""}`} onClick={() => setRoleFilter("buddy")}>🎒 Buddies</button>
+              <button className={`pill ${roleFilter === "all" ? "active" : ""}`} onClick={() => setRoleFilter("all")}>🌍 Iedereen</button>
+              <button className={`pill ${roleFilter === "owner" ? "active" : ""}`} onClick={() => setRoleFilter("owner")}>🏡 BnB Eigenaar</button>
+              <button className={`pill ${roleFilter === "buddy" ? "active" : ""}`} onClick={() => setRoleFilter("buddy")}>🎒 Buddy</button>
             </div>
             <div className="profile-grid">
               {filtered.map(p => (
                 <ProfileCard key={p.id} profile={p} isLoggedIn={!!user} onView={setViewProfile} onLogin={openLogin} />
               ))}
             </div>
-            {!filtered.length && <div className="empty"><div className="ei">🔍</div><h3>No profiles found</h3><p>Try a different filter.</p></div>}
+            {!filtered.length && <div className="empty"><div className="ei">🔍</div><h3>No profiles gevonden</h3><p>Probeer een ander filter.</p></div>}
           </>
         ) : (
           <>
-            <div className="sec-head"><h2>Your matches</h2></div>
+            <div className="sec-head"><h2>Jouw matches</h2></div>
             <MatchesTab matches={matched} onOpenChat={p => { setChatProfile(p); setTab("messages"); }} />
           </>
         )}
