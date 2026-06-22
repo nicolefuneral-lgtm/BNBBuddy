@@ -368,7 +368,7 @@ function AuthModal({ onClose, onLogin, initialMode = "login" }) {
 
 // ── PROFILE CARD ──────────────────────────────────────────────────────────────
 function ProfileCard({ profile, isLoggedIn, onView, onLogin }) {
-  const isOwner = profiel aanmaken.role === "owner";
+   const isOwner = profile.role === "owner";
   return (
     <div className="card" onClick={() => onView(profile)}>
       <div className="card-img">
