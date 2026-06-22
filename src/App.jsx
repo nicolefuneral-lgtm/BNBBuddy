@@ -259,7 +259,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 `;
 
 // ── AUTH MODAL ────────────────────────────────────────────────────────────────
-function AuthModal({ onClose, onLogin, initialMode = "login" }) {
+function AuthModal({ onClose, onLogin, onSignupSuccess, initialMode = "login" }) {
   const [mode, setMode] = useState(initialMode);
   const [role, setRole] = useState(null);
   const [name, setName] = useState("");
@@ -277,7 +277,8 @@ function AuthModal({ onClose, onLogin, initialMode = "login" }) {
     try {
       if (mode === "signup") {
         await signUp({ email, password, name: name || email.split("@")[0], role });
-        onLogin({ name: name || email.split("@")[0], email, role, avatar: "https://i.pravatar.cc/80?img=12", isNew: true });
+        onSignupSuccess(email);
+        return;
       } else {
         const user = await signIn({ email, password });
         let profile = null;
@@ -854,11 +855,42 @@ function EmailBevestigd({ onLogin }) {
   );
 }
 
+// ── CHECK JE E-MAIL ──────────────────────────────────────────────────────────
+function CheckEmail({ email, onBackToLogin }) {
+  return (
+    <div style={{
+      minHeight: "100vh", background: "#FDF6EC",
+      display: "flex", flexDirection: "column",
+      alignItems: "center", justifyContent: "center",
+      padding: "40px 30px", textAlign: "center"
+    }}>
+      <div style={{ fontSize: 72, marginBottom: 24 }}>📬</div>
+      <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: 28, color: "#2C2C2C", marginBottom: 12 }}>
+        Check je e-mail!
+      </h1>
+      <p style={{ fontSize: 16, color: "#8A7968", lineHeight: 1.7, marginBottom: 8, maxWidth: 360 }}>
+        We hebben een bevestigingslink gestuurd naar <strong style={{ color: "#2C2C2C" }}>{email}</strong>
+      </p>
+      <p style={{ fontSize: 15, color: "#8A7968", lineHeight: 1.7, marginBottom: 36, maxWidth: 360 }}>
+        Klik op de link in de e-mail om je account te activeren. Geen mail ontvangen? Check ook je spam-map.
+      </p>
+      <button
+        className="btn-main"
+        onClick={onBackToLogin}
+        style={{ maxWidth: 320, width: "100%" }}
+      >
+        Terug naar inloggen →
+      </button>
+    </div>
+  );
+}
+
 // ── MAIN APP ──────────────────────────────────────────────────────────────────
 export default function App() {
   const [user, setUser] = useState(null);
   const [showAuth, setShowAuth] = useState(false);
   const [authMode, setAuthMode] = useState("login");
+  const [checkEmailAddress, setCheckEmailAddress] = useState(null);
   const [emailConfirmed, setEmailConfirmed] = useState(false);
   const [screen, setScreen] = useState("browse");
   const [tab, setTab] = useState("browse");
@@ -927,6 +959,7 @@ export default function App() {
   const allProfiles = dbProfiles.length > 0 ? dbProfiles : PROFILES;
 
   const login = u => { setUser(u); setShowAuth(false); if (u.isNew) setScreen("create-profile"); };
+  const handleSignupSuccess = (email) => { setShowAuth(false); setCheckEmailAddress(email); };
   const openSignup = () => { setAuthMode("signup"); setShowAuth(true); };
   const openLogin = () => { setAuthMode("login"); setShowAuth(true); };
 
@@ -979,6 +1012,13 @@ export default function App() {
 
   const filtered = (roleFilter === "all" ? allProfiles : allProfiles.filter(p => p.role === roleFilter));
   const matched = allProfiles.filter(p => likes.includes(p.id));
+
+  if (checkEmailAddress) return (
+    <div className="wrap">
+      <style>{css}</style>
+      <CheckEmail email={checkEmailAddress} onBackToLogin={() => { setCheckEmailAddress(null); openLogin(); }} />
+    </div>
+  );
 
   if (emailConfirmed) return (
     <div className="wrap">
@@ -1074,7 +1114,7 @@ export default function App() {
         </div>
       )}
 
-      {showAuth && <AuthModal onClose={() => setShowAuth(false)} onLogin={login} initialMode={authMode} />}
+      {showAuth && <AuthModal onClose={() => setShowAuth(false)} onLogin={login} onSignupSuccess={handleSignupSuccess} initialMode={authMode} />}
     </div>
   );
 }
