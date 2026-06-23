@@ -258,6 +258,17 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 }
 `;
 
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function dataUrlToFile(dataUrl, filename) {
+  const [header, base64] = dataUrl.split(",");
+  const mimeMatch = header.match(/:(.*?);/);
+  const mime = mimeMatch ? mimeMatch[1] : "image/jpeg";
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new File([bytes], filename, { type: mime });
+}
+
 // ── AUTH MODAL ────────────────────────────────────────────────────────────────
 function AuthModal({ onClose, onLogin, onSignupSuccess, initialMode = "login" }) {
   const [mode, setMode] = useState(initialMode);
@@ -990,7 +1001,26 @@ export default function App() {
           amenities: form.amenities,
           house_rules: form.houseRules,
         });
-        if (form.avatar) setUser(u => ({ ...u, avatar: form.avatar }));
+
+        // Upload avatar (profile photo) to Storage and save its URL
+        if (form.avatar) {
+          try {
+            const avatarFile = dataUrlToFile(form.avatar, `avatar.jpg`);
+            const avatarUrl = await uploadPhoto(user.id, avatarFile, 'avatar');
+            await upsertProfile(user.id, { avatar_url: avatarUrl });
+            setUser(u => ({ ...u, avatar: avatarUrl }));
+          } catch (e) { console.error("Avatar upload error:", e); }
+        }
+
+        // Upload gallery photos (property/travel photos) to Storage
+        if (form.photos && form.photos.length > 0) {
+          for (let i = 0; i < form.photos.length; i++) {
+            try {
+              const photoFile = dataUrlToFile(form.photos[i], `photo-${Date.now()}-${i}.jpg`);
+              await uploadPhoto(user.id, photoFile, 'gallery');
+            } catch (e) { console.error("Photo upload error:", e); }
+          }
+        }
       } catch (e) { console.error(e); }
     }
     setScreen("under-review");
