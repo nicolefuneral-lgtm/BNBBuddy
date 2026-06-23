@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { supabase, signUp, signIn, getProfile, upsertProfile, getApprovedProfiles, uploadPhoto, sendMessage, getMessages, likeProfile, getLikes } from "./supabase.js";
+import { supabase, signUp, signIn, signOut, getProfile, upsertProfile, getApprovedProfiles, uploadPhoto, sendMessage, getMessages, likeProfile, getLikes } from "./supabase.js";
 
 const C = {
   cream: "#FDF6EC", sand: "#F2E4CC", terra: "#C4622D",
@@ -638,7 +638,7 @@ function PhotoStep({ avatar, photos, isOwner, onAvatar, onPhotos }) {
 }
 
 // ── CREATE PROFILE ────────────────────────────────────────────────────────────
-function CreateProfile({ user, onDone }) {
+function CreateProfile({ user, onDone, onClose }) {
   const isOwner = user.role === "owner";
   const STEPS = 6;
   const [step, setStep] = useState(1);
@@ -673,6 +673,7 @@ function CreateProfile({ user, onDone }) {
           <div style={{ fontSize: 12, color: "#8A7968" }}>Stap {step} van {STEPS}</div>
         </div>
         <span className={`role-badge ${user.role}`} style={{ marginLeft: "auto" }}>{isOwner ? "🏡 Eigenaar" : "🎒 Buddy"}</span>
+        {onClose && <button onClick={onClose} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#8A7968", marginLeft: 8 }}>✕</button>}
       </div>
       <div style={{ padding: "24px 20px" }}>
         <div className="step-bar">
@@ -970,6 +971,10 @@ export default function App() {
   const allProfiles = dbProfiles.length > 0 ? dbProfiles : PROFILES;
 
   const login = u => { setUser(u); setShowAuth(false); if (u.isNew) setScreen("create-profile"); };
+  const handleLogout = async () => {
+    try { await signOut(); } catch (e) { console.error(e); }
+    setUser(null); setScreen("browse"); setTab("browse"); setViewProfile(null); setChatProfile(null);
+  };
   const handleSignupSuccess = (email) => { setShowAuth(false); setCheckEmailAddress(email); };
   const openSignup = () => { setAuthMode("signup"); setShowAuth(true); };
   const openLogin = () => { setAuthMode("login"); setShowAuth(true); };
@@ -1064,7 +1069,7 @@ export default function App() {
     </div>
   );
   if (screen === "create-profile" && user) return (
-    <div className="wrap"><style>{css}</style><CreateProfile user={user} onDone={profileDone} /></div>
+    <div className="wrap"><style>{css}</style><CreateProfile user={user} onDone={profileDone} onClose={() => setScreen("browse")} /></div>
   );
   if (screen === "under-review" && user) return (
     <div className="wrap"><style>{css}</style><UnderReview user={user} onBrowse={() => setScreen("browse")} /></div>
@@ -1082,6 +1087,7 @@ export default function App() {
               <span style={{ fontSize: 13, color: "#8A7968" }}>Hoi, {user.name}</span>
               <span className={`role-badge ${user.role}`} style={{ fontSize: 10, padding: "3px 8px" }}>{user.role === "owner" ? "🏡" : "🎒"}</span>
               <button className="btn-nav" onClick={() => setScreen("create-profile")} style={{ fontSize: 12, padding: "5px 10px" }}>+ Profiel</button>
+              <button className="btn-nav" onClick={handleLogout} style={{ fontSize: 12, padding: "5px 10px" }}>Uitloggen</button>
               <img src={user.avatar} alt="me" className="nav-avatar" />
             </>
           ) : (
