@@ -646,11 +646,12 @@ function CreateProfile({ user, onDone, onClose }) {
     ? ["Basisgegevens", "Jouw verhaal", "Jouw pand", "Voorzieningen & prijs", "Interesses", "Foto's"]
     : ["Basisgegevens", "Jouw verhaal", "Travel plans", "Preferences", "Interesses", "Foto's"];
   const [form, setForm] = useState({
-    tagline: "", bio: "", city: "", country: "", age: "",
-    languages: [], interests: [],
-    vaardigheden: [], bestemmingen: "", tripDuration: "", maanden: [], aantalPersonen: [], overigeTaal: "", overigeInteresse: "",
-    propertyName: "", propertyType: "", rooms: "", priceVan: "", priceTot: "", amenities: [], houseRules: "",
-    avatar: null, photos: [],
+    tagline: user.tagline || "", bio: user.bio || "", city: user.city || "", country: user.country || "", age: user.age ? String(user.age) : "",
+    languages: user.languages || [], interests: user.interests || [],
+    vaardigheden: user.vaardigheden || [], bestemmingen: user.bestemmingen || "", tripDuration: user.trip_duration || "", maanden: user.maanden || [], aantalPersonen: user.aantal_personen || "", overigeTaal: user.overige_taal || "", overigeInteresse: user.overige_interesse || "",
+    propertyName: user.property_name || "", propertyType: user.property_type || "", rooms: user.rooms ? String(user.rooms) : "", priceVan: user.price_from ? String(user.price_from) : "", priceTot: user.price_to ? String(user.price_to) : "", amenities: user.amenities || [], houseRules: user.house_rules || "",
+    avatar: user.avatar_url || user.avatar || null,
+    photos: (user.photos || []).filter(p => p.type === "gallery").map(p => p.url),
   });
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
   const tog = (k, v) => setForm(f => ({ ...f, [k]: f[k].includes(v) ? f[k].filter(x => x !== v) : [...f[k], v] }));
@@ -1007,8 +1008,8 @@ export default function App() {
           house_rules: form.houseRules,
         });
 
-        // Upload avatar (profile photo) to Storage and save its URL
-        if (form.avatar) {
+        // Upload avatar (profile photo) to Storage and save its URL — only if it's a newly selected local file
+        if (form.avatar && form.avatar.startsWith("data:")) {
           try {
             const avatarFile = dataUrlToFile(form.avatar, `avatar.jpg`);
             const avatarUrl = await uploadPhoto(user.id, avatarFile, 'avatar');
@@ -1017,11 +1018,12 @@ export default function App() {
           } catch (e) { console.error("Avatar upload error:", e); }
         }
 
-        // Upload gallery photos (property/travel photos) to Storage
-        if (form.photos && form.photos.length > 0) {
-          for (let i = 0; i < form.photos.length; i++) {
+        // Upload gallery photos (property/travel photos) to Storage — only new local selections, skip already-uploaded URLs
+        const newPhotos = (form.photos || []).filter(p => p.startsWith("data:"));
+        if (newPhotos.length > 0) {
+          for (let i = 0; i < newPhotos.length; i++) {
             try {
-              const photoFile = dataUrlToFile(form.photos[i], `photo-${Date.now()}-${i}.jpg`);
+              const photoFile = dataUrlToFile(newPhotos[i], `photo-${Date.now()}-${i}.jpg`);
               await uploadPhoto(user.id, photoFile, 'gallery');
             } catch (e) { console.error("Photo upload error:", e); }
           }
