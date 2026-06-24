@@ -178,8 +178,8 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .role-card .rck{position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;background:#C4622D;color:white;font-size:11px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;}
 .role-card.sel .rck{opacity:1;}
 .prof-wrap{padding-bottom:100px;}
-.prof-hero{position:relative;height:340px;overflow:hidden;}
-.prof-hero img{width:100%;height:100%;object-fit:cover;}
+.prof-hero{position:relative;height:340px;overflow:hidden;background:#F2E4CC;}
+.prof-hero img{width:100%;height:100%;object-fit:contain;}
 .prof-hero-over{position:absolute;bottom:0;left:0;right:0;padding:28px 20px 20px;background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 100%);color:white;}
 .prof-hero-over h2{font-family:'Playfair Display',serif;font-size:30px;}
 .prof-hero-over .subloc{font-size:13px;opacity:0.85;margin-top:2px;}
@@ -411,13 +411,15 @@ function ProfileCard({ profile, isLoggedIn, onView, onLogin }) {
         ) : (
           <>
             <div className="snap-row">
-              <span className="snap buddy">✈ {profile.nextDestination}</span>
-              <span className="snap buddy">⏱ {profile.tripDuration}</span>
+              {profile.bestemmingen && <span className="snap buddy">✈ {profile.bestemmingen}</span>}
+              {profile.tripDuration && <span className="snap buddy">⏱ {profile.tripDuration}</span>}
             </div>
-            <div className="snap-row" style={{ marginTop: 4 }}>
-              <span className="snap buddy">💰 {profile.budget}</span>
-              <span className="snap buddy">🤝 {profile.lookingFor}</span>
-            </div>
+            {(profile.maanden?.length > 0 || profile.aantalPersonen) && (
+              <div className="snap-row" style={{ marginTop: 4 }}>
+                {profile.maanden?.length > 0 && <span className="snap buddy">📅 {profile.maanden.slice(0, 2).join(", ")}{profile.maanden.length > 2 ? "…" : ""}</span>}
+                {profile.aantalPersonen && <span className="snap buddy">👥 {profile.aantalPersonen}</span>}
+              </div>
+            )}
             <div className="tags">{(profile.interests || []).slice(0, 3).map(t => <span className="tag" key={t}>{t}</span>)}</div>
           </>
         )}
@@ -459,10 +461,10 @@ function FullProfile({ profile, onBack, onChat, isLoggedIn, onLogin }) {
           </>
         ) : (
           <>
-            <div className="stat"><div className="sl">Next trip</div><div className="sv">{profile.nextDestination}</div></div>
-            <div className="stat"><div className="sl">Duration</div><div className="sv">{profile.tripDuration}</div></div>
-            <div className="stat"><div className="sl">Budget</div><div className="sv">{profile.budget}</div></div>
-            <div className="stat"><div className="sl">Style</div><div className="sv">{profile.travelStyle}</div></div>
+            <div className="stat"><div className="sl">Bestemming</div><div className="sv">{profile.bestemmingen || "—"}</div></div>
+            <div className="stat"><div className="sl">Duration</div><div className="sv">{profile.tripDuration || "—"}</div></div>
+            <div className="stat"><div className="sl">Maanden</div><div className="sv">{profile.maanden?.length > 0 ? profile.maanden.join(", ") : "—"}</div></div>
+            <div className="stat"><div className="sl">Personen</div><div className="sv">{profile.aantalPersonen || "—"}</div></div>
           </>
         )}
       </div>
@@ -475,12 +477,6 @@ function FullProfile({ profile, onBack, onChat, isLoggedIn, onLogin }) {
         <div className="prof-sec">
           <h4>🏡 {profile.propertyName}</h4>
           <div className="tags">{(profile.amenities || []).map(a => <span className="tag" key={a}>{a}</span>)}</div>
-        </div>
-      )}
-      {!isOwner && (
-        <div className="prof-sec">
-          <h4>Op zoek naar</h4>
-          <p style={{ color: "#C4622D", fontWeight: 500 }}>🤝 {profile.lookingFor}</p>
         </div>
       )}
 
@@ -565,7 +561,7 @@ function MatchesTab({ matches, onOpenChat }) {
           <div className="match-av"><img src={p.avatar} alt={p.name} /><div className="online-dot" /></div>
           <div className="match-info">
             <div className="match-name">{p.name}</div>
-            <div className="match-prev">{p.role === "owner" ? `🏡 ${p.propertyName}` : `✈ ${p.nextDestination}`}</div>
+            <div className="match-prev">{p.role === "owner" ? `🏡 ${p.propertyName}` : `✈ ${p.bestemmingen || ""}`}</div>
           </div>
           <div className="match-time">now</div>
         </div>
@@ -1064,10 +1060,8 @@ export default function App() {
           ...p,
           avatar: p.avatar_url || "https://i.pravatar.cc/400?img=47",
           photos: (p.photos || []).filter(ph => ph.type === "gallery").map(ph => ph.url),
-          nextDestination: p.next_destination || "",
           tripDuration: p.trip_duration || "",
-          lookingFor: Array.isArray(p.looking_for) ? p.looking_for.join(", ") : (p.looking_for || ""),
-          travelStyle: p.travel_style || "",
+          aantalPersonen: p.aantal_personen || "",
           pricePerNight: p.price_from && p.price_to ? `€${p.price_from}–€${p.price_to}` : "",
           propertyName: p.property_name || "",
           propertyType: p.property_type || "",
