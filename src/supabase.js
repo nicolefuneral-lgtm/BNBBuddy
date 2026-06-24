@@ -61,7 +61,14 @@ export async function getApprovedProfiles() {
   if (error) return []
   return data || []
 }
-
+export async function getAllProfiles() {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*, photos(*)')
+    .order('created_at', { ascending: false })
+  if (error) return []
+  return data || []
+}
 // ── PHOTOS ────────────────────────────────────────────────────────────────────
 export async function uploadPhoto(userId, file, type = 'gallery') {
   const ext = file.name.split('.').pop()
