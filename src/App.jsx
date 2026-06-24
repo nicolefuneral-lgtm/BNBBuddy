@@ -1,5 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import { supabase, signUp, signIn, signOut, getProfile, upsertProfile, getApprovedProfiles, uploadPhoto, sendMessage, getMessages, likeProfile, getLikes } from "./supabase.js";
+import { supabase, signUp, signIn, signOut, getProfile, upsertProfile, getApprovedProfiles, getAllProfiles, uploadPhoto, sendMessage, getMessages, likeProfile, getLikes } from "./supabase.js";
+
+// ⚠️ Verander dit wachtwoord naar iets eigens voordat je live gaat!
+const ADMIN_PASSWORD = "Hetkomtgoedschatje";
 
 const C = {
   cream: "#FDF6EC", sand: "#F2E4CC", terra: "#C4622D",
@@ -898,6 +901,114 @@ function CheckEmail({ email, onBackToLogin }) {
   );
 }
 
+// ── ADMIN GATE (wachtwoordscherm) ───────────────────────────────────────────
+function AdminGate({ onUnlock }) {
+  const [pw, setPw] = useState("");
+  const [error, setError] = useState("");
+  const submit = () => {
+    if (pw === ADMIN_PASSWORD) { onUnlock(); }
+    else setError("Onjuist wachtwoord.");
+  };
+  return (
+    <div style={{
+      minHeight: "100vh", background: "#FDF6EC",
+      display: "flex", flexDirection: "column",
+      alignItems: "center", justifyContent: "center",
+      padding: "40px 30px", textAlign: "center"
+    }}>
+      <div style={{ fontSize: 48, marginBottom: 20 }}>🔐</div>
+      <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: 24, color: "#2C2C2C", marginBottom: 20 }}>
+        Admin-toegang
+      </h1>
+      <div className="field" style={{ width: "100%", maxWidth: 320 }}>
+        <input
+          type="password"
+          placeholder="Wachtwoord"
+          value={pw}
+          onChange={e => setPw(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && submit()}
+          style={{ textAlign: "center" }}
+        />
+      </div>
+      {error && <div style={{ fontSize: 13, color: "#C4622D", marginBottom: 8 }}>{error}</div>}
+      <button className="btn-main" onClick={submit} style={{ maxWidth: 320, width: "100%" }}>
+        Inloggen →
+      </button>
+    </div>
+  );
+}
+
+// ── ADMIN PANEL ──────────────────────────────────────────────────────────────
+function AdminPanel({ onLock }) {
+  const [profiles, setProfiles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("pending");
+
+  const load = () => {
+    setLoading(true);
+    getAllProfiles()
+      .then(data => setProfiles(data || []))
+      .finally(() => setLoading(false));
+  };
+  useEffect(() => { load(); }, []);
+
+  const setStatus = async (id, status) => {
+    try {
+      await upsertProfile(id, { status });
+      setProfiles(p => p.map(pr => pr.id === id ? { ...pr, status } : pr));
+    } catch (e) { console.error(e); }
+  };
+
+  const filtered = profiles.filter(p => filter === "all" ? true : p.status === filter);
+
+  return (
+    <div style={{ minHeight: "100vh", background: "#FDF6EC", padding: "24px 20px 60px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+        <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: 24 }}>Admin — Profielen</h1>
+        <button className="btn-nav" onClick={onLock}>Vergrendelen</button>
+      </div>
+
+      <div className="filter-pills" style={{ padding: 0, marginBottom: 16 }}>
+        {["pending", "approved", "rejected", "all"].map(f => (
+          <button key={f} className={`pill ${filter === f ? "active" : ""}`} onClick={() => setFilter(f)}>
+            {f === "pending" ? "⏳ In behandeling" : f === "approved" ? "✅ Goedgekeurd" : f === "rejected" ? "🚫 Afgekeurd" : "🌍 Alles"}
+          </button>
+        ))}
+        <button className="pill" onClick={load} style={{ marginLeft: "auto" }}>↻ Vernieuwen</button>
+      </div>
+
+      {loading ? (
+        <p style={{ color: "#8A7968" }}>Laden…</p>
+      ) : !filtered.length ? (
+        <p style={{ color: "#8A7968" }}>Geen profielen in deze categorie.</p>
+      ) : (
+        filtered.map(p => (
+          <div key={p.id} className="review-box" style={{ marginBottom: 14, textAlign: "left" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
+              <div>
+                <div style={{ fontWeight: 600, fontSize: 16 }}>{p.name || "(geen naam)"}</div>
+                <div style={{ fontSize: 12, color: "#8A7968" }}>{p.email}</div>
+              </div>
+              <span className={`role-badge ${p.role}`}>{p.role === "owner" ? "🏡 Eigenaar" : "🎒 Buddy"}</span>
+            </div>
+            <div style={{ fontSize: 13, color: "#8A7968", marginBottom: 4 }}>
+              {p.city}{p.city && p.country ? ", " : ""}{p.country} {p.tagline ? `· "${p.tagline}"` : ""}
+            </div>
+            {p.bio && <p style={{ fontSize: 13, marginBottom: 10 }}>{p.bio}</p>}
+            <div style={{ fontSize: 12, color: "#8A7968", marginBottom: 10 }}>
+              Status: <strong style={{ color: "#C4622D" }}>{p.status}</strong>
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button className="btn-main" style={{ flex: 1, margin: 0 }} onClick={() => setStatus(p.id, "approved")}>✅ Goedkeuren</button>
+              <button className="btn-ghost" style={{ flex: 1, margin: 0 }} onClick={() => setStatus(p.id, "rejected")}>🚫 Afkeuren</button>
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  );
+}
+
 // ── MAIN APP ──────────────────────────────────────────────────────────────────
 export default function App() {
   const [user, setUser] = useState(null);
@@ -914,6 +1025,26 @@ export default function App() {
   const [roleFilter, setRoleFilter] = useState("all");
   const [dbProfiles, setDbProfiles] = useState([]);
   const [loadingProfiles, setLoadingProfiles] = useState(true);
+  const [isAdminRoute, setIsAdminRoute] = useState(() => window.location.hash === "#admin");
+  const [adminUnlocked, setAdminUnlocked] = useState(() => {
+    try { return localStorage.getItem("bnbbuddy_admin_unlocked") === "true"; } catch (e) { return false; }
+  });
+
+  useEffect(() => {
+    const onHashChange = () => setIsAdminRoute(window.location.hash === "#admin");
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
+  const lockAdmin = () => {
+    try { localStorage.removeItem("bnbbuddy_admin_unlocked"); } catch (e) {}
+    setAdminUnlocked(false);
+    window.location.hash = "";
+  };
+  const unlockAdmin = () => {
+    try { localStorage.setItem("bnbbuddy_admin_unlocked", "true"); } catch (e) {}
+    setAdminUnlocked(true);
+  };
 
   // Load approved profiles from Supabase on mount
   useEffect(() => {
@@ -1049,6 +1180,13 @@ export default function App() {
 
   const filtered = (roleFilter === "all" ? allProfiles : allProfiles.filter(p => p.role === roleFilter));
   const matched = allProfiles.filter(p => likes.includes(p.id));
+
+  if (isAdminRoute) return (
+    <div className="wrap" style={{ maxWidth: "100%" }}>
+      <style>{css}</style>
+      {adminUnlocked ? <AdminPanel onLock={lockAdmin} /> : <AdminGate onUnlock={unlockAdmin} />}
+    </div>
+  );
 
   if (checkEmailAddress) return (
     <div className="wrap">
