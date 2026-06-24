@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { supabase, signUp, signIn, signOut, getProfile, upsertProfile, getApprovedProfiles, getAllProfiles, uploadPhoto, sendMessage, getMessages, likeProfile, getLikes } from "./supabase.js";
+import { supabase, signUp, signIn, signOut, getProfile, upsertProfile, deleteProfile, getApprovedProfiles, getAllProfiles, uploadPhoto, sendMessage, getMessages, likeProfile, getLikes } from "./supabase.js";
 
 // ⚠️ Verander dit wachtwoord naar iets eigens voordat je live gaat!
 const ADMIN_PASSWORD = "Hetkomtgoedschatje";
@@ -959,6 +959,15 @@ function AdminPanel({ onLock }) {
     } catch (e) { console.error(e); }
   };
 
+  const handleDelete = async (p) => {
+    const ok = window.confirm(`Profiel van "${p.name || p.email}" definitief verwijderen? Dit kan niet ongedaan worden gemaakt (foto's, berichten en likes worden ook verwijderd).`);
+    if (!ok) return;
+    try {
+      await deleteProfile(p.id);
+      setProfiles(prev => prev.filter(pr => pr.id !== p.id));
+    } catch (e) { console.error(e); alert("Verwijderen mislukt, zie console voor details."); }
+  };
+
   const filtered = profiles.filter(p => filter === "all" ? true : p.status === filter);
 
   return (
@@ -1001,6 +1010,7 @@ function AdminPanel({ onLock }) {
             <div style={{ display: "flex", gap: 8 }}>
               <button className="btn-main" style={{ flex: 1, margin: 0 }} onClick={() => setStatus(p.id, "approved")}>✅ Goedkeuren</button>
               <button className="btn-ghost" style={{ flex: 1, margin: 0 }} onClick={() => setStatus(p.id, "rejected")}>🚫 Afkeuren</button>
+              <button className="btn-ghost" style={{ flex: 1, margin: 0, color: "#9E4A1E", borderColor: "#9E4A1E" }} onClick={() => handleDelete(p)}>🗑️ Verwijderen</button>
             </div>
           </div>
         ))
