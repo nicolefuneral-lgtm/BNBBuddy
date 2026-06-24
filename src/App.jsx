@@ -935,10 +935,32 @@ function AdminGate({ onUnlock }) {
 }
 
 // ── ADMIN PANEL ──────────────────────────────────────────────────────────────
+function toDisplayProfile(p) {
+  return {
+    ...p,
+    avatar: p.avatar_url || "https://i.pravatar.cc/400?img=47",
+    photos: (p.photos || []).filter(ph => ph.type === "gallery").map(ph => ph.url),
+    tripDuration: p.trip_duration || "",
+    aantalPersonen: p.aantal_personen || "",
+    pricePerNight: p.price_from && p.price_to ? `€${p.price_from}–€${p.price_to}` : "",
+    propertyName: p.property_name || "",
+    propertyType: p.property_type || "",
+    hostingSince: p.hosting_since || "",
+    bio: p.bio || "",
+    tagline: p.tagline || "",
+    amenities: p.amenities || [],
+    interests: p.interests || [],
+    languages: p.languages || [],
+    bestemmingen: p.bestemmingen || "",
+    maanden: p.maanden || [],
+  };
+}
+
 function AdminPanel({ onLock }) {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("pending");
+  const [previewProfile, setPreviewProfile] = useState(null);
 
   const load = () => {
     setLoading(true);
@@ -1004,12 +1026,38 @@ function AdminPanel({ onLock }) {
               Status: <strong style={{ color: "#C4622D" }}>{p.status}</strong>
             </div>
             <div style={{ display: "flex", gap: 8 }}>
+              <button className="btn-ghost" style={{ flex: 1, margin: 0 }} onClick={() => setPreviewProfile(p)}>👁️ Bekijken</button>
               <button className="btn-main" style={{ flex: 1, margin: 0 }} onClick={() => setStatus(p.id, "approved")}>✅ Goedkeuren</button>
               <button className="btn-ghost" style={{ flex: 1, margin: 0 }} onClick={() => setStatus(p.id, "rejected")}>🚫 Afkeuren</button>
               <button className="btn-ghost" style={{ flex: 1, margin: 0, color: "#9E4A1E", borderColor: "#9E4A1E" }} onClick={() => handleDelete(p)}>🗑️ Verwijderen</button>
             </div>
           </div>
         ))
+      )}
+
+      {previewProfile && (
+        <div className="modal-bg" onClick={() => setPreviewProfile(null)} style={{ alignItems: "stretch", justifyContent: "stretch" }}>
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{ background: "#FDF6EC", maxWidth: 430, width: "100%", margin: "0 auto", maxHeight: "100vh", overflowY: "auto", position: "relative" }}
+          >
+            <button
+              onClick={() => setPreviewProfile(null)}
+              style={{ position: "absolute", top: 16, right: 16, zIndex: 10, background: "rgba(255,255,255,0.9)", border: "none", borderRadius: "50%", width: 36, height: 36, fontSize: 16, cursor: "pointer" }}
+            >✕</button>
+            <FullProfile
+              profile={toDisplayProfile(previewProfile)}
+              onBack={() => setPreviewProfile(null)}
+              onChat={() => {}}
+              isLoggedIn={true}
+              onLogin={() => {}}
+            />
+            <div style={{ display: "flex", gap: 8, padding: "0 20px 24px" }}>
+              <button className="btn-main" style={{ flex: 1, margin: 0 }} onClick={() => { setStatus(previewProfile.id, "approved"); setPreviewProfile(null); }}>✅ Goedkeuren</button>
+              <button className="btn-ghost" style={{ flex: 1, margin: 0 }} onClick={() => { setStatus(previewProfile.id, "rejected"); setPreviewProfile(null); }}>🚫 Afkeuren</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
@@ -1167,6 +1215,22 @@ export default function App() {
     }
     setScreen("under-review");
   };
+
+  const loadConversation = async (otherId) => {
+    if (!user) return;
+    try {
+      const rows = await getMessages(user.id, otherId);
+      const formatted = rows.map(r => ({ from: r.sender_id === user.id ? "me" : "them", text: r.text }));
+      setMessages(p => ({ ...p, [otherId]: formatted }));
+    } catch (e) { console.error("Load messages error:", e); }
+  };
+
+  // Load real conversation history from Supabase whenever a real (non-demo) chat is opened
+  useEffect(() => {
+    if (chatProfile && user && typeof chatProfile.id === "string") {
+      loadConversation(chatProfile.id);
+    }
+  }, [chatProfile?.id, user?.id]);
 
   const send = async (profileId, text) => {
     setMessages(p => ({ ...p, [profileId]: [...(p[profileId] || []), { from: "me", text }] }));
