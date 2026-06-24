@@ -69,6 +69,13 @@ export async function getAllProfiles() {
   if (error) return []
   return data || []
 }
+export async function deleteProfile(userId) {
+  await supabase.from('photos').delete().eq('profile_id', userId)
+  await supabase.from('messages').delete().or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
+  await supabase.from('likes').delete().or(`from_id.eq.${userId},to_id.eq.${userId}`)
+  const { error } = await supabase.from('profiles').delete().eq('id', userId)
+  if (error) throw error
+}
 // ── PHOTOS ────────────────────────────────────────────────────────────────────
 export async function uploadPhoto(userId, file, type = 'gallery') {
   const ext = file.name.split('.').pop()
