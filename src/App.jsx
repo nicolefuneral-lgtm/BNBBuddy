@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { supabase, signUp, signIn, signOut, getProfile, upsertProfile, deleteProfile, getApprovedProfiles, getAllProfiles, uploadPhoto, sendMessage, getMessages, likeProfile, getLikes } from "./supabase.js";
 
 // ⚠️ Verander dit wachtwoord naar iets eigens voordat je live gaat!
-const ADMIN_PASSWORD = "Hetkomtgoedschatje";
+const ADMIN_PASSWORD = "Hetkomtgoeschatje";
 
 const C = {
   cream: "#FDF6EC", sand: "#F2E4CC", terra: "#C4622D",
@@ -416,7 +416,7 @@ function ProfileCard({ profile, isLoggedIn, onView, onLogin }) {
   return (
     <div className="card" onClick={() => onView(profile)}>
       <div className="card-img">
-        <img src={profile.avatar} alt={profile.name} />
+        <img src={profile.avatar} alt={profile.name} style={{ objectPosition: `50% ${profile.focusY ?? 25}%` }} />
         {profile.verified && <span className="badge-verified">✓ Verified</span>}
       </div>
       <div className="card-body">
@@ -617,7 +617,7 @@ function MultiSelect({ options, selected, onToggle, max }) {
 }
 
 // ── PHOTO UPLOAD ──────────────────────────────────────────────────────────────
-function PhotoStep({ avatar, photos, isOwner, onAvatar, onPhotos }) {
+function PhotoStep({ avatar, photos, isOwner, onAvatar, onPhotos, focusY, onFocusYChange }) {
   const MAX = 6;
   const readFile = f => new Promise(res => { const r = new FileReader(); r.onload = e => res(e.target.result); r.readAsDataURL(f); });
   const handleAvatar = async e => { const f = e.target.files[0]; if (f) onAvatar(await readFile(f)); };
@@ -643,6 +643,26 @@ function PhotoStep({ avatar, photos, isOwner, onAvatar, onPhotos }) {
           </div>
         </div>
       </div>
+      {avatar && (
+        <div style={{ marginBottom: 28 }}>
+          <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 8 }}>Focuspunt op kaartjes</div>
+          <p style={{ fontSize: 12, color: "#8A7968", marginBottom: 10 }}>Sleep de schuifregelaar zodat je gezicht goed in beeld blijft op de profielkaart.</p>
+          <div style={{ borderRadius: 14, overflow: "hidden", height: 150, marginBottom: 10 }}>
+            <img src={avatar} alt="voorbeeld" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: `50% ${focusY}%` }} />
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={focusY}
+            onChange={e => onFocusYChange(Number(e.target.value))}
+            style={{ width: "100%" }}
+          />
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "#8A7968" }}>
+            <span>Boven</span><span>Onder</span>
+          </div>
+        </div>
+      )}
       <div>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
           <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", textTransform: "uppercase", letterSpacing: "0.5px" }}>{isOwner ? "Foto's van het pand" : "Reisfoto's"}</div>
@@ -684,6 +704,7 @@ function CreateProfile({ user, onDone, onClose }) {
     propertyName: user.property_name || "", propertyType: user.property_type || "", rooms: user.rooms ? String(user.rooms) : "", priceVan: user.price_from ? String(user.price_from) : "", priceTot: user.price_to ? String(user.price_to) : "", amenities: user.amenities || [], houseRules: user.house_rules || "",
     avatar: user.avatar_url || user.avatar || null,
     photos: (user.photos || []).filter(p => p.type === "gallery").map(p => p.url),
+    focusY: user.focus_y ?? 25,
   });
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
   const tog = (k, v) => setForm(f => ({ ...f, [k]: f[k].includes(v) ? f[k].filter(x => x !== v) : [...f[k], v] }));
@@ -829,7 +850,8 @@ function CreateProfile({ user, onDone, onClose }) {
 
         {step === 6 && (
           <PhotoStep avatar={form.avatar} photos={form.photos} isOwner={isOwner}
-            onAvatar={v => set("avatar", v)} onPhotos={v => set("photos", v)} />
+            onAvatar={v => set("avatar", v)} onPhotos={v => set("photos", v)}
+            focusY={form.focusY} onFocusYChange={v => set("focusY", v)} />
         )}
 
         <div style={{ marginTop: 32, display: "flex", gap: 12 }}>
@@ -986,6 +1008,7 @@ function toDisplayProfile(p) {
     languages: p.languages || [],
     bestemmingen: p.bestemmingen || "",
     maanden: p.maanden || [],
+    focusY: p.focus_y ?? 25,
   };
 }
 
@@ -1152,6 +1175,7 @@ export default function App() {
           amenities: p.amenities || [],
           interests: p.interests || [],
           languages: p.languages || [],
+          focusY: p.focus_y ?? 25,
         })));
       })
       .catch(() => {}) // fallback to demo profiles on error
@@ -1222,6 +1246,7 @@ export default function App() {
           price_to: form.priceTot ? parseFloat(form.priceTot) : null,
           amenities: form.amenities,
           house_rules: form.houseRules,
+          focus_y: form.focusY,
         });
 
         // Upload avatar (profile photo) to Storage and save its URL — only if it's a newly selected local file
