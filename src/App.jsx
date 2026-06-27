@@ -132,7 +132,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .pill.active{background:#C4622D;color:white;border-color:#C4622D;}
 .card{margin:0 20px 16px;border-radius:20px;overflow:hidden;background:white;box-shadow:0 2px 16px rgba(0,0,0,0.07);cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;}
 .card:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(0,0,0,0.11);}
-.card-img{position:relative;height:260px;overflow:hidden;}
+.card-img{position:relative;height:120px;overflow:hidden;}
 .card-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s;}
 .card:hover .card-img img{transform:scale(1.03);}
 .card-overlay{position:absolute;bottom:0;left:0;right:0;padding:20px 16px 14px;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 100%);color:white;}
@@ -272,6 +272,35 @@ function dataUrlToFile(dataUrl, filename) {
   return new File([bytes], filename, { type: mime });
 }
 
+// ── ICONS (simpel & neutraal, geen emoji) ───────────────────────────────────
+function HouseIcon({ size = 13 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: "-2px", marginRight: 4 }}>
+      <path d="M3 11l9-8 9 8" />
+      <path d="M5 10v10h14V10" />
+    </svg>
+  );
+}
+function PeopleIcon({ size = 13 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: "-2px", marginRight: 4 }}>
+      <circle cx="9" cy="8" r="3" />
+      <path d="M3 20c0-3 2.5-5 6-5s6 2 6 5" />
+      <circle cx="17" cy="9" r="2.3" />
+      <path d="M16 14.5c2.6 0.4 4 1.9 4 4.5" />
+    </svg>
+  );
+}
+function GlobeIcon({ size = 13 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: "-2px", marginRight: 4 }}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18" />
+      <path d="M12 3c2.5 2.5 4 5.7 4 9s-1.5 6.5-4 9c-2.5-2.5-4-5.7-4-9s1.5-6.5 4-9z" />
+    </svg>
+  );
+}
+
 // ── AUTH MODAL ────────────────────────────────────────────────────────────────
 function AuthModal({ onClose, onLogin, onSignupSuccess, initialMode = "login" }) {
   const [mode, setMode] = useState(initialMode);
@@ -389,15 +418,19 @@ function ProfileCard({ profile, isLoggedIn, onView, onLogin }) {
       <div className="card-img">
         <img src={profile.avatar} alt={profile.name} />
         {profile.verified && <span className="badge-verified">✓ Verified</span>}
-        <div className="card-overlay">
-          <h3>{profile.name}{!isOwner ? `, ${profile.age}` : ""}</h3>
-          <div className="loc">{profile.country} · {profile.city}</div>
-        </div>
       </div>
       <div className="card-body">
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, marginBottom: 6 }}>
+          <div>
+            <h3 style={{ fontFamily: "'Playfair Display',serif", fontSize: 18, fontWeight: 600, color: "#2C2C2C" }}>
+              {profile.name}{!isOwner ? `, ${profile.age}` : ""}
+            </h3>
+            <div style={{ fontSize: 12, color: "#8A7968" }}>{profile.country} · {profile.city}</div>
+          </div>
+          <span className={`role-badge ${profile.role}`}>{isOwner ? <><HouseIcon /> Eigenaar</> : <><PeopleIcon /> Buddy</>}</span>
+        </div>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, marginBottom: 10 }}>
           <div className="card-tagline">"{profile.tagline}"</div>
-          <span className={`role-badge ${profile.role}`}>{isOwner ? "🏡 Eigenaar" : "🎒 Buddy"}</span>
         </div>
         {isOwner ? (
           <>
@@ -425,7 +458,7 @@ function ProfileCard({ profile, isLoggedIn, onView, onLogin }) {
         )}
         {!isLoggedIn && (
           <div className="lock-bar">
-            <button className="btn-lock" onClick={e => { e.stopPropagation(); onLogin(); }}>🔒 Login voor volledig profiel</button>
+            <button className="btn-lock" onClick={e => { e.stopPropagation(); onLogin(); }}>🔒 Login voor profiel · {isOwner ? "Eigenaar" : "Buddy"}</button>
           </div>
         )}
       </div>
@@ -1315,9 +1348,9 @@ export default function App() {
           <>
             {!user && (
               <div className="hero">
-                <h1>Vind je <em>reismaatje</em></h1>
-                <p>Kom in contact met BnB Eigenaren en Buddy's die bij jouw stijl en bestemming passen.</p>
-                <button className="btn-hero" onClick={openSignup}>Word gratis lid ✈</button>
+                <h1>Vind je <em>BNB/Buddy</em></h1>
+                <p>Kom in contact met BNB-eigenaren en Buddy's die bij jouw stijl en bestemming passen.</p>
+                <button className="btn-hero" onClick={openSignup}>Word gratis lid</button>
               </div>
             )}
             <div className="sec-head">
@@ -1325,9 +1358,9 @@ export default function App() {
               <span style={{ fontSize: 12, color: "#8A7968" }}>{filtered.length} gevonden</span>
             </div>
             <div className="filter-pills">
-              <button className={`pill ${roleFilter === "all" ? "active" : ""}`} onClick={() => setRoleFilter("all")}>🌍 Iedereen</button>
-              <button className={`pill ${roleFilter === "owner" ? "active" : ""}`} onClick={() => setRoleFilter("owner")}>🏡 BnB Eigenaar</button>
-              <button className={`pill ${roleFilter === "buddy" ? "active" : ""}`} onClick={() => setRoleFilter("buddy")}>🎒 Buddy</button>
+              <button className={`pill ${roleFilter === "all" ? "active" : ""}`} onClick={() => setRoleFilter("all")}><GlobeIcon /> Iedereen</button>
+              <button className={`pill ${roleFilter === "owner" ? "active" : ""}`} onClick={() => setRoleFilter("owner")}><HouseIcon /> BNB-eigenaar</button>
+              <button className={`pill ${roleFilter === "buddy" ? "active" : ""}`} onClick={() => setRoleFilter("buddy")}><PeopleIcon /> Buddy</button>
             </div>
             <div className="profile-grid">
               {filtered.map(p => (
