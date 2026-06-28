@@ -102,12 +102,12 @@ const AANTAL_PERSONEN = ["Ik kom alleen","Ik kom met partner"];
 
 // ── STYLES ───────────────────────────────────────────────────────────────────
 const css = `
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Prata&family=DM+Sans:wght@300;400;500&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-height:100vh;}
 .wrap{max-width:430px;margin:0 auto;min-height:100vh;background:#FDF6EC;position:relative;}
 .nav{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 14px;background:#FDF6EC;border-bottom:1px solid #F2E4CC;position:sticky;top:0;z-index:50;}
-.nav-logo{font-family:'Playfair Display',serif;font-size:22px;color:#C4622D;font-weight:800;}
+.nav-logo{font-family:'Prata',serif;font-size:22px;color:#C4622D;font-weight:800;}
 .nav-logo span{font-style:italic;color:#7A9E7E;}
 .nav-actions{display:flex;gap:10px;align-items:center;}
 .btn-nav{background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:#8A7968;padding:6px 14px;border-radius:20px;transition:all 0.2s;}
@@ -120,13 +120,13 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .tab-btn.active{color:#C4622D;}
 .tab-icon{font-size:20px;}
 .hero{padding:28px 20px 20px;background:linear-gradient(135deg,#F2E4CC 0%,#FDF6EC 60%);}
-.hero h1{font-family:'Playfair Display',serif;font-size:30px;font-weight:800;line-height:1.2;margin-bottom:8px;}
+.hero h1{font-family:'Prata',serif;font-size:30px;font-weight:800;line-height:1.2;margin-bottom:8px;}
 .hero h1 em{color:#C4622D;font-style:italic;}
 .hero p{font-size:14px;color:#8A7968;line-height:1.6;margin-bottom:16px;}
 .btn-hero{display:inline-flex;align-items:center;gap:8px;background:#C4622D;color:white;border:none;padding:12px 22px;border-radius:28px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background 0.2s;}
 .btn-hero:hover{background:#9E4A1E;}
 .sec-head{padding:20px 20px 12px;display:flex;align-items:baseline;justify-content:space-between;}
-.sec-head h2{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;}
+.sec-head h2{font-family:'Prata',serif;font-size:18px;font-weight:700;}
 .filter-pills{display:flex;gap:8px;padding:0 20px 14px;overflow-x:auto;scrollbar-width:none;}
 .pill{flex-shrink:0;padding:8px 16px;border-radius:24px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;background:white;color:#8A7968;border:1.5px solid #F2E4CC;transition:all 0.2s;}
 .pill.active{background:#C4622D;color:white;border-color:#C4622D;}
@@ -136,7 +136,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .card-img img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform 0.4s;}
 .card:hover .card-img img{transform:scale(1.03);}
 .card-overlay{position:absolute;bottom:0;left:0;right:0;padding:20px 16px 14px;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 100%);color:white;}
-.card-overlay h3{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;margin-bottom:2px;}
+.card-overlay h3{font-family:'Prata',serif;font-size:22px;font-weight:600;margin-bottom:2px;}
 .card-overlay .loc{font-size:12px;opacity:0.85;}
 .badge-verified{position:absolute;top:12px;right:12px;background:#7A9E7E;color:white;font-size:11px;font-weight:600;padding:4px 10px;border-radius:12px;}
 .role-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:12px;}
@@ -158,7 +158,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .modal{background:#FDF6EC;border-radius:28px 28px 0 0;padding:28px 24px 36px;width:100%;max-width:430px;max-height:85vh;overflow-y:auto;animation:slideUp 0.3s cubic-bezier(0.34,1.2,0.64,1);}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .modal-handle{width:40px;height:4px;background:#F2E4CC;border-radius:2px;margin:0 auto 22px;}
-.modal h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-bottom:6px;}
+.modal h2{font-family:'Prata',serif;font-size:26px;font-weight:700;margin-bottom:6px;}
 .modal .sub{font-size:14px;color:#8A7968;margin-bottom:24px;}
 .field{margin-bottom:16px;}
 .field label{display:block;font-size:12px;font-weight:500;color:#8A7968;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
@@ -173,7 +173,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .role-card{flex:1;border:2px solid #F2E4CC;border-radius:18px;padding:16px 12px;text-align:center;cursor:pointer;background:white;transition:all 0.2s;position:relative;}
 .role-card.sel{border-color:#C4622D;background:#FEF3EC;}
 .role-card .ri{font-size:28px;margin-bottom:8px;}
-.role-card .rt{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;margin-bottom:4px;}
+.role-card .rt{font-family:'Prata',serif;font-size:15px;font-weight:600;margin-bottom:4px;}
 .role-card .rd{font-size:11px;color:#8A7968;line-height:1.4;}
 .role-card .rck{position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;background:#C4622D;color:white;font-size:11px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;}
 .role-card.sel .rck{opacity:1;}
@@ -181,7 +181,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .prof-hero{position:relative;height:340px;overflow:hidden;background:#F2E4CC;}
 .prof-hero img{width:100%;height:100%;object-fit:contain;}
 .prof-hero-over{position:absolute;bottom:0;left:0;right:0;padding:28px 20px 20px;background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 100%);color:white;}
-.prof-hero-over h2{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;}
+.prof-hero-over h2{font-family:'Prata',serif;font-size:30px;font-weight:700;}
 .prof-hero-over .subloc{font-size:13px;opacity:0.85;margin-top:2px;}
 .back-btn{position:absolute;top:16px;left:16px;background:rgba(255,255,255,0.85);border:none;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5;font-size:18px;box-shadow:0 2px 8px rgba(0,0,0,0.12);}
 .stat-row{display:flex;gap:10px;padding:16px 20px;overflow-x:auto;scrollbar-width:none;}
@@ -189,7 +189,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .stat .sl{font-size:10px;color:#8A7968;text-transform:uppercase;letter-spacing:0.4px;}
 .stat .sv{font-size:13px;font-weight:500;color:#2C2C2C;margin-top:2px;}
 .prof-sec{padding:16px 20px 0;}
-.prof-sec h4{font-family:'Playfair Display',serif;font-size:16px;color:#C4622D;margin-bottom:10px;}
+.prof-sec h4{font-family:'Prata',serif;font-size:16px;color:#C4622D;margin-bottom:10px;}
 .prof-sec p{font-size:14px;line-height:1.7;}
 .action-bar{position:fixed;bottom:64px;left:50%;transform:translateX(-50%);width:calc(100% - 40px);max-width:390px;display:flex;gap:12px;z-index:40;}
 .action-bar button{flex:1;padding:15px;border-radius:16px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;border:none;}
@@ -221,7 +221,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .send-btn{background:#C4622D;color:white;border:none;width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;}
 .empty{text-align:center;padding:60px 30px;}
 .empty .ei{font-size:48px;margin-bottom:16px;}
-.empty h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;margin-bottom:8px;}
+.empty h3{font-family:'Prata',serif;font-size:20px;font-weight:700;margin-bottom:8px;}
 .empty p{font-size:14px;color:#8A7968;line-height:1.6;}
 .step-bar{display:flex;gap:6px;justify-content:center;margin-bottom:24px;}
 .step-seg{height:4px;border-radius:2px;transition:all 0.3s;}
@@ -422,7 +422,7 @@ function ProfileCard({ profile, isLoggedIn, onView, onLogin }) {
       <div className="card-body">
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, marginBottom: 6 }}>
           <div>
-            <h3 style={{ fontFamily: "'Playfair Display',serif", fontSize: 18, fontWeight: 600, color: "#2C2C2C" }}>
+            <h3 style={{ fontFamily: "'Prata',serif", fontSize: 18, fontWeight: 600, color: "#2C2C2C" }}>
               {profile.name}{!isOwner ? `, ${profile.age}` : ""}
             </h3>
             <div style={{ fontSize: 12, color: "#8A7968" }}>{profile.country} · {profile.city}</div>
@@ -628,7 +628,7 @@ function PhotoStep({ avatar, photos, isOwner, onAvatar, onPhotos, focusX, focusY
   };
   return (
     <div>
-      <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Voeg foto's toe</h2>
+      <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Voeg foto's toe</h2>
       <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Een profielfoto helpt mensen jou te herkennen. {isOwner ? "Pand" : "Travel"} photos help you stand out.</p>
       <div style={{ marginBottom: 28 }}>
         <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 12 }}>Profielfoto</div>
@@ -735,7 +735,7 @@ function CreateProfile({ user, onDone, onClose }) {
       <div style={{ padding: "18px 20px 14px", borderBottom: "1px solid #F2E4CC", display: "flex", alignItems: "center", gap: 12 }}>
         {step > 1 && <button onClick={() => setStep(s => s - 1)} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#8A7968" }}>←</button>}
         <div>
-          <div style={{ fontFamily: "'Playfair Display',serif", fontSize: 18 }}>{titles[step - 1]}</div>
+          <div style={{ fontFamily: "'Prata',serif", fontSize: 18 }}>{titles[step - 1]}</div>
           <div style={{ fontSize: 12, color: "#8A7968" }}>Stap {step} van {STEPS}</div>
         </div>
         <span className={`role-badge ${user.role}`} style={{ marginLeft: "auto" }}>{isOwner ? "🏡 Eigenaar" : "🎒 Buddy"}</span>
@@ -750,7 +750,7 @@ function CreateProfile({ user, onDone, onClose }) {
 
         {step === 1 && (
           <div>
-            <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Hoi {user.name}! 👋</h2>
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Hoi {user.name}! 👋</h2>
             <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Laten we jouw {isOwner ? "host" : "reiziger"} profiel aanmaken.</p>
             {!isOwner && <div className="field"><label>Jouw leeftijd</label><input type="number" placeholder="bijv. 28" value={form.age} onChange={e => set("age", e.target.value)} /></div>}
             <div className="field"><label>Stad</label><input placeholder="bijv. Amsterdam" value={form.city} onChange={e => set("city", e.target.value)} /></div>
@@ -760,7 +760,7 @@ function CreateProfile({ user, onDone, onClose }) {
 
         {step === 2 && (
           <div>
-            <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Vertel je verhaal</h2>
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Vertel je verhaal</h2>
             <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>This is what people see on your profile.</p>
             <div className="field">
               <label>Tagline — one catchy line about you</label>
@@ -778,7 +778,7 @@ function CreateProfile({ user, onDone, onClose }) {
 
         {step === 3 && isOwner && (
           <div>
-            <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Jouw pand</h2>
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Jouw pand</h2>
             <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Vertel gasten wat je aanbiedt.</p>
             <div className="field"><label>Naam van het pand</label><input placeholder="bijv. Casa Sabor" value={form.propertyName} onChange={e => set("propertyName", e.target.value)} /></div>
             <div className="field">
@@ -802,7 +802,7 @@ function CreateProfile({ user, onDone, onClose }) {
 
         {step === 3 && !isOwner && (
           <div>
-            <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Bestemming</h2>
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Bestemming</h2>
             <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Welke bestemmingen hebben jouw voorkeur?</p>
             <div className="field">
               <label>Vaardigheden (wat breng jij mee)</label>
@@ -813,7 +813,7 @@ function CreateProfile({ user, onDone, onClose }) {
 
         {step === 4 && isOwner && (
           <div>
-            <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Amenities</h2>
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Amenities</h2>
             <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Wat bied je gasten aan?</p>
             <MultiSelect options={AMENITIES_LIST} selected={form.amenities} onToggle={v => tog("amenities", v)} />
           </div>
@@ -821,7 +821,7 @@ function CreateProfile({ user, onDone, onClose }) {
 
         {step === 4 && !isOwner && (
           <div>
-            <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Beschikbaarheid</h2>
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Beschikbaarheid</h2>
             <div className="field">
               <label>Reisduur</label>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
@@ -843,7 +843,7 @@ function CreateProfile({ user, onDone, onClose }) {
 
         {step === 5 && (
           <div>
-            <h2 style={{ fontFamily: "'Playfair Display',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Bijna klaar!</h2>
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Bijna klaar!</h2>
             <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Voeg je talen en interesses toe.</p>
             <div className="field">
               <label>Talen die je spreekt</label>
@@ -884,7 +884,7 @@ function UnderReview({ user, onBrowse }) {
   return (
     <div className="review-wrap">
       <div style={{ fontSize: 64, marginBottom: 24 }}>🌍</div>
-      <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: 26, fontWeight: 700, marginBottom: 12 }}>Je bent onderweg, {user.name}!</h1>
+      <h1 style={{ fontFamily: "'Prata',serif", fontSize: 26, fontWeight: 700, marginBottom: 12 }}>Je bent onderweg, {user.name}!</h1>
       <p style={{ fontSize: 15, color: "#8A7968", lineHeight: 1.7, marginBottom: 8 }}>Je profiel is ingediend en wordt momenteel <strong style={{ color: "#C4622D" }}>beoordeeld</strong>.</p>
       <p style={{ fontSize: 14, color: "#8A7968", lineHeight: 1.7, marginBottom: 32 }}>We controleren elk profiel om BnbBuddy veilig en gastvrij te houden. Je ontvangt binnen <strong>24–48 uur</strong>.</p>
       <div className="review-box">
@@ -915,7 +915,7 @@ function EmailBevestigd({ onLogin }) {
       padding: "40px 30px", textAlign: "center"
     }}>
       <div style={{ fontSize: 72, marginBottom: 24 }}>🎉</div>
-      <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: 28, fontWeight: 700, color: "#2C2C2C", marginBottom: 12 }}>
+      <h1 style={{ fontFamily: "'Prata',serif", fontSize: 28, fontWeight: 700, color: "#2C2C2C", marginBottom: 12 }}>
         E-mail bevestigd!
       </h1>
       <p style={{ fontSize: 16, color: "#8A7968", lineHeight: 1.7, marginBottom: 8, maxWidth: 360 }}>
@@ -945,7 +945,7 @@ function CheckEmail({ email, onBackToLogin }) {
       padding: "40px 30px", textAlign: "center"
     }}>
       <div style={{ fontSize: 72, marginBottom: 24 }}>📬</div>
-      <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: 28, fontWeight: 700, color: "#2C2C2C", marginBottom: 12 }}>
+      <h1 style={{ fontFamily: "'Prata',serif", fontSize: 28, fontWeight: 700, color: "#2C2C2C", marginBottom: 12 }}>
         Check je e-mail!
       </h1>
       <p style={{ fontSize: 16, color: "#8A7968", lineHeight: 1.7, marginBottom: 8, maxWidth: 360 }}>
@@ -981,7 +981,7 @@ function AdminGate({ onUnlock }) {
       padding: "40px 30px", textAlign: "center"
     }}>
       <div style={{ fontSize: 48, marginBottom: 20 }}>🔐</div>
-      <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: 24, fontWeight: 700, color: "#2C2C2C", marginBottom: 20 }}>
+      <h1 style={{ fontFamily: "'Prata',serif", fontSize: 24, fontWeight: 700, color: "#2C2C2C", marginBottom: 20 }}>
         Admin-toegang
       </h1>
       <div className="field" style={{ width: "100%", maxWidth: 320 }}>
@@ -1061,7 +1061,7 @@ function AdminPanel({ onLock }) {
   return (
     <div style={{ minHeight: "100vh", background: "#FDF6EC", padding: "24px 20px 60px" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-        <h1 style={{ fontFamily: "'Playfair Display',serif", fontSize: 24 }}>Admin — Profielen</h1>
+        <h1 style={{ fontFamily: "'Prata',serif", fontSize: 24 }}>Admin — Profielen</h1>
         <button className="btn-nav" onClick={onLock}>Vergrendelen</button>
       </div>
 
