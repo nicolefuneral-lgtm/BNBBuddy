@@ -398,7 +398,6 @@ function AuthModal({ onClose, onLogin, onSignupSuccess, initialMode = "login" })
         <button className="btn-main" onClick={submit} style={{ opacity: (mode === "signup" && !role) || loading ? 0.5 : 1 }}>
           {loading ? "Even geduld…" : mode === "login" ? "Inloggen" : "Account aanmaken"} →
         </button>
-        <button className="btn-ghost" onClick={onClose}>Verder browsen</button>
         <div className="modal-toggle">
           {mode === "login" ? "Nieuw hier? " : "Al een account? "}
           <button onClick={() => { setMode(mode === "login" ? "signup" : "login"); setRole(null); }}>
@@ -487,15 +486,15 @@ function FullProfile({ profile, onBack, onChat, isLoggedIn, onLogin }) {
       <div className="stat-row">
         {isOwner ? (
           <>
-            <div className="stat"><div className="sl">Property</div><div className="sv">{profile.propertyType}</div></div>
-            <div className="stat"><div className="sl">Rooms</div><div className="sv">{profile.rooms}</div></div>
-            <div className="stat"><div className="sl">Price/night</div><div className="sv">{profile.pricePerNight}</div></div>
-            <div className="stat"><div className="sl">Since</div><div className="sv">{profile.hostingSince}</div></div>
+            <div className="stat"><div className="sl">Pand</div><div className="sv">{profile.propertyType}</div></div>
+            <div className="stat"><div className="sl">Kamers</div><div className="sv">{profile.rooms}</div></div>
+            <div className="stat"><div className="sl">Prijs/nacht</div><div className="sv">{profile.pricePerNight}</div></div>
+            <div className="stat"><div className="sl">Sinds</div><div className="sv">{profile.hostingSince}</div></div>
           </>
         ) : (
           <>
             <div className="stat"><div className="sl">Bestemming</div><div className="sv">{profile.bestemmingen || "—"}</div></div>
-            <div className="stat"><div className="sl">Duration</div><div className="sv">{profile.tripDuration || "—"}</div></div>
+            <div className="stat"><div className="sl">Duur</div><div className="sv">{profile.tripDuration || "—"}</div></div>
             <div className="stat"><div className="sl">Maanden</div><div className="sv">{profile.maanden?.length > 0 ? profile.maanden.join(", ") : "—"}</div></div>
             <div className="stat"><div className="sl">Personen</div><div className="sv">{profile.aantalPersonen || "—"}</div></div>
           </>
@@ -605,13 +604,35 @@ function MatchesTab({ matches, onOpenChat }) {
 
 // ── MULTI SELECT ──────────────────────────────────────────────────────────────
 function MultiSelect({ options, selected, onToggle, max }) {
+  const [open, setOpen] = useState(false);
+  const summary = selected.length === 0
+    ? "Selecteer…"
+    : selected.length <= 2
+      ? selected.join(", ")
+      : `${selected.length} geselecteerd`;
   return (
-    <div className="ms">
-      {options.map(o => {
-        const on = selected.includes(o);
-        const disabled = max && !on && selected.length >= max;
-        return <button key={o} className={on ? "on" : ""} onClick={() => !disabled && onToggle(o)} style={{ opacity: disabled ? 0.4 : 1 }}>{o}</button>;
-      })}
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        style={{
+          width: "100%", textAlign: "left", display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "13px 16px", border: "1.5px solid #F2E4CC", borderRadius: 14, background: "white",
+          fontFamily: "'DM Sans',sans-serif", fontSize: 15, color: selected.length ? "#2C2C2C" : "#8A7968", cursor: "pointer",
+        }}
+      >
+        <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{summary}</span>
+        <span style={{ marginLeft: 8, color: "#C4622D", transform: open ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>▾</span>
+      </button>
+      {open && (
+        <div className="ms" style={{ marginTop: 10 }}>
+          {options.map(o => {
+            const on = selected.includes(o);
+            const disabled = max && !on && selected.length >= max;
+            return <button key={o} className={on ? "on" : ""} onClick={() => !disabled && onToggle(o)} style={{ opacity: disabled ? 0.4 : 1 }}>{o}</button>;
+          })}
+        </div>
+      )}
     </div>
   );
 }
@@ -711,7 +732,7 @@ function CreateProfile({ user, onDone, onClose }) {
   const [form, setForm] = useState({
     tagline: user.tagline || "", bio: user.bio || "", city: user.city || "", country: user.country || "", age: user.age ? String(user.age) : "",
     languages: user.languages || [], interests: user.interests || [],
-    vaardigheden: user.vaardigheden || [], bestemmingen: user.bestemmingen || "", tripDuration: user.trip_duration || "", maanden: user.maanden || [], aantalPersonen: user.aantal_personen || "", overigeTaal: user.overige_taal || "", overigeInteresse: user.overige_interesse || "",
+    vaardigheden: user.vaardigheden || [], bestemmingen: user.bestemmingen ? [...user.bestemmingen.split(",").map(s => s.trim()), "", "", ""].slice(0, 3) : ["", "", ""], tripDuration: user.trip_duration || "", maanden: user.maanden || [], aantalPersonen: user.aantal_personen || "", overigeTaal: user.overige_taal || "", overigeInteresse: user.overige_interesse || "",
     propertyName: user.property_name || "", propertyType: user.property_type || "", rooms: user.rooms ? String(user.rooms) : "", priceVan: user.price_from ? String(user.price_from) : "", priceTot: user.price_to ? String(user.price_to) : "", amenities: user.amenities || [], houseRules: user.house_rules || "",
     avatar: user.avatar_url || user.avatar || null,
     photos: (user.photos || []).filter(p => p.type === "gallery").map(p => p.url),
@@ -751,7 +772,7 @@ function CreateProfile({ user, onDone, onClose }) {
         {step === 1 && (
           <div>
             <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Hoi {user.name}! 👋</h2>
-            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Laten we jouw {isOwner ? "host" : "reiziger"} profiel aanmaken.</p>
+            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Laten we jouw {isOwner ? "host" : "Buddy"} profiel aanmaken.</p>
             {!isOwner && <div className="field"><label>Jouw leeftijd</label><input type="number" placeholder="bijv. 28" value={form.age} onChange={e => set("age", e.target.value)} /></div>}
             <div className="field"><label>Stad</label><input placeholder="bijv. Amsterdam" value={form.city} onChange={e => set("city", e.target.value)} /></div>
             <div className="field"><label>Land</label><input placeholder="bijv. Nederland" value={form.country} onChange={e => set("country", e.target.value)} /></div>
@@ -761,15 +782,15 @@ function CreateProfile({ user, onDone, onClose }) {
         {step === 2 && (
           <div>
             <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Vertel je verhaal</h2>
-            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>This is what people see on your profile.</p>
+            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Dit is wat anderen op jouw profiel zien.</p>
             <div className="field">
-              <label>Tagline — one catchy line about you</label>
-              <input placeholder={isOwner ? "e.g. Cosy rooms, big adventures" : "e.g. Slow travel & strong coffee"} value={form.tagline} onChange={e => set("tagline", e.target.value)} maxLength={60} />
+              <label>Pakkende zin over jou</label>
+              <input placeholder={isOwner ? "bijv. Gezellige kamers, mooie omgeving" : "bijv. Rustig reizen & sterke koffie"} value={form.tagline} onChange={e => set("tagline", e.target.value)} maxLength={60} />
               <div style={{ fontSize: 11, color: "#8A7968", marginTop: 4 }}>{form.tagline.length}/60</div>
             </div>
             <div className="field">
-              <label>Over you</label>
-              <textarea placeholder={isOwner ? "Tell guests about your place…" : "What kind of traveller are you?…"} value={form.bio} onChange={e => set("bio", e.target.value)} rows={5} maxLength={400}
+              <label>Over jou</label>
+              <textarea placeholder={isOwner ? "Vertel gasten over je pand…" : "Wat voor Buddy ben jij?…"} value={form.bio} onChange={e => set("bio", e.target.value)} rows={5} maxLength={400}
                 style={{ width: "100%", padding: "13px 16px", border: "1.5px solid #F2E4CC", borderRadius: 14, background: "white", fontFamily: "'DM Sans',sans-serif", fontSize: 14, outline: "none", resize: "none", lineHeight: 1.6 }} />
               <div style={{ fontSize: 11, color: "#8A7968", marginTop: 4 }}>{form.bio.length}/400</div>
             </div>
@@ -804,6 +825,20 @@ function CreateProfile({ user, onDone, onClose }) {
           <div>
             <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Bestemming</h2>
             <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Welke bestemmingen hebben jouw voorkeur?</p>
+            {[0, 1, 2].map(i => (
+              <div className="field" key={i}>
+                <label>Bestemming {i + 1}{i > 0 ? " (optioneel)" : ""}</label>
+                <input
+                  placeholder="bijv. Lissabon, Portugal"
+                  value={form.bestemmingen[i] || ""}
+                  onChange={e => {
+                    const arr = [...form.bestemmingen];
+                    arr[i] = e.target.value;
+                    set("bestemmingen", arr);
+                  }}
+                />
+              </div>
+            ))}
             <div className="field">
               <label>Vaardigheden (wat breng jij mee)</label>
               <MultiSelect options={VAARDIGHEDEN} selected={form.vaardigheden} onToggle={v => tog("vaardigheden", v)} />
@@ -852,7 +887,7 @@ function CreateProfile({ user, onDone, onClose }) {
                 style={{ marginTop: 10, width: "100%", padding: "10px 16px", border: "1.5px solid #F2E4CC", borderRadius: 14, fontFamily: "'DM Sans',sans-serif", fontSize: 14, outline: "none" }} />
             </div>
             <div className="field" style={{ marginTop: 20 }}>
-              <label>Interesses (pick up to 6)</label>
+              <label>Interesses (kies max. 6)</label>
               <MultiSelect options={INTERESTS_LIST} selected={form.interests} onToggle={v => tog("interests", v)} max={6} />
               <input placeholder="Overige interesse..." value={form.overigeInteresse} onChange={e => set("overigeInteresse", e.target.value)}
                 style={{ marginTop: 10, width: "100%", padding: "10px 16px", border: "1.5px solid #F2E4CC", borderRadius: 14, fontFamily: "'DM Sans',sans-serif", fontSize: 14, outline: "none" }} />
@@ -1248,7 +1283,7 @@ export default function App() {
           tagline: form.tagline, bio: form.bio,
           languages: form.languages, interests: form.interests,
           vaardigheden: form.vaardigheden,
-          bestemmingen: form.bestemmingen,
+          bestemmingen: Array.isArray(form.bestemmingen) ? form.bestemmingen.filter(Boolean).join(", ") : form.bestemmingen,
           trip_duration: form.tripDuration,
           maanden: form.maanden,
           aantal_personen: form.aantalPersonen,
