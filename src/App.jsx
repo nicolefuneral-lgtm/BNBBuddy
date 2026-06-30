@@ -115,10 +115,6 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .btn-nav.primary{background:#C4622D;color:white;}
 .btn-nav.primary:hover{background:#9E4A1E;}
 .nav-avatar{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #F4C9A8;cursor:pointer;}
-.bottom-tab{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:white;border-top:1px solid #F2E4CC;display:flex;z-index:50;}
-.tab-btn{flex:1;padding:14px 0 10px;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;color:#8A7968;transition:color 0.2s;}
-.tab-btn.active{color:#C4622D;}
-.tab-icon{font-size:20px;}
 .hero{padding:28px 20px 20px;background:linear-gradient(135deg,#F2E4CC 0%,#FDF6EC 60%);}
 .hero h1{font-family:'Prata',serif;font-size:30px;font-weight:800;line-height:1.2;margin-bottom:8px;}
 .hero h1 em{color:#C4622D;font-style:italic;}
@@ -177,7 +173,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .role-card .rd{font-size:11px;color:#8A7968;line-height:1.4;}
 .role-card .rck{position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;background:#C4622D;color:white;font-size:11px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;}
 .role-card.sel .rck{opacity:1;}
-.prof-wrap{padding-bottom:100px;}
+.prof-wrap{padding-bottom:60px;}
 .prof-hero{position:relative;height:340px;overflow:hidden;background:#F2E4CC;}
 .prof-hero img{width:100%;height:100%;object-fit:contain;}
 .prof-hero-over{position:absolute;bottom:0;left:0;right:0;padding:28px 20px 20px;background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 100%);color:white;}
@@ -191,11 +187,11 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .prof-sec{padding:16px 20px 0;}
 .prof-sec h4{font-family:'Prata',serif;font-size:16px;color:#C4622D;margin-bottom:10px;}
 .prof-sec p{font-size:14px;line-height:1.7;}
-.action-bar{position:fixed;bottom:64px;left:50%;transform:translateX(-50%);width:calc(100% - 40px);max-width:390px;display:flex;gap:12px;z-index:40;}
+.action-bar{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);width:calc(100% - 40px);max-width:390px;display:flex;gap:12px;z-index:40;}
 .action-bar button{flex:1;padding:15px;border-radius:16px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;border:none;}
 .btn-like{background:#C4622D;color:white;}
 .btn-msg-out{background:white;color:#C4622D;border:1.5px solid #F4C9A8!important;}
-.matches-list{padding:0 20px 100px;}
+.matches-list{padding:0 20px 40px;}
 .match-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid #F2E4CC;cursor:pointer;}
 .match-row:last-child{border-bottom:none;}
 .match-av{position:relative;}
@@ -205,7 +201,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .match-name{font-weight:500;font-size:15px;margin-bottom:3px;}
 .match-prev{font-size:13px;color:#8A7968;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;}
 .match-time{font-size:11px;color:#8A7968;}
-.chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 0px);}
+.chat-wrap{display:flex;flex-direction:column;min-height:100vh;}
 .chat-head{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #F2E4CC;background:#FDF6EC;}
 .chat-head img{width:40px;height:40px;border-radius:50%;object-fit:cover;}
 .chat-name{font-weight:500;font-size:15px;}
@@ -215,7 +211,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .bubble{max-width:75%;padding:11px 16px;border-radius:20px;font-size:14px;line-height:1.5;}
 .bubble.me{background:#C4622D;color:white;border-bottom-right-radius:6px;align-self:flex-end;}
 .bubble.them{background:white;color:#2C2C2C;border-bottom-left-radius:6px;align-self:flex-start;box-shadow:0 1px 4px rgba(0,0,0,0.06);}
-.chat-input{display:flex;align-items:center;gap:10px;padding:12px 16px;background:white;border-top:1px solid #F2E4CC;}
+.chat-input{display:flex;align-items:center;gap:10px;padding:12px 16px;background:white;border-top:1px solid #F2E4CC;position:sticky;bottom:0;}
 .chat-input input{flex:1;padding:11px 16px;border:1.5px solid #F2E4CC;border-radius:24px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;background:#FDF6EC;}
 .chat-input input:focus{border-color:#C4622D;}
 .send-btn{background:#C4622D;color:white;border:none;width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;}
@@ -241,23 +237,20 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .review-step{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
 .review-num{width:22px;height:22px;border-radius:50%;background:#F2E4CC;color:#C4622D;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
 @media(min-width:768px){
-  .wrap{max-width:100%;display:grid;grid-template-columns:280px 1fr;grid-template-rows:64px 1fr;min-height:100vh;}
-  .nav{grid-column:1/-1;grid-row:1;max-width:100%;padding:0 32px;height:64px;}
-  .bottom-tab{position:static;grid-column:1;grid-row:2;flex-direction:column;max-width:280px;border-top:none;border-right:1px solid #F2E4CC;padding:24px 0;height:100%;width:280px;transform:none;left:auto;align-items:flex-start;}
-  .tab-btn{flex-direction:row;padding:14px 24px;font-size:15px;gap:12px;width:100%;justify-content:flex-start;}
-  .main-content{grid-column:2;grid-row:2;overflow-y:auto;padding-bottom:40px;}
-  .profile-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:0 24px 24px;}
+  .wrap{max-width:100%;display:flex;flex-direction:column;min-height:100vh;}
+  .nav{max-width:100%;padding:0 32px;height:64px;}
+  .main-content{overflow-y:auto;padding-bottom:40px;}
+  .profile-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:0 24px 24px;max-width:900px;margin:0 auto;}
   .card{margin:0;}
-  .hero{padding:40px 32px 32px;}
+  .hero{padding:40px 32px 32px;max-width:900px;margin:0 auto;}
   .hero h1{font-size:40px;}
-  .sec-head{padding:24px 32px 12px;}
-  .filter-pills{padding:0 32px 16px;}
-  .matches-list{padding:0 32px 40px;}
+  .sec-head{padding:24px 32px 12px;max-width:900px;margin:0 auto;width:100%;box-sizing:border-box;}
+  .filter-pills{padding:0 32px 16px;max-width:900px;margin:0 auto;}
+  .matches-list{padding:0 32px 40px;max-width:900px;margin:0 auto;}
 }
 @media(min-width:1200px){
-  .wrap{grid-template-columns:300px 1fr;}
-  .bottom-tab{width:300px;max-width:300px;}
-  .profile-grid{grid-template-columns:repeat(3,1fr);}
+  .profile-grid{grid-template-columns:repeat(3,1fr);max-width:1100px;}
+  .hero,.sec-head,.filter-pills,.matches-list{max-width:1100px;}
 }
 `;
 
@@ -481,7 +474,7 @@ function ProfileCard({ profile, isLoggedIn, onView, onLogin }) {
 }
 
 // ── FULL PROFILE ──────────────────────────────────────────────────────────────
-function FullProfile({ profile, onBack, onChat, isLoggedIn, onLogin }) {
+function FullProfile({ profile, onBack, onChat, isLoggedIn, onLogin, isOwnProfile, onEdit }) {
   const isOwner = profile.role === "owner";
   return (
     <div className="prof-wrap">
@@ -562,9 +555,11 @@ function FullProfile({ profile, onBack, onChat, isLoggedIn, onLogin }) {
 
       <div className="action-bar">
         <button className="btn-msg-out" onClick={onBack}>← Terug</button>
-        {isLoggedIn
-          ? <button className="btn-like" onClick={() => onChat(profile)}>💬 Bericht</button>
-          : <button className="btn-like" onClick={onLogin}>🔒 Login om te chatten</button>
+        {isOwnProfile
+          ? <button className="btn-like" onClick={onEdit}>✏️ Profiel bewerken</button>
+          : isLoggedIn
+            ? <button className="btn-like" onClick={() => onChat(profile)}>💬 Bericht</button>
+            : <button className="btn-like" onClick={onLogin}>🔒 Login om te chatten</button>
         }
       </div>
     </div>
@@ -599,7 +594,7 @@ function ChatView({ profile, messages, onBack, onSend }) {
 // ── MATCHES ───────────────────────────────────────────────────────────────────
 function MatchesTab({ matches, onOpenChat }) {
   if (!matches.length) return (
-    <div className="empty"><div className="ei">🌍</div><h3>Nog geen matches</h3><p>Bekijk profielen en start gesprekken. Jouw reismaatje is er!</p></div>
+    <div className="empty"><div className="ei">💬</div><h3>Nog geen berichten</h3><p>Bekijk profielen en start een gesprek.</p></div>
   );
   return (
     <div className="matches-list">
@@ -665,7 +660,7 @@ function PhotoStep({ avatar, photos, isOwner, onAvatar, onPhotos, focusX, focusY
   return (
     <div>
       <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Voeg foto's toe</h2>
-      <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Een profielfoto helpt mensen jou te herkennen. {isOwner ? "Pand" : "Travel"} photos help you stand out.</p>
+      <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Een profielfoto helpt mensen jou te herkennen. {isOwner ? "Pandfoto's" : "Reisfoto's"} laten je opvallen.</p>
       <div style={{ marginBottom: 28 }}>
         <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 12 }}>Profielfoto</div>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -1444,13 +1439,16 @@ export default function App() {
       <style>{css}</style>
 
       <div className="nav">
-        <div className="nav-logo"><img src="/logo.png" alt="BnbBuddy" style={{ height: 32, display: "block" }} /></div>
+        <div className="nav-logo" onClick={() => { setScreen("browse"); setTab("browse"); setViewProfile(null); setChatProfile(null); }} style={{ cursor: "pointer" }}>
+          <img src="/logo.png" alt="BnbBuddy" style={{ height: 32, display: "block" }} />
+        </div>
         <div className="nav-actions">
           {user ? (
             <>
               <span style={{ fontSize: 13, color: "#8A7968" }}>Hoi, {user.name}</span>
               <span className={`role-badge ${user.role}`} style={{ fontSize: 10, padding: "3px 8px" }}>{user.role === "owner" ? "🏡" : "🎒"}</span>
-              <button className="btn-nav" onClick={() => setScreen("create-profile")} style={{ fontSize: 12, padding: "5px 10px" }}>+ Profiel</button>
+              <button className="btn-nav" onClick={() => { setTab("messages"); setScreen("browse"); setViewProfile(null); setChatProfile(null); }} style={{ fontSize: 12, padding: "5px 10px" }}>💬 Berichten</button>
+              <button className="btn-nav" onClick={() => { setScreen("browse"); setViewProfile(toDisplayProfile(user)); }} style={{ fontSize: 12, padding: "5px 10px" }}>Mijn profiel</button>
               <button className="btn-nav" onClick={handleLogout} style={{ fontSize: 12, padding: "5px 10px" }}>Uitloggen</button>
               <img src={user.avatar} alt="me" className="nav-avatar" />
             </>
@@ -1466,7 +1464,9 @@ export default function App() {
       <div className="main-content">
         {viewProfile ? (
           <FullProfile profile={viewProfile} onBack={() => setViewProfile(null)} onChat={openChat}
-            isLoggedIn={!!user} onLogin={() => { setViewProfile(null); openLogin(); }} />
+            isLoggedIn={!!user} onLogin={() => { setViewProfile(null); openLogin(); }}
+            isOwnProfile={!!user && viewProfile.id === user.id}
+            onEdit={() => { setViewProfile(null); setScreen("create-profile"); }} />
         ) : tab === "browse" ? (
           <>
             {!user && (
@@ -1494,25 +1494,11 @@ export default function App() {
           </>
         ) : (
           <>
-            <div className="sec-head"><h2>Jouw matches</h2></div>
+            <div className="sec-head"><h2>Jouw berichten</h2></div>
             <MatchesTab matches={matched} onOpenChat={p => { setChatProfile(p); setTab("messages"); }} />
           </>
         )}
       </div>
-
-      {user && (
-        <div className="bottom-tab">
-          <button className={`tab-btn ${tab === "browse" ? "active" : ""}`} onClick={() => { setTab("browse"); setScreen("browse"); }}>
-            <span className="tab-icon">🗺</span>Explore
-          </button>
-          <button className={`tab-btn ${tab === "messages" ? "active" : ""}`} onClick={() => setTab("messages")}>
-            <span className="tab-icon">💬</span>Matches
-          </button>
-          <button className={`tab-btn ${screen === "create-profile" ? "active" : ""}`} onClick={() => setScreen("create-profile")}>
-            <span className="tab-icon">👤</span>My Profile
-          </button>
-        </div>
-      )}
 
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} onLogin={login} onSignupSuccess={handleSignupSuccess} initialMode={authMode} />}
     </div>
