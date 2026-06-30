@@ -262,6 +262,20 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 `;
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
+function formatDate(d) {
+  if (!d) return "";
+  const date = new Date(d);
+  if (isNaN(date)) return "";
+  return date.toLocaleDateString("nl-NL", { day: "numeric", month: "short" });
+}
+function formatBeschikbaarheid(profile) {
+  if (profile.flexibeleData) return "Flexibel";
+  if (profile.beschikbaarVan && profile.beschikbaarTot) {
+    return `${formatDate(profile.beschikbaarVan)} – ${formatDate(profile.beschikbaarTot)}`;
+  }
+  return "";
+}
+
 function dataUrlToFile(dataUrl, filename) {
   const [header, base64] = dataUrl.split(",");
   const mimeMatch = header.match(/:(.*?);/);
@@ -437,6 +451,7 @@ function ProfileCard({ profile, isLoggedIn, onView, onLogin }) {
               <span className="snap owner">🏠 {profile.propertyType}</span>
               <span className="snap owner">🛏 {profile.rooms} room{profile.rooms > 1 ? "s" : ""}</span>
               <span className="snap owner">💶 {profile.pricePerNight}</span>
+              {formatBeschikbaarheid(profile) && <span className="snap owner">📅 {formatBeschikbaarheid(profile)}</span>}
             </div>
             <div className="tags">{(profile.amenities || []).slice(0, 3).map(a => <span className="tag" key={a}>{a}</span>)}</div>
           </>
@@ -444,7 +459,7 @@ function ProfileCard({ profile, isLoggedIn, onView, onLogin }) {
           <>
             <div className="snap-row">
               {profile.bestemmingen && <span className="snap buddy">✈ {profile.bestemmingen}</span>}
-              {profile.tripDuration && <span className="snap buddy">⏱ {profile.tripDuration}</span>}
+              {formatBeschikbaarheid(profile) && <span className="snap buddy">📅 {formatBeschikbaarheid(profile)}</span>}
             </div>
             {(profile.maanden?.length > 0 || profile.aantalPersonen) && (
               <div className="snap-row" style={{ marginTop: 4 }}>
@@ -489,12 +504,12 @@ function FullProfile({ profile, onBack, onChat, isLoggedIn, onLogin }) {
             <div className="stat"><div className="sl">Pand</div><div className="sv">{profile.propertyType}</div></div>
             <div className="stat"><div className="sl">Kamers</div><div className="sv">{profile.rooms}</div></div>
             <div className="stat"><div className="sl">Prijs/nacht</div><div className="sv">{profile.pricePerNight}</div></div>
-            <div className="stat"><div className="sl">Sinds</div><div className="sv">{profile.hostingSince}</div></div>
+            <div className="stat"><div className="sl">Beschikbaar</div><div className="sv">{formatBeschikbaarheid(profile) || "—"}</div></div>
           </>
         ) : (
           <>
             <div className="stat"><div className="sl">Bestemming</div><div className="sv">{profile.bestemmingen || "—"}</div></div>
-            <div className="stat"><div className="sl">Duur</div><div className="sv">{profile.tripDuration || "—"}</div></div>
+            <div className="stat"><div className="sl">Beschikbaar</div><div className="sv">{formatBeschikbaarheid(profile) || "—"}</div></div>
             <div className="stat"><div className="sl">Maanden</div><div className="sv">{profile.maanden?.length > 0 ? profile.maanden.join(", ") : "—"}</div></div>
             <div className="stat"><div className="sl">Personen</div><div className="sv">{profile.aantalPersonen || "—"}</div></div>
           </>
@@ -733,6 +748,7 @@ function CreateProfile({ user, onDone, onClose }) {
     tagline: user.tagline || "", bio: user.bio || "", city: user.city || "", country: user.country || "", age: user.age ? String(user.age) : "",
     languages: user.languages || [], interests: user.interests || [],
     vaardigheden: user.vaardigheden || [], bestemmingen: user.bestemmingen ? [...user.bestemmingen.split(",").map(s => s.trim()), "", "", ""].slice(0, 3) : ["", "", ""], tripDuration: user.trip_duration || "", maanden: user.maanden || [], aantalPersonen: user.aantal_personen || "", overigeTaal: user.overige_taal || "", overigeInteresse: user.overige_interesse || "",
+    beschikbaarVan: user.beschikbaar_van || "", beschikbaarTot: user.beschikbaar_tot || "", flexibeleData: user.flexibele_data || false,
     propertyName: user.property_name || "", propertyType: user.property_type || "", rooms: user.rooms ? String(user.rooms) : "", priceVan: user.price_from ? String(user.price_from) : "", priceTot: user.price_to ? String(user.price_to) : "", amenities: user.amenities || [], houseRules: user.house_rules || "",
     avatar: user.avatar_url || user.avatar || null,
     photos: (user.photos || []).filter(p => p.type === "gallery").map(p => p.url),
@@ -745,7 +761,10 @@ function CreateProfile({ user, onDone, onClose }) {
     if (step === 1) return form.city && form.country && (isOwner || form.age);
     if (step === 2) return form.tagline && form.bio;
     if (step === 3) return isOwner ? (form.propertyName && form.propertyType && form.rooms) : form.vaardigheden.length > 0;
-    if (step === 4) return isOwner ? form.amenities.length > 0 : form.tripDuration;
+    if (step === 4) {
+      const datesOk = form.flexibeleData || (form.beschikbaarVan && form.beschikbaarTot);
+      return isOwner ? (form.amenities.length > 0 && datesOk) : datesOk;
+    }
     if (step === 5) return form.languages.length > 0 && form.interests.length > 0;
     return true;
   };
@@ -848,9 +867,22 @@ function CreateProfile({ user, onDone, onClose }) {
 
         {step === 4 && isOwner && (
           <div>
-            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Amenities</h2>
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Voorzieningen & beschikbaarheid</h2>
             <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Wat bied je gasten aan?</p>
             <MultiSelect options={AMENITIES_LIST} selected={form.amenities} onToggle={v => tog("amenities", v)} />
+
+            <div className="field" style={{ marginTop: 24 }}>
+              <label>Beschikbaar van</label>
+              <input type="date" value={form.beschikbaarVan} onChange={e => set("beschikbaarVan", e.target.value)} disabled={form.flexibeleData} style={{ opacity: form.flexibeleData ? 0.5 : 1 }} />
+            </div>
+            <div className="field">
+              <label>Beschikbaar tot</label>
+              <input type="date" value={form.beschikbaarTot} onChange={e => set("beschikbaarTot", e.target.value)} disabled={form.flexibeleData} style={{ opacity: form.flexibeleData ? 0.5 : 1 }} />
+            </div>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "#2C2C2C", cursor: "pointer", marginTop: 4 }}>
+              <input type="checkbox" checked={form.flexibeleData} onChange={e => set("flexibeleData", e.target.checked)} style={{ width: "auto" }} />
+              Mijn beschikbaarheid is flexibel
+            </label>
           </div>
         )}
 
@@ -858,11 +890,17 @@ function CreateProfile({ user, onDone, onClose }) {
           <div>
             <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Beschikbaarheid</h2>
             <div className="field">
-              <label>Reisduur</label>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {DURATIONS.map(d => <button key={d} onClick={() => set("tripDuration", d)} style={sb(d, form.tripDuration)}>{d}</button>)}
-              </div>
+              <label>Beschikbaar van</label>
+              <input type="date" value={form.beschikbaarVan} onChange={e => set("beschikbaarVan", e.target.value)} disabled={form.flexibeleData} style={{ opacity: form.flexibeleData ? 0.5 : 1 }} />
             </div>
+            <div className="field">
+              <label>Beschikbaar tot</label>
+              <input type="date" value={form.beschikbaarTot} onChange={e => set("beschikbaarTot", e.target.value)} disabled={form.flexibeleData} style={{ opacity: form.flexibeleData ? 0.5 : 1 }} />
+            </div>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "#2C2C2C", cursor: "pointer", marginTop: 4, marginBottom: 8 }}>
+              <input type="checkbox" checked={form.flexibeleData} onChange={e => set("flexibeleData", e.target.checked)} style={{ width: "auto" }} />
+              Mijn data zijn flexibel
+            </label>
             <div className="field" style={{ marginTop: 20 }}>
               <label>Maanden</label>
               <MultiSelect options={MAANDEN} selected={form.maanden} onToggle={v => tog("maanden", v)} />
@@ -1044,6 +1082,9 @@ function toDisplayProfile(p) {
     avatar: p.avatar_url || "https://i.pravatar.cc/400?img=47",
     photos: (p.photos || []).filter(ph => ph.type === "gallery").map(ph => ph.url),
     tripDuration: p.trip_duration || "",
+    beschikbaarVan: p.beschikbaar_van || "",
+    beschikbaarTot: p.beschikbaar_tot || "",
+    flexibeleData: p.flexibele_data || false,
     aantalPersonen: p.aantal_personen || "",
     pricePerNight: p.price_from && p.price_to ? `€${p.price_from}–€${p.price_to}` : "",
     propertyName: p.property_name || "",
@@ -1214,6 +1255,9 @@ export default function App() {
           avatar: p.avatar_url || "https://i.pravatar.cc/400?img=47",
           photos: (p.photos || []).filter(ph => ph.type === "gallery").map(ph => ph.url),
           tripDuration: p.trip_duration || "",
+          beschikbaarVan: p.beschikbaar_van || "",
+          beschikbaarTot: p.beschikbaar_tot || "",
+          flexibeleData: p.flexibele_data || false,
           aantalPersonen: p.aantal_personen || "",
           pricePerNight: p.price_from && p.price_to ? `€${p.price_from}–€${p.price_to}` : "",
           propertyName: p.property_name || "",
@@ -1285,6 +1329,9 @@ export default function App() {
           vaardigheden: form.vaardigheden,
           bestemmingen: Array.isArray(form.bestemmingen) ? form.bestemmingen.filter(Boolean).join(", ") : form.bestemmingen,
           trip_duration: form.tripDuration,
+          beschikbaar_van: form.beschikbaarVan || null,
+          beschikbaar_tot: form.beschikbaarTot || null,
+          flexibele_data: form.flexibeleData,
           maanden: form.maanden,
           aantal_personen: form.aantalPersonen,
           overige_taal: form.overigeTaal,
