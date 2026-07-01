@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { supabase, signUp, signIn, signOut, getProfile, upsertProfile, deleteProfile, getApprovedProfiles, getAllProfiles, uploadPhoto, sendMessage, getMessages, likeProfile, getLikes, getReviews, addReview } from "./supabase.js";
 
 // ⚠️ Verander dit wachtwoord naar iets eigens voordat je live gaat!
-const ADMIN_PASSWORD = "Hetkomtgoedschatje;
+const ADMIN_PASSWORD = "Hetkomtgoedschatje";
 
 const C = {
   cream: "#FDF6EC", sand: "#F2E4CC", terra: "#C4622D",
