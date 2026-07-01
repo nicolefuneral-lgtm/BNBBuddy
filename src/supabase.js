@@ -128,7 +128,6 @@ export async function getReviews(profileId) {
   if (error) return []
   return data || []
 }
-
 export async function addReview({ profileId, reviewerId, sterren, tekst }) {
   const { error } = await supabase.from('reviews').insert({
     profile_id: profileId,
@@ -138,3 +137,4 @@ export async function addReview({ profileId, reviewerId, sterren, tekst }) {
     status: 'pending',
   })
   if (error) throw error
+}
