@@ -1633,9 +1633,17 @@ if (showLanding) return (
       <style>{css}</style>
 
       <div className="nav">
-        <div className="nav-logo" onClick={() => { setScreen("browse"); setTab("browse"); setViewProfile(null); setChatProfile(null); }} style={{ cursor: "pointer" }}>
-          <img src="/logo.png" alt="BnbBuddy" style={{ height: 32, display: "block" }} />
-        </div>
+ <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+  <div className="nav-logo" onClick={() => { setScreen("browse"); setTab("browse"); setViewProfile(null); setChatProfile(null); }} style={{ cursor: "pointer" }}>
+    <img src="/logo.png" alt="BnbBuddy" style={{ height: 32, display: "block" }} />
+  </div>
+  <button
+    onClick={() => setShowLanding(true)}
+    style={{ background: "none", border: "none", cursor: "pointer", fontSize: 11, color: "#8A7968", padding: 0, textAlign: "left" }}
+  >
+    ← Terug naar website
+  </button>
+</div>
         <div className="nav-actions">
           {user ? (
             <>
