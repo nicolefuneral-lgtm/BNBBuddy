@@ -1588,6 +1588,18 @@ export default function App() {
       {adminUnlocked ? <AdminPanel onLock={lockAdmin} /> : <AdminGate onUnlock={unlockAdmin} />}
     </div>
   );
+if (showLanding) return (
+  <div className="wrap" style={{ maxWidth: "100%" }}>
+    <style>{css}</style>
+    <LandingPage
+      onEnterApp={(role, mode) => {
+        setShowLanding(false);
+        if (mode === "login") openLogin();
+        else openSignup();
+      }}
+    />
+  </div>
+);
 
   if (checkEmailAddress) return (
     <div className="wrap">
