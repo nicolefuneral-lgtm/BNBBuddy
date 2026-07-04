@@ -65,6 +65,13 @@ const landingCss = `
 .lp-footer .cols{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-bottom:20px;}
 .lp-footer .col h4{font-family:'Prata',serif;font-size:14px;margin-bottom:10px;color:white;}
 .lp-footer .col div{margin-bottom:6px;opacity:.85;}
+.lp-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:900px;margin:0 auto 48px;padding:0 20px;}
+.lp-gallery img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px;}
+.lp-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:900px;margin:0 auto;padding:0 20px 48px;}
+.lp-grid3 img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:20px;}
+@media(max-width:600px){
+  .lp-grid3{grid-template-columns:1fr;}
+}
 @media(min-width:768px){
   .lp-hero h1{font-size:42px;}
 }
@@ -78,8 +85,30 @@ const IMG = {
     "https://www.bnbbuddy.eu/uploads/70BCIf0R/320x0_320x0/huisjemetpersonen_864__msi___png.webp",
     "https://www.bnbbuddy.eu/uploads/mhXCtDYb/320x0_320x0/kalendermethanden_605__msi___png.webp",
   ],
-  nicole: "https://www.bnbbuddy.eu/uploads/EBYdMXvc/768x0_640x0/jon-tyson-XS_o-Iuf9Go-unsplash-min_282__msi___jpg.webp",
-  footerBanner: "https://www.bnbbuddy.eu/uploads/9PPJA6RY/768x0_480x0/alex-azabache-V83v-MYB_Z8-unsplash-min__msi___jpg.webp",
+  // De echte foto van Nicole (naast "Over Nicole")
+  nicole: "https://www.bnbbuddy.eu/uploads/9qzCUHih/NicoleAlmeida__msi___jpg.jpg",
+  // Sfeerbeeld naast de nieuwsbrief-aanmelding
+  newsletterBanner: "https://www.bnbbuddy.eu/uploads/EBYdMXvc/jon-tyson-XS_o-Iuf9Go-unsplash-min_282__msi___jpg.jpg",
+  // Sfeerbeeld boven de footer / naast het contactformulier
+  footerBanner: "https://www.bnbbuddy.eu/uploads/9PPJA6RY/alex-azabache-V83v-MYB_Z8-unsplash-min__msi___jpg.jpg",
+  // De 9 foto's uit de slideshow ("Waarom BNB Buddy" sectie)
+  gallery: [
+    "https://www.bnbbuddy.eu/uploads/56kcs3UC/rolands-varsbergs-gexFiejzFzY-unsplash-min__msi___jpg.jpg",
+    "https://www.bnbbuddy.eu/uploads/TPLR3inf/roberta-sant-anna-xEpCd-YSU-Y-unsplash-min__msi___jpg.jpg",
+    "https://www.bnbbuddy.eu/uploads/L7Drts67/jahanzeb-ahsan-QizdAJNl-1Y-unsplash-min__msi___jpg.jpg",
+    "https://www.bnbbuddy.eu/uploads/1FKPcWKn/toa-heftiba-z2EbQN08ZL0-unsplash-min__msi___jpg.jpg",
+    "https://www.bnbbuddy.eu/uploads/SztdlK4m/henrique-ferreira-Nhtd6yevEAw-unsplash-min__msi___jpg.jpg",
+    "https://www.bnbbuddy.eu/uploads/lqmPejI6/leongsan-d2aCbaPymVU-unsplash-min__msi___jpg.jpg",
+    "https://www.bnbbuddy.eu/uploads/1yplBuEp/xtrafotouitstralingvindikleukApplelogomagervanaf-min__msi___jpg.jpg",
+    "https://www.bnbbuddy.eu/uploads/lDwJqZmG/hector-o-connor-XSknXjyCVcs-unsplash-min__msi___jpg.jpg",
+    "https://www.bnbbuddy.eu/uploads/4PNqkpDV/priscilla-du-preez-JuNUW2Fg__o-unsplash-min__msi___jpg.jpg",
+  ],
+  // De 3 foto's van het fotogrid (naast elkaar, na "Over Nicole")
+  grid: [
+    "https://www.bnbbuddy.eu/uploads/4jy7LTyX/lilartsy-GujI_lyCX4Q-unsplash-min__msi___jpg.jpg",
+    "https://www.bnbbuddy.eu/uploads/n8Q2abdV/estudio-bloom-N9PBvp2xAlk-unsplash-min__msi___jpg.jpg",
+    "https://www.bnbbuddy.eu/uploads/mq64k9MH/dino-reichmuth-A5rCN8626Ck-unsplash-min__msi___jpg.jpg",
+  ],
 };
 
 export default function LandingPage({ onEnterApp }) {
@@ -156,6 +185,11 @@ export default function LandingPage({ onEnterApp }) {
               </div>
             ))}
           </div>
+          <div className="lp-gallery">
+            {IMG.gallery.map((src, i) => (
+              <img key={i} src={src} alt="" loading="lazy" />
+            ))}
+          </div>
           <div className="lp-section" style={{ paddingBottom: 0 }}>
             <h2>{content.howTitle}</h2>
             <p>{content.howIntro}</p>
@@ -211,8 +245,16 @@ export default function LandingPage({ onEnterApp }) {
         </p>
       </div>
 
+      {/* FOTOGRID */}
+      <div className="lp-grid3">
+        {IMG.grid.map((src, i) => (
+          <img key={i} src={src} alt="" loading="lazy" />
+        ))}
+      </div>
+
       {/* NEWSLETTER */}
       <div className="lp-newsletter">
+        <img src={IMG.newsletterBanner} alt="" style={{ width: "100%", maxWidth: 420, borderRadius: 20, objectFit: "cover", marginBottom: 20 }} />
         <h2>{t.shared.newsletterTitle}</h2>
         <form onSubmit={e => e.preventDefault()}>
           <input type="email" placeholder={t.shared.newsletterPlaceholder} required />
