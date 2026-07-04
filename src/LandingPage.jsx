@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { TRANSLATIONS, LANGUAGES } from "./translations.js";
 
@@ -71,6 +70,18 @@ const landingCss = `
 }
 `;
 
+// Sfeerbeelden / iconen, overgenomen van bnbbuddy.eu
+const IMG = {
+  logo: "https://www.bnbbuddy.eu/uploads/8ADu0lqi/320x0_320x0/logo-bnb-buddy_332_717__msi___jpg.webp",
+  whyIcons: [
+    "https://www.bnbbuddy.eu/uploads/hURD5gzI/320x0_320x0/buttonvoorhuisje_532__msi___png.webp",
+    "https://www.bnbbuddy.eu/uploads/70BCIf0R/320x0_320x0/huisjemetpersonen_864__msi___png.webp",
+    "https://www.bnbbuddy.eu/uploads/mhXCtDYb/320x0_320x0/kalendermethanden_605__msi___png.webp",
+  ],
+  nicole: "https://www.bnbbuddy.eu/uploads/EBYdMXvc/768x0_640x0/jon-tyson-XS_o-Iuf9Go-unsplash-min_282__msi___jpg.webp",
+  footerBanner: "https://www.bnbbuddy.eu/uploads/9PPJA6RY/768x0_480x0/alex-azabache-V83v-MYB_Z8-unsplash-min__msi___jpg.webp",
+};
+
 export default function LandingPage({ onEnterApp }) {
   const [lang, setLang] = useState("nl");
   const [page, setPage] = useState("owner"); // "owner" | "buddy"
@@ -88,7 +99,7 @@ export default function LandingPage({ onEnterApp }) {
 
       <div className="lp-nav">
         <div className="lp-logo" onClick={() => setPage("owner")}>
-          Bnb<span>Buddy</span>
+          <img src={IMG.logo} alt="BnbBuddy" style={{ height: 32, display: "block" }} />
         </div>
         <div className="lp-tabs">
           <button className={`lp-tab ${page === "owner" ? "on" : ""}`} onClick={() => setPage("owner")}>
@@ -139,7 +150,7 @@ export default function LandingPage({ onEnterApp }) {
           <div className="lp-blobs">
             {content.whyPoints.map((pt, i) => (
               <div className="lp-blob" key={i}>
-                <div className="num">{i + 1}</div>
+                <img src={IMG.whyIcons[i]} alt="" style={{ width: 56, height: 56, objectFit: "contain", margin: "0 auto 14px", display: "block" }} />
                 <h3>{pt.title}</h3>
                 <p>{pt.text}</p>
               </div>
@@ -193,6 +204,7 @@ export default function LandingPage({ onEnterApp }) {
 
       {/* OVER NICOLE */}
       <div className="lp-about">
+        <img src={IMG.nicole} alt="Nicole" style={{ width: "100%", maxWidth: 420, borderRadius: 20, objectFit: "cover" }} />
         <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22 }}>{t.shared.aboutNicoleTitle}</h2>
         <p style={{ fontSize: 14, color: C.muted, lineHeight: 1.8, whiteSpace: "pre-line", textAlign: "left" }}>
           {t.shared.aboutNicoleText}
@@ -255,6 +267,9 @@ export default function LandingPage({ onEnterApp }) {
           <button className="lp-submit" type="submit">{t.shared.contactCta} →</button>
         </form>
       </div>
+
+      {/* SFEERBEELD BOVEN FOOTER */}
+      <img src={IMG.footerBanner} alt="" style={{ width: "100%", maxHeight: 280, objectFit: "cover", display: "block" }} />
 
       {/* FOOTER */}
       <div className="lp-footer">
