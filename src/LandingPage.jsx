@@ -128,7 +128,7 @@ export default function LandingPage({ onEnterApp }) {
 
       <div className="lp-nav">
         <div className="lp-logo" onClick={() => setPage("owner")}>
-          <img src={IMG.logo} alt="BnbBuddy" style={{ height: 32, display: "block" }} />
+          <img src={IMG.logo} alt="BnbBuddy" style={{ height: 44, display: "block" }} />
         </div>
         <div className="lp-tabs">
           <button className={`lp-tab ${page === "owner" ? "on" : ""}`} onClick={() => setPage("owner")}>
@@ -153,6 +153,7 @@ export default function LandingPage({ onEnterApp }) {
 
       {/* HERO */}
       <div className="lp-hero">
+        <img src={IMG.logo} alt="BnbBuddy" style={{ height: 100, margin: "0 auto 24px", display: "block" }} />
         <h1>{content.heroTitle}</h1>
         {content.heroSubtitle && <p style={{ fontWeight: 600, color: C.terra, marginBottom: 4 }}>{content.heroSubtitle}</p>}
         <p>{content.heroText}</p>
