@@ -1366,6 +1366,13 @@ export default function App() {
   const [dbProfiles, setDbProfiles] = useState([]);
   const [loadingProfiles, setLoadingProfiles] = useState(true);
   const [isAdminRoute, setIsAdminRoute] = useState(() => window.location.hash === "#admin");
+  const [showLanding, setShowLanding] = useState(() => {
+  try {
+    if (window.location.hash === "#admin") return false;
+    if (window.location.pathname.startsWith("/app")) return false;
+  } catch (e) {}
+  return true;
+});
   const [adminUnlocked, setAdminUnlocked] = useState(() => {
     try { return localStorage.getItem("bnbbuddy_admin_unlocked") === "true"; } catch (e) { return false; }
   });
