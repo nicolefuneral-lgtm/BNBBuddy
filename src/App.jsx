@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { supabase, signUp, signIn, signOut, getProfile, upsertProfile, deleteProfile, getApprovedProfiles, getAllProfiles, uploadPhoto, sendMessage, getMessages, likeProfile, getLikes, getReviews, addReview } from "./supabase.js";
-
+import LandingPage from "./LandingPage.jsx";
 // ⚠️ Verander dit wachtwoord naar iets eigens voordat je live gaat!
 const ADMIN_PASSWORD = "Hetkomtgoedschatje";
 
