@@ -168,6 +168,11 @@ export default function LandingPage({ onEnterApp }) {
             <h2>{content.section2Title}</h2>
             <p>{content.section2Text}</p>
           </div>
+          <div className="lp-gallery">
+            {IMG.gallery.slice(0, 3).map((src, i) => (
+              <img key={i} src={src} alt="" loading="lazy" />
+            ))}
+          </div>
           <div className="lp-break">
             <h2>{content.breakTitle}</h2>
             <p>{content.breakText}</p>
@@ -187,7 +192,7 @@ export default function LandingPage({ onEnterApp }) {
             ))}
           </div>
           <div className="lp-gallery">
-            {IMG.gallery.map((src, i) => (
+            {IMG.gallery.slice(3, 6).map((src, i) => (
               <img key={i} src={src} alt="" loading="lazy" />
             ))}
           </div>
@@ -202,6 +207,11 @@ export default function LandingPage({ onEnterApp }) {
                 <h3>{st.title}</h3>
                 <p>{st.text}</p>
               </div>
+            ))}
+          </div>
+          <div className="lp-gallery">
+            {IMG.gallery.slice(6, 9).map((src, i) => (
+              <img key={i} src={src} alt="" loading="lazy" />
             ))}
           </div>
         </>
