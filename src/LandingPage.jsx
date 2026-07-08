@@ -114,8 +114,36 @@ const IMG = {
 export default function LandingPage({ onEnterApp }) {
   const [lang, setLang] = useState("nl");
   const [page, setPage] = useState("owner"); // "owner" | "buddy"
+  const [contactForm, setContactForm] = useState({
+    salutation: "", firstName: "", lastName: "", role: "",
+    email: "", website: "", city: "", country: "", message: "",
+  });
+  const [contactStatus, setContactStatus] = useState("idle"); // idle | sending | sent | error
   const t = TRANSLATIONS[lang];
   const content = t[page];
+
+  const setField = (k, v) => setContactForm(f => ({ ...f, [k]: v }));
+
+  const encode = (data) =>
+    Object.keys(data)
+      .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(data[k]))
+      .join("&");
+
+  const submitContact = async (e) => {
+    e.preventDefault();
+    setContactStatus("sending");
+    try {
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({ "form-name": "contact", ...contactForm }),
+      });
+      setContactStatus("sent");
+      setContactForm({ salutation: "", firstName: "", lastName: "", role: "", email: "", website: "", city: "", country: "", message: "" });
+    } catch (err) {
+      setContactStatus("error");
+    }
+  };
 
   const handleCta = () => {
     // Navigeer naar de app en open direct de aanmeld-flow met de juiste rol.
@@ -278,47 +306,70 @@ export default function LandingPage({ onEnterApp }) {
       <div className="lp-contact">
         <h2>{t.shared.contactTitle}</h2>
         <p>{t.shared.contactIntro}</p>
-        <form onSubmit={e => e.preventDefault()}>
+        {contactStatus === "sent" ? (
+          <div style={{ textAlign: "center", padding: "40px 20px", background: "white", borderRadius: 16, border: `1.5px solid ${C.sand}` }}>
+            <div style={{ fontSize: 40, marginBottom: 12 }}>✓</div>
+            <p style={{ color: C.charcoal, fontWeight: 600 }}>Bedankt voor je bericht! We nemen zo snel mogelijk contact met je op.</p>
+          </div>
+        ) : (
+        <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" onSubmit={submitContact}>
+          <input type="hidden" name="form-name" value="contact" />
+          <p style={{ display: "none" }}><label>Don't fill this out: <input name="bot-field" /></label></p>
           <div className="lp-form-grid">
             <div className="lp-field full">
               <label>{t.shared.contactFields.salutation}</label>
-              <select><option></option></select>
+              <select value={contactForm.salutation} onChange={e => setField("salutation", e.target.value)}>
+                <option value=""></option>
+                <option value="Dhr.">Dhr.</option>
+                <option value="Mevr.">Mevr.</option>
+                <option value="Anders">Anders</option>
+              </select>
             </div>
             <div className="lp-field">
               <label>{t.shared.contactFields.firstName}</label>
-              <input type="text" />
+              <input type="text" value={contactForm.firstName} onChange={e => setField("firstName", e.target.value)} required />
             </div>
             <div className="lp-field">
               <label>{t.shared.contactFields.lastName}</label>
-              <input type="text" />
+              <input type="text" value={contactForm.lastName} onChange={e => setField("lastName", e.target.value)} required />
             </div>
             <div className="lp-field full">
               <label>{t.shared.contactFields.role}</label>
-              <select><option></option></select>
+              <select value={contactForm.role} onChange={e => setField("role", e.target.value)} required>
+                <option value=""></option>
+                <option value="BNB eigenaar">BNB eigenaar</option>
+                <option value="Buddy">Buddy</option>
+              </select>
             </div>
             <div className="lp-field">
               <label>{t.shared.contactFields.email}</label>
-              <input type="email" />
+              <input type="email" value={contactForm.email} onChange={e => setField("email", e.target.value)} required />
             </div>
             <div className="lp-field">
               <label>{t.shared.contactFields.website}</label>
-              <input type="text" />
+              <input type="text" value={contactForm.website} onChange={e => setField("website", e.target.value)} />
             </div>
             <div className="lp-field">
               <label>{t.shared.contactFields.city}</label>
-              <input type="text" />
+              <input type="text" value={contactForm.city} onChange={e => setField("city", e.target.value)} />
             </div>
             <div className="lp-field">
               <label>{t.shared.contactFields.country}</label>
-              <input type="text" />
+              <input type="text" value={contactForm.country} onChange={e => setField("country", e.target.value)} />
             </div>
             <div className="lp-field full">
               <label>{t.shared.contactFields.message}</label>
-              <textarea />
+              <textarea value={contactForm.message} onChange={e => setField("message", e.target.value)} required />
             </div>
           </div>
-          <button className="lp-submit" type="submit">{t.shared.contactCta} →</button>
+          {contactStatus === "error" && (
+            <div style={{ color: C.terra, fontSize: 13, marginBottom: 10 }}>Er ging iets mis bij het versturen. Probeer het nog eens.</div>
+          )}
+          <button className="lp-submit" type="submit" disabled={contactStatus === "sending"} style={{ opacity: contactStatus === "sending" ? 0.6 : 1 }}>
+            {contactStatus === "sending" ? "Versturen..." : `${t.shared.contactCta} →`}
+          </button>
         </form>
+        )}
       </div>
 
       {/* SFEERBEELD BOVEN FOOTER */}
