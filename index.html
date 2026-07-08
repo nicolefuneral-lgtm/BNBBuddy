@@ -8,20 +8,21 @@
     <title>BnbBuddy</title>
     <meta http-equiv="Content-Language" content="nl" />
   </head>
-  <body>
+ <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="salutation" />
+      <input type="text" name="firstName" />
+      <input type="text" name="lastName" />
+      <input type="text" name="role" />
+      <input type="email" name="email" />
+      <input type="text" name="website" />
+      <input type="text" name="city" />
+      <input type="text" name="country" />
+      <textarea name="message"></textarea>
+      <input type="text" name="bot-field" />
+    </form>
   </body>
 </html>
-<form name="contact" netlify netlify-honeypot="bot-field" hidden>
-  <input type="text" name="salutation" />
-  <input type="text" name="firstName" />
-  <input type="text" name="lastName" />
-  <input type="text" name="role" />
-  <input type="email" name="email" />
-  <input type="text" name="website" />
-  <input type="text" name="city" />
-  <input type="text" name="country" />
-  <textarea name="message"></textarea>
-  <input type="text" name="bot-field" />
-</form>
+ 
