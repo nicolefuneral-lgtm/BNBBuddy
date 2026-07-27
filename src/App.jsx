@@ -1115,19 +1115,23 @@ function AdminGate({ onUnlock }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const submit = async () => {
-    setError("");
-    setLoading(true);
-    const { data, error: signInError } = await signIn(email, pw);
-    setLoading(false);
-    if (signInError) { setError("Onjuiste inloggegevens."); return; }
-    if (data?.user?.email !== ADMIN_EMAIL) {
+const submit = async () => {
+  setError("");
+  setLoading(true);
+  try {
+    const user = await signIn({ email, password: pw });
+    if (user?.email !== ADMIN_EMAIL) {
       setError("Dit account heeft geen admin-toegang.");
       await signOut();
       return;
     }
     onUnlock();
-  };
+  } catch (err) {
+    setError("Onjuiste inloggegevens.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div style={{
