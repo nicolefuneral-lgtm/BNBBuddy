@@ -1403,15 +1403,15 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
-  const lockAdmin = () => {
-    try { localStorage.removeItem("bnbbuddy_admin_unlocked"); } catch (e) {}
-    setAdminUnlocked(false);
-    window.location.hash = "";
-  };
-  const unlockAdmin = () => {
-    try { localStorage.setItem("bnbbuddy_admin_unlocked", "true"); } catch (e) {}
-    setAdminUnlocked(true);
-  };
+const unlockAdmin = () => {
+  try { localStorage.setItem("bnbbuddy_admin_unlocked", "true"); } catch (e) {}
+  setAdminUnlocked(true);
+};
+const lockAdmin = async () => {
+  try { localStorage.removeItem("bnbbuddy_admin_unlocked"); } catch (e) {}
+  await signOut();
+  setAdminUnlocked(false);
+};
 
   // Load approved profiles from Supabase on mount
   useEffect(() => {
