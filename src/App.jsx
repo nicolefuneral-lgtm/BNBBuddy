@@ -1110,12 +1110,25 @@ function CheckEmail({ email, onBackToLogin }) {
 
 // ── ADMIN GATE (wachtwoordscherm) ───────────────────────────────────────────
 function AdminGate({ onUnlock }) {
+  const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [error, setError] = useState("");
-  const submit = () => {
-    if (pw === ADMIN_PASSWORD) { onUnlock(); }
-    else setError("Onjuist wachtwoord.");
+  const [loading, setLoading] = useState(false);
+
+  const submit = async () => {
+    setError("");
+    setLoading(true);
+    const { data, error: signInError } = await signIn(email, pw);
+    setLoading(false);
+    if (signInError) { setError("Onjuiste inloggegevens."); return; }
+    if (data?.user?.email !== ADMIN_EMAIL) {
+      setError("Dit account heeft geen admin-toegang.");
+      await signOut();
+      return;
+    }
+    onUnlock();
   };
+
   return (
     <div style={{
       minHeight: "100vh", background: "#FDF6EC",
@@ -1129,6 +1142,13 @@ function AdminGate({ onUnlock }) {
       </h1>
       <div className="field" style={{ width: "100%", maxWidth: 320 }}>
         <input
+          type="email"
+          placeholder="E-mailadres"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          style={{ textAlign: "center", marginBottom: 12 }}
+        />
+        <input
           type="password"
           placeholder="Wachtwoord"
           value={pw}
@@ -1138,8 +1158,8 @@ function AdminGate({ onUnlock }) {
         />
       </div>
       {error && <div style={{ fontSize: 13, color: "#C4622D", marginBottom: 8 }}>{error}</div>}
-      <button className="btn-main" onClick={submit} style={{ maxWidth: 320, width: "100%" }}>
-        Inloggen →
+      <button className="btn-main" onClick={submit} disabled={loading} style={{ maxWidth: 320, width: "100%" }}>
+        {loading ? "Bezig..." : "Inloggen →"}
       </button>
     </div>
   );
