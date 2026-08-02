@@ -1406,7 +1406,16 @@ export default function App() {
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
-
+useEffect(() => {
+  const checkAdminSession = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session || session.user?.email !== ADMIN_EMAIL) {
+      try { localStorage.removeItem("bnbbuddy_admin_unlocked"); } catch (e) {}
+      setAdminUnlocked(false);
+    }
+  };
+  checkAdminSession();
+}, []);
 const unlockAdmin = () => {
   try { localStorage.setItem("bnbbuddy_admin_unlocked", "true"); } catch (e) {}
   setAdminUnlocked(true);
