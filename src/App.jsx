@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { supabase, signUp, signIn, signOut, getProfile, upsertProfile, deleteProfile, getApprovedProfiles, getAllProfiles, uploadPhoto, sendMessage, getMessages, likeProfile, getLikes, getReviews, addReview } from "./supabase.js";
 import { TRANSLATIONS, LANGUAGES } from "./translations.js";
-import { APP_TRANSLATIONS } from "./app-translations.js";
+import { APP_TRANSLATIONS, labelForValue } from "./app-translations.js";
 import LandingPage from "./LandingPage.jsx";
 // ⚠️ Verander dit wachtwoord naar iets eigens voordat je live gaat!
 const ADMIN_EMAIL = "bnb@bnbbuddy.eu";
@@ -11,16 +11,6 @@ const C = {
   terradark: "#9E4A1E", sage: "#7A9E7E", charcoal: "#2C2C2C",
   muted: "#8A7968", white: "#FFFFFF", blush: "#F4C9A8",
 };
-
-
-const INTERESTS_LIST = ["Hiking","Photography","Cooking","Cycling","Surfing","Music","Art","Wine","Reading","Yoga","Dancing","Climbing","Nature","Nightlife","History","Markets"];
-const LANGUAGES_LIST = ["English","Dutch","German","French","Spanish","Italian","Portuguese","Japanese","Arabic","Swedish","Polish","Turkish"];
-const VAARDIGHEDEN = ["Kamers schoonmaken","Tuin onderhouden","Dieren verzorgen","Koken","Rijbewijs","Reserveringen bijhouden","In en uitchecken","Gasten informeren over bestemming","Sleutelbeheer","Administratie bijhouden","Kleine reparaties","Zwembad onderhouden","Boodschappen doen","Babysitter/kinderopvang"];
-const PROPERTY_TYPES = ["Private room","Entire apartment","Farmhouse B&B","Cabin / Retreat","Boutique guesthouse","Villa","Treehouse","Houseboat"];
-const AMENITIES_LIST = ["Breakfast included","WiFi","Parking","Garden","Pool","Sauna","Bike rental","Kitchen","Pets allowed","EV charger","Workspace","City tours"];
-const MAANDEN = ["Januari","Februari","Maart","April","Mei","Juni","Juli","Augustus","September","Oktober","November","December"];
-const DURATIONS = ["Weekend","1 week","1-2 weeks","2-4 weeks","1+ month","Flexible"];
-const AANTAL_PERSONEN = ["Ik kom alleen","Ik kom met partner"];
 
 // ── STYLES ───────────────────────────────────────────────────────────────────
 const css = `
@@ -399,13 +389,15 @@ function AuthModal({ onClose, onLogin, onSignupSuccess, initialMode = "login", l
 }
 
 // ── PROFILE CARD ──────────────────────────────────────────────────────────────
-function ProfileCard({ profile, isLoggedIn, onView, onLogin }) {
+function ProfileCard({ profile, isLoggedIn, onView, onLogin, lang = "nl" }) {
   const isOwner = profile.role === "owner";
+  const at = APP_TRANSLATIONS[lang] || APP_TRANSLATIONS.nl;
+  const dt = at.dashboard;
   return (
     <div className="card" onClick={() => onView(profile)}>
       <div className="card-img">
         <img src={profile.avatar} alt={profile.name} style={{ objectPosition: `${profile.focusX ?? 50}% ${profile.focusY ?? 25}%` }} />
-        {profile.verified && <span className="badge-verified">✓ Verified</span>}
+        {profile.verified && <span className="badge-verified">{dt.cardVerified}</span>}
       </div>
       <div className="card-body">
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, marginBottom: 6 }}>
@@ -415,7 +407,7 @@ function ProfileCard({ profile, isLoggedIn, onView, onLogin }) {
             </h3>
             <div style={{ fontSize: 12, color: "#8A7968" }}>{profile.country} · {profile.city}</div>
           </div>
-          <span className={`role-badge ${profile.role}`}>{isOwner ? <><HouseIcon /> Eigenaar</> : <><PeopleIcon /> Buddy</>}</span>
+          <span className={`role-badge ${profile.role}`}>{isOwner ? <><HouseIcon /> {dt.cardOwner}</> : <><PeopleIcon /> {dt.cardBuddy}</>}</span>
         </div>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, marginBottom: 10 }}>
           <div className="card-tagline">"{profile.tagline}"</div>
@@ -423,12 +415,12 @@ function ProfileCard({ profile, isLoggedIn, onView, onLogin }) {
         {isOwner ? (
           <>
             <div className="snap-row">
-              <span className="snap owner">🏠 {profile.propertyType}</span>
-              <span className="snap owner">🛏 {profile.rooms} room{profile.rooms > 1 ? "s" : ""}</span>
+              <span className="snap owner">🏠 {labelForValue(at.propertyTypes, profile.propertyType)}</span>
+              <span className="snap owner">🛏 {profile.rooms} {profile.rooms > 1 ? dt.cardRooms : dt.cardRoom}</span>
               <span className="snap owner">💶 {profile.pricePerNight}</span>
               {formatBeschikbaarheid(profile) && <span className="snap owner">📅 {formatBeschikbaarheid(profile)}</span>}
             </div>
-            <div className="tags">{(profile.amenities || []).slice(0, 3).map(a => <span className="tag" key={a}>{a}</span>)}</div>
+            <div className="tags">{(profile.amenities || []).slice(0, 3).map(a => <span className="tag" key={a}>{labelForValue(at.amenities, a)}</span>)}</div>
           </>
         ) : (
           <>
@@ -438,16 +430,16 @@ function ProfileCard({ profile, isLoggedIn, onView, onLogin }) {
             </div>
             {(profile.maanden?.length > 0 || profile.aantalPersonen) && (
               <div className="snap-row" style={{ marginTop: 4 }}>
-                {profile.maanden?.length > 0 && <span className="snap buddy">📅 {profile.maanden.slice(0, 2).join(", ")}{profile.maanden.length > 2 ? "…" : ""}</span>}
-                {profile.aantalPersonen && <span className="snap buddy">👥 {profile.aantalPersonen}</span>}
+                {profile.maanden?.length > 0 && <span className="snap buddy">📅 {profile.maanden.slice(0, 2).map(m => labelForValue(at.maanden, m)).join(", ")}{profile.maanden.length > 2 ? "…" : ""}</span>}
+                {profile.aantalPersonen && <span className="snap buddy">👥 {labelForValue(at.aantalPersonen, profile.aantalPersonen)}</span>}
               </div>
             )}
-            <div className="tags">{(profile.interests || []).slice(0, 3).map(t => <span className="tag" key={t}>{t}</span>)}</div>
+            <div className="tags">{(profile.interests || []).slice(0, 3).map(t => <span className="tag" key={t}>{labelForValue(at.interestsList, t)}</span>)}</div>
           </>
         )}
         {!isLoggedIn && (
           <div className="lock-bar">
-            <button className="btn-lock" onClick={e => { e.stopPropagation(); onLogin(); }}>🔒 Login voor profiel · {isOwner ? "Eigenaar" : "Buddy"}</button>
+            <button className="btn-lock" onClick={e => { e.stopPropagation(); onLogin(); }}>{dt.cardLockLogin.replace("{role}", isOwner ? dt.cardOwner : dt.cardBuddy)}</button>
           </div>
         )}
       </div>
@@ -1688,23 +1680,23 @@ if (showLanding) return (
     onClick={() => setShowLanding(true)}
     style={{ background: "none", border: "none", cursor: "pointer", fontSize: 11, color: "#8A7968", padding: 0, textAlign: "left" }}
   >
-    ← Terug naar website
+    {t.dashboard.backToWebsite}
   </button>
 </div>
         <div className="nav-actions">
           {user ? (
             <>
-              <span style={{ fontSize: 13, color: "#8A7968" }}>Hoi, {user.name}</span>
+              <span style={{ fontSize: 13, color: "#8A7968" }}>{t.dashboard.hi.replace("{name}", user.name)}</span>
               <span className={`role-badge ${user.role}`} style={{ fontSize: 10, padding: "3px 8px" }}>{user.role === "owner" ? "🏡" : "🎒"}</span>
-              <button className="btn-nav" onClick={() => { setTab("messages"); setScreen("browse"); setViewProfile(null); setChatProfile(null); }} style={{ fontSize: 12, padding: "5px 10px" }}>💬 Berichten</button>
-              <button className="btn-nav" onClick={() => { setScreen("browse"); setViewProfile(toDisplayProfile(user)); }} style={{ fontSize: 12, padding: "5px 10px" }}>Mijn profiel</button>
-              <button className="btn-nav" onClick={handleLogout} style={{ fontSize: 12, padding: "5px 10px" }}>Uitloggen</button>
+              <button className="btn-nav" onClick={() => { setTab("messages"); setScreen("browse"); setViewProfile(null); setChatProfile(null); }} style={{ fontSize: 12, padding: "5px 10px" }}>{t.dashboard.messages}</button>
+              <button className="btn-nav" onClick={() => { setScreen("browse"); setViewProfile(toDisplayProfile(user)); }} style={{ fontSize: 12, padding: "5px 10px" }}>{t.dashboard.myProfile}</button>
+              <button className="btn-nav" onClick={handleLogout} style={{ fontSize: 12, padding: "5px 10px" }}>{t.dashboard.logout}</button>
               <img src={user.avatar} alt="me" className="nav-avatar" />
             </>
           ) : (
             <>
-              <button className="btn-nav" onClick={openLogin}>Log in</button>
-              <button className="btn-nav primary" onClick={openSignup}>Word gratis lid</button>
+              <button className="btn-nav" onClick={openLogin}>{t.dashboard.login}</button>
+              <button className="btn-nav primary" onClick={openSignup}>{t.dashboard.signupFree}</button>
             </>
           )}
         </div>
@@ -1721,20 +1713,20 @@ if (showLanding) return (
           <>
             {!user && (
               <div className="hero">
-                <h1>Vind je <em>BNB/Buddy</em></h1>
-                <p>Kom in contact met BNB-eigenaren en Buddy's die bij jouw stijl en bestemming passen.</p>
-                <button className="btn-hero" onClick={openSignup}>Word gratis lid</button>
+                <h1>{t.dashboard.heroTitlePrefix}<em>{t.dashboard.heroTitleEm}</em>{t.dashboard.heroTitleSuffix}</h1>
+                <p>{t.dashboard.heroSubtitle}</p>
+                <button className="btn-hero" onClick={openSignup}>{t.dashboard.heroCta}</button>
               </div>
             )}
             <div className="sec-head">
-              <h2>Bekijk profielen</h2>
-              <span style={{ fontSize: 12, color: "#8A7968" }}>{filtered.length} gevonden</span>
+              <h2>{t.dashboard.viewProfiles}</h2>
+              <span style={{ fontSize: 12, color: "#8A7968" }}>{t.dashboard.resultsFound.replace("{n}", filtered.length)}</span>
             </div>
 
             {/* Zoekbalk + filterknop */}
             <div style={{ padding: "0 20px 12px", display: "flex", gap: 8 }}>
               <input
-                placeholder="Zoek op naam, stad, bio…"
+                placeholder={t.dashboard.searchPlaceholder}
                 value={zoekText}
                 onChange={e => { setZoekText(e.target.value); setPagina(1); }}
                 style={{ flex: 1, padding: "10px 16px", border: "1.5px solid #F2E4CC", borderRadius: 24, fontFamily: "'DM Sans',sans-serif", fontSize: 14, outline: "none", background: "white" }}
@@ -1743,7 +1735,7 @@ if (showLanding) return (
                 onClick={() => setFilterOpen(o => !o)}
                 style={{ padding: "10px 16px", borderRadius: 24, border: `1.5px solid ${aantalFilters > 0 ? "#C4622D" : "#F2E4CC"}`, background: aantalFilters > 0 ? "#FEF3EC" : "white", color: aantalFilters > 0 ? "#C4622D" : "#8A7968", fontFamily: "'DM Sans',sans-serif", fontSize: 13, cursor: "pointer", fontWeight: 500, whiteSpace: "nowrap" }}
               >
-                ⚙ Filter{aantalFilters > 0 ? ` (${aantalFilters})` : ""}
+                {t.dashboard.filterButton}{aantalFilters > 0 ? ` (${aantalFilters})` : ""}
               </button>
             </div>
 
@@ -1751,36 +1743,36 @@ if (showLanding) return (
             {filterOpen && (
               <div style={{ margin: "0 20px 16px", padding: "16px", background: "white", borderRadius: 16, border: "1.5px solid #F2E4CC" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
-                  <span style={{ fontSize: 13, fontWeight: 600 }}>Filters</span>
-                  {aantalFilters > 0 && <button onClick={resetFilters} style={{ background: "none", border: "none", color: "#C4622D", fontSize: 13, cursor: "pointer" }}>Wis alles</button>}
+                  <span style={{ fontSize: 13, fontWeight: 600 }}>{t.dashboard.filterTitle}</span>
+                  {aantalFilters > 0 && <button onClick={resetFilters} style={{ background: "none", border: "none", color: "#C4622D", fontSize: 13, cursor: "pointer" }}>{t.dashboard.clearAll}</button>}
                 </div>
 
                 <div className="field" style={{ marginBottom: 12 }}>
-                  <label>Vaardigheden</label>
+                  <label>{t.dashboard.skillsLabel}</label>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                    {VAARDIGHEDEN.map(v => (
-                      <button key={v} onClick={() => { setFilterVaardigheden(f => f.includes(v) ? f.filter(x => x !== v) : [...f, v]); setPagina(1); }}
-                        style={{ padding: "5px 12px", borderRadius: 20, border: "1.5px solid", borderColor: filterVaardigheden.includes(v) ? "#C4622D" : "#F2E4CC", background: filterVaardigheden.includes(v) ? "#FEF3EC" : "white", color: filterVaardigheden.includes(v) ? "#C4622D" : "#2C2C2C", fontSize: 12, cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
-                        {v}
+                    {t.vaardigheden.map(v => (
+                      <button key={v.value} onClick={() => { setFilterVaardigheden(f => f.includes(v.value) ? f.filter(x => x !== v.value) : [...f, v.value]); setPagina(1); }}
+                        style={{ padding: "5px 12px", borderRadius: 20, border: "1.5px solid", borderColor: filterVaardigheden.includes(v.value) ? "#C4622D" : "#F2E4CC", background: filterVaardigheden.includes(v.value) ? "#FEF3EC" : "white", color: filterVaardigheden.includes(v.value) ? "#C4622D" : "#2C2C2C", fontSize: 12, cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
+                        {v.label}
                       </button>
                     ))}
                   </div>
                 </div>
 
                 <div className="field" style={{ marginBottom: 12 }}>
-                  <label>Talen</label>
+                  <label>{t.dashboard.languagesLabel}</label>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                    {LANGUAGES_LIST.map(t => (
-                      <button key={t} onClick={() => { setFilterTalen(f => f.includes(t) ? f.filter(x => x !== t) : [...f, t]); setPagina(1); }}
-                        style={{ padding: "5px 12px", borderRadius: 20, border: "1.5px solid", borderColor: filterTalen.includes(t) ? "#C4622D" : "#F2E4CC", background: filterTalen.includes(t) ? "#FEF3EC" : "white", color: filterTalen.includes(t) ? "#C4622D" : "#2C2C2C", fontSize: 12, cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
-                        {t}
+                    {t.languagesList.map(lg => (
+                      <button key={lg.value} onClick={() => { setFilterTalen(f => f.includes(lg.value) ? f.filter(x => x !== lg.value) : [...f, lg.value]); setPagina(1); }}
+                        style={{ padding: "5px 12px", borderRadius: 20, border: "1.5px solid", borderColor: filterTalen.includes(lg.value) ? "#C4622D" : "#F2E4CC", background: filterTalen.includes(lg.value) ? "#FEF3EC" : "white", color: filterTalen.includes(lg.value) ? "#C4622D" : "#2C2C2C", fontSize: 12, cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
+                        {lg.label}
                       </button>
                     ))}
                   </div>
                 </div>
 
                 <div className="field" style={{ marginBottom: 12 }}>
-                  <label>Beschikbaarheid</label>
+                  <label>{t.dashboard.availabilityLabel}</label>
                   <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                     <input type="date" value={filterVan} onChange={e => { setFilterVan(e.target.value); setPagina(1); }} style={{ flex: 1, padding: "8px 12px", border: "1.5px solid #F2E4CC", borderRadius: 12, fontFamily: "'DM Sans',sans-serif", fontSize: 13, outline: "none" }} />
                     <span style={{ color: "#8A7968" }}>–</span>
@@ -1789,12 +1781,12 @@ if (showLanding) return (
                 </div>
 
                 <div className="field" style={{ marginBottom: 0 }}>
-                  <label>Aantal personen</label>
+                  <label>{t.dashboard.peopleLabel}</label>
                   <div style={{ display: "flex", gap: 8 }}>
-                    {AANTAL_PERSONEN.map(a => (
-                      <button key={a} onClick={() => { setFilterPersonen(f => f === a ? "" : a); setPagina(1); }}
-                        style={{ flex: 1, padding: "8px 12px", borderRadius: 20, border: "1.5px solid", borderColor: filterPersonen === a ? "#C4622D" : "#F2E4CC", background: filterPersonen === a ? "#FEF3EC" : "white", color: filterPersonen === a ? "#C4622D" : "#2C2C2C", fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
-                        {a}
+                    {t.aantalPersonen.map(a => (
+                      <button key={a.value} onClick={() => { setFilterPersonen(f => f === a.value ? "" : a.value); setPagina(1); }}
+                        style={{ flex: 1, padding: "8px 12px", borderRadius: 20, border: "1.5px solid", borderColor: filterPersonen === a.value ? "#C4622D" : "#F2E4CC", background: filterPersonen === a.value ? "#FEF3EC" : "white", color: filterPersonen === a.value ? "#C4622D" : "#2C2C2C", fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans',sans-serif" }}>
+                        {a.label}
                       </button>
                     ))}
                   </div>
@@ -1803,37 +1795,37 @@ if (showLanding) return (
             )}
 
             <div className="filter-pills">
-              <button className={`pill ${roleFilter === "all" ? "active" : ""}`} onClick={() => { setRoleFilter("all"); setPagina(1); }}><GlobeIcon /> Iedereen</button>
-              <button className={`pill ${roleFilter === "owner" ? "active" : ""}`} onClick={() => { setRoleFilter("owner"); setPagina(1); }}><HouseIcon /> BNB-eigenaar</button>
-              <button className={`pill ${roleFilter === "buddy" ? "active" : ""}`} onClick={() => { setRoleFilter("buddy"); setPagina(1); }}><PeopleIcon /> Buddy</button>
+              <button className={`pill ${roleFilter === "all" ? "active" : ""}`} onClick={() => { setRoleFilter("all"); setPagina(1); }}><GlobeIcon /> {t.dashboard.pillEveryone}</button>
+              <button className={`pill ${roleFilter === "owner" ? "active" : ""}`} onClick={() => { setRoleFilter("owner"); setPagina(1); }}><HouseIcon /> {t.dashboard.pillOwner}</button>
+              <button className={`pill ${roleFilter === "buddy" ? "active" : ""}`} onClick={() => { setRoleFilter("buddy"); setPagina(1); }}><PeopleIcon /> {t.dashboard.pillBuddy}</button>
             </div>
 
             <div className="profile-grid">
               {getoond.map(p => (
-                <ProfileCard key={p.id} profile={p} isLoggedIn={!!user} onView={setViewProfile} onLogin={openLogin} />
+                <ProfileCard key={p.id} profile={p} isLoggedIn={!!user} onView={setViewProfile} onLogin={openLogin} lang={appLang} />
               ))}
             </div>
 
-            {!filtered.length && <div className="empty"><div className="ei">🔍</div><h3>Geen profielen gevonden</h3><p>Probeer een ander filter of zoekterm.</p></div>}
+            {!filtered.length && <div className="empty"><div className="ei">🔍</div><h3>{t.dashboard.emptyTitle}</h3><p>{t.dashboard.emptySubtitle}</p></div>}
 
             {/* Paginering */}
             {paginaCount > 1 && (
               <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 8, padding: "16px 20px 32px" }}>
                 <button onClick={() => setPagina(p => Math.max(1, p - 1))} disabled={pagina === 1}
                   style={{ padding: "8px 16px", borderRadius: 20, border: "1.5px solid #F2E4CC", background: "white", color: pagina === 1 ? "#C4C4C4" : "#C4622D", cursor: pagina === 1 ? "default" : "pointer", fontFamily: "'DM Sans',sans-serif", fontSize: 13 }}>
-                  ← Vorige
+                  {t.dashboard.prevPage}
                 </button>
-                <span style={{ fontSize: 13, color: "#8A7968" }}>Pagina {pagina} van {paginaCount}</span>
+                <span style={{ fontSize: 13, color: "#8A7968" }}>{t.dashboard.pageOf.replace("{p}", pagina).replace("{n}", paginaCount)}</span>
                 <button onClick={() => setPagina(p => Math.min(paginaCount, p + 1))} disabled={pagina === paginaCount}
                   style={{ padding: "8px 16px", borderRadius: 20, border: "1.5px solid #F2E4CC", background: "white", color: pagina === paginaCount ? "#C4C4C4" : "#C4622D", cursor: pagina === paginaCount ? "default" : "pointer", fontFamily: "'DM Sans',sans-serif", fontSize: 13 }}>
-                  Volgende →
+                  {t.dashboard.nextPage}
                 </button>
               </div>
             )}
           </>
         ) : (
           <>
-            <div className="sec-head"><h2>Jouw berichten</h2></div>
+            <div className="sec-head"><h2>{t.dashboard.yourMessages}</h2></div>
             <MatchesTab matches={matched} onOpenChat={p => { setChatProfile(p); setTab("messages"); }} />
           </>
         )}
