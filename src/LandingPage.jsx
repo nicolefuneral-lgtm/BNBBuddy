@@ -185,6 +185,7 @@ export default function LandingPage({ onEnterApp, isLoggedIn, userName }) {
             <button className="lp-btn-nav primary" onClick={() => onEnterApp?.(null, "resume")}>{t.nav.backToApp}</button>
           ) : (
             <>
+              <button className="lp-btn-nav" onClick={() => onEnterApp?.(null, "browse")}>{t.nav.browseProfiles}</button>
               <button className="lp-btn-nav" onClick={() => onEnterApp?.(null, "login")}>{t.nav.login}</button>
               <button className="lp-btn-nav primary" onClick={() => onEnterApp?.(null, "signup")}>{t.nav.signup}</button>
             </>
