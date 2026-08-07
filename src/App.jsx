@@ -448,7 +448,9 @@ function ProfileCard({ profile, isLoggedIn, onView, onLogin, lang = "nl" }) {
 }
 
 // ── REVIEW SECTION ───────────────────────────────────────────────────────────
-function ReviewSection({ profileId, currentUserId, isOwnProfile }) {
+function ReviewSection({ profileId, currentUserId, isOwnProfile, lang = "nl" }) {
+  const at = APP_TRANSLATIONS[lang] || APP_TRANSLATIONS.nl;
+  const pt = at.profile;
   const [reviews, setReviews] = useState([]);
   const [sterren, setSterren] = useState(0);
   const [tekst, setTekst] = useState("");
@@ -475,15 +477,15 @@ function ReviewSection({ profileId, currentUserId, isOwnProfile }) {
 
   return (
     <div className="prof-sec" style={{ marginTop: 24 }}>
-      <h4>Reviews {gemiddeld && <span style={{ fontSize: 14, fontWeight: 400, color: "#8A7968" }}>— ⭐ {gemiddeld} ({reviews.length})</span>}</h4>
+      <h4>{pt.reviewsTitle} {gemiddeld && <span style={{ fontSize: 14, fontWeight: 400, color: "#8A7968" }}>— ⭐ {gemiddeld} ({reviews.length})</span>}</h4>
 
-      {reviews.length === 0 && <p style={{ fontSize: 13, color: "#8A7968", fontStyle: "italic" }}>Nog geen reviews.</p>}
+      {reviews.length === 0 && <p style={{ fontSize: 13, color: "#8A7968", fontStyle: "italic" }}>{pt.noReviewsYet}</p>}
 
       {reviews.map(r => (
         <div key={r.id} style={{ background: "white", borderRadius: 12, padding: "12px 14px", marginBottom: 10, border: "1px solid #F2E4CC" }}>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
             <span style={{ fontSize: 13, fontWeight: 500 }}>{"⭐".repeat(r.sterren)}</span>
-            <span style={{ fontSize: 11, color: "#8A7968" }}>{new Date(r.created_at).toLocaleDateString("nl-NL")}</span>
+            <span style={{ fontSize: 11, color: "#8A7968" }}>{new Date(r.created_at).toLocaleDateString(lang === "nl" ? "nl-NL" : lang === "de" ? "de-DE" : lang === "fr" ? "fr-FR" : "en-GB")}</span>
           </div>
           <p style={{ fontSize: 13, lineHeight: 1.6 }}>{r.tekst}</p>
         </div>
@@ -491,10 +493,10 @@ function ReviewSection({ profileId, currentUserId, isOwnProfile }) {
 
       {currentUserId && !isOwnProfile && (
         verzonden ? (
-          <div style={{ fontSize: 13, color: "#7A9E7E", marginTop: 12 }}>✓ Je review is ingediend en wordt beoordeeld.</div>
+          <div style={{ fontSize: 13, color: "#7A9E7E", marginTop: 12 }}>{pt.reviewSubmitted}</div>
         ) : (
           <div style={{ marginTop: 16, background: "white", borderRadius: 14, padding: "14px 16px", border: "1.5px solid #F2E4CC" }}>
-            <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", marginBottom: 10, textTransform: "uppercase", letterSpacing: "0.5px" }}>Schrijf een review</div>
+            <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", marginBottom: 10, textTransform: "uppercase", letterSpacing: "0.5px" }}>{pt.writeReview}</div>
             <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
               {[1,2,3,4,5].map(n => (
                 <button key={n} onClick={() => setSterren(n)}
@@ -502,7 +504,7 @@ function ReviewSection({ profileId, currentUserId, isOwnProfile }) {
               ))}
             </div>
             <textarea
-              placeholder="Vertel over je ervaring…"
+              placeholder={pt.reviewPlaceholder}
               value={tekst}
               onChange={e => setTekst(e.target.value)}
               rows={3}
@@ -511,7 +513,7 @@ function ReviewSection({ profileId, currentUserId, isOwnProfile }) {
             />
             <div style={{ fontSize: 11, color: "#8A7968", marginBottom: 10 }}>{tekst.length}/400</div>
             <button className="btn-main" onClick={submit} style={{ opacity: (!sterren || !tekst.trim() || loading) ? 0.5 : 1 }}>
-              {loading ? "Versturen…" : "Review versturen"}
+              {loading ? pt.sending : pt.submitReview}
             </button>
           </div>
         )
@@ -521,8 +523,10 @@ function ReviewSection({ profileId, currentUserId, isOwnProfile }) {
 }
 
 // ── FULL PROFILE ──────────────────────────────────────────────────────────────
-function FullProfile({ profile, onBack, onChat, isLoggedIn, onLogin, isOwnProfile, onEdit, currentUserId }) {
+function FullProfile({ profile, onBack, onChat, isLoggedIn, onLogin, isOwnProfile, onEdit, currentUserId, lang = "nl" }) {
   const isOwner = profile.role === "owner";
+  const at = APP_TRANSLATIONS[lang] || APP_TRANSLATIONS.nl;
+  const pt = at.profile;
   return (
     <div className="prof-wrap">
       <div className="prof-hero">
@@ -532,43 +536,43 @@ function FullProfile({ profile, onBack, onChat, isLoggedIn, onLogin, isOwnProfil
           <h2>{profile.name}{!isOwner ? `, ${profile.age}` : ""}</h2>
           <div className="subloc">{profile.country} · {profile.city}</div>
           <span className={`role-badge ${profile.role}`} style={{ marginTop: 8, display: "inline-flex" }}>
-            {isOwner ? "🏡 BnB Eigenaar" : "🎒 Buddy"}
+            {isOwner ? pt.ownerBadge : pt.buddyBadge}
           </span>
         </div>
-        {profile.verified && <span className="badge-verified" style={{ position: "absolute", top: 14, right: 14 }}>✓ Verified</span>}
+        {profile.verified && <span className="badge-verified" style={{ position: "absolute", top: 14, right: 14 }}>{at.dashboard.cardVerified}</span>}
       </div>
 
       <div className="stat-row">
         {isOwner ? (
           <>
-            <div className="stat"><div className="sl">Pand</div><div className="sv">{profile.propertyType}</div></div>
-            <div className="stat"><div className="sl">Kamers</div><div className="sv">{profile.rooms}</div></div>
-            <div className="stat"><div className="sl">Prijs/nacht</div><div className="sv">{profile.pricePerNight}</div></div>
-            <div className="stat"><div className="sl">Beschikbaar</div><div className="sv">{formatBeschikbaarheid(profile) || "—"}</div></div>
+            <div className="stat"><div className="sl">{pt.propertyLabel}</div><div className="sv">{labelForValue(at.propertyTypes, profile.propertyType)}</div></div>
+            <div className="stat"><div className="sl">{pt.roomsLabel}</div><div className="sv">{profile.rooms}</div></div>
+            <div className="stat"><div className="sl">{pt.priceLabel}</div><div className="sv">{profile.pricePerNight}</div></div>
+            <div className="stat"><div className="sl">{pt.availableLabel}</div><div className="sv">{formatBeschikbaarheid(profile) || "—"}</div></div>
           </>
         ) : (
           <>
-            <div className="stat"><div className="sl">Bestemming</div><div className="sv">{profile.bestemmingen || "—"}</div></div>
-            <div className="stat"><div className="sl">Beschikbaar</div><div className="sv">{formatBeschikbaarheid(profile) || "—"}</div></div>
-            <div className="stat"><div className="sl">Maanden</div><div className="sv">{profile.maanden?.length > 0 ? profile.maanden.join(", ") : "—"}</div></div>
-            <div className="stat"><div className="sl">Personen</div><div className="sv">{profile.aantalPersonen || "—"}</div></div>
+            <div className="stat"><div className="sl">{pt.destinationLabel}</div><div className="sv">{profile.bestemmingen || "—"}</div></div>
+            <div className="stat"><div className="sl">{pt.availableLabel}</div><div className="sv">{formatBeschikbaarheid(profile) || "—"}</div></div>
+            <div className="stat"><div className="sl">{pt.monthsLabel}</div><div className="sv">{profile.maanden?.length > 0 ? profile.maanden.map(m => labelForValue(at.maanden, m)).join(", ") : "—"}</div></div>
+            <div className="stat"><div className="sl">{pt.peopleLabel}</div><div className="sv">{profile.aantalPersonen ? labelForValue(at.aantalPersonen, profile.aantalPersonen) : "—"}</div></div>
           </>
         )}
       </div>
 
       <div style={{ padding: "0 20px", display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 4 }}>
-        {(profile.languages || []).map(l => <span className="tag sage" key={l}>🌐 {l}</span>)}
+        {(profile.languages || []).map(l => <span className="tag sage" key={l}>🌐 {labelForValue(at.languagesList, l)}</span>)}
       </div>
 
       {isOwner && (
         <div className="prof-sec">
           <h4>🏡 {profile.propertyName}</h4>
-          <div className="tags">{(profile.amenities || []).map(a => <span className="tag" key={a}>{a}</span>)}</div>
+          <div className="tags">{(profile.amenities || []).map(a => <span className="tag" key={a}>{labelForValue(at.amenities, a)}</span>)}</div>
         </div>
       )}
 
       <div className="prof-sec" style={{ marginTop: 16 }}>
-        <h4>Over {profile.name}</h4>
+        <h4>{pt.aboutLabel.replace("{name}", profile.name)}</h4>
         {isLoggedIn ? (
           <p>{profile.bio}</p>
         ) : (
@@ -579,7 +583,7 @@ function FullProfile({ profile, onBack, onChat, isLoggedIn, onLogin, isOwnProfil
                 {(profile.bio || "").split(" ").slice(28).join(" ")}
               </p>
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, display: "flex", justifyContent: "center", paddingBottom: 4 }}>
-                <button className="btn-lock" onClick={onLogin} style={{ fontSize: 13, padding: "9px 20px" }}>🔒 Login voor meer</button>
+                <button className="btn-lock" onClick={onLogin} style={{ fontSize: 13, padding: "9px 20px" }}>{pt.lockMore}</button>
               </div>
             </div>
           </div>
@@ -587,12 +591,12 @@ function FullProfile({ profile, onBack, onChat, isLoggedIn, onLogin, isOwnProfil
       </div>
 
       <div className="prof-sec" style={{ marginTop: 16 }}>
-        <h4>Interesses</h4>
-        <div className="tags">{(profile.interests || []).map(t => <span className="tag" key={t}>{t}</span>)}</div>
+        <h4>{pt.interestsLabel}</h4>
+        <div className="tags">{(profile.interests || []).map(t => <span className="tag" key={t}>{labelForValue(at.interestsList, t)}</span>)}</div>
       </div>
 
       <div className="prof-sec" style={{ marginTop: 16 }}>
-        <h4>{isOwner ? "Foto's van het pand" : "Reisfoto's"}</h4>
+        <h4>{isOwner ? pt.propertyPhotosLabel : pt.travelPhotosLabel}</h4>
         <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
           {profile.photos.map((p, i) => (
             <img key={i} src={p} alt="photo" style={{ width: "calc(50% - 5px)", aspectRatio: "1", objectFit: "cover", borderRadius: 14 }} />
@@ -600,15 +604,15 @@ function FullProfile({ profile, onBack, onChat, isLoggedIn, onLogin, isOwnProfil
         </div>
       </div>
 
-      <ReviewSection profileId={profile.id} currentUserId={currentUserId} isOwnProfile={isOwnProfile} />
+      <ReviewSection profileId={profile.id} currentUserId={currentUserId} isOwnProfile={isOwnProfile} lang={lang} />
 
       <div className="action-bar">
-        <button className="btn-msg-out" onClick={onBack}>← Terug</button>
+        <button className="btn-msg-out" onClick={onBack}>{pt.backBtn}</button>
         {isOwnProfile
-          ? <button className="btn-like" onClick={onEdit}>✏️ Profiel bewerken</button>
+          ? <button className="btn-like" onClick={onEdit}>{pt.editProfileBtn}</button>
           : isLoggedIn
-            ? <button className="btn-like" onClick={() => onChat(profile)}>💬 Bericht</button>
-            : <button className="btn-like" onClick={onLogin}>🔒 Login om te chatten</button>
+            ? <button className="btn-like" onClick={() => onChat(profile)}>{pt.messageBtn}</button>
+            : <button className="btn-like" onClick={onLogin}>{pt.loginToChatBtn}</button>
         }
       </div>
     </div>
@@ -616,7 +620,9 @@ function FullProfile({ profile, onBack, onChat, isLoggedIn, onLogin, isOwnProfil
 }
 
 // ── CHAT ──────────────────────────────────────────────────────────────────────
-function ChatView({ profile, messages, onBack, onSend }) {
+function ChatView({ profile, messages, onBack, onSend, lang = "nl" }) {
+  const at = APP_TRANSLATIONS[lang] || APP_TRANSLATIONS.nl;
+  const pt = at.profile;
   const [input, setInput] = useState("");
   const endRef = useRef(null);
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
@@ -626,14 +632,14 @@ function ChatView({ profile, messages, onBack, onSend }) {
       <div className="chat-head">
         <button className="chat-back" onClick={onBack}>←</button>
         <img src={profile.avatar} alt={profile.name} />
-        <div><div className="chat-name">{profile.name}</div><div className="chat-status">● Online</div></div>
+        <div><div className="chat-name">{profile.name}</div><div className="chat-status">{pt.onlineStatus}</div></div>
       </div>
       <div className="chat-msgs">
         {(messages || []).map((m, i) => <div key={i} className={`bubble ${m.from === "me" ? "me" : "them"}`}>{m.text}</div>)}
         <div ref={endRef} />
       </div>
       <div className="chat-input">
-        <input placeholder={`Bericht aan ${profile.name}…`} value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && send()} />
+        <input placeholder={pt.messagePlaceholder.replace("{name}", profile.name)} value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && send()} />
         <button className="send-btn" onClick={send}>➤</button>
       </div>
     </div>
@@ -641,9 +647,11 @@ function ChatView({ profile, messages, onBack, onSend }) {
 }
 
 // ── MATCHES ───────────────────────────────────────────────────────────────────
-function MatchesTab({ matches, onOpenChat }) {
+function MatchesTab({ matches, onOpenChat, lang = "nl" }) {
+  const at = APP_TRANSLATIONS[lang] || APP_TRANSLATIONS.nl;
+  const pt = at.profile;
   if (!matches.length) return (
-    <div className="empty"><div className="ei">💬</div><h3>Nog geen berichten</h3><p>Bekijk profielen en start een gesprek.</p></div>
+    <div className="empty"><div className="ei">💬</div><h3>{pt.matchesEmptyTitle}</h3><p>{pt.matchesEmptySubtitle}</p></div>
   );
   return (
     <div className="matches-list">
@@ -654,7 +662,7 @@ function MatchesTab({ matches, onOpenChat }) {
             <div className="match-name">{p.name}</div>
             <div className="match-prev">{p.role === "owner" ? `🏡 ${p.propertyName}` : `✈ ${p.bestemmingen || ""}`}</div>
           </div>
-          <div className="match-time">now</div>
+          <div className="match-time">{pt.nowLabel}</div>
         </div>
       ))}
     </div>
@@ -1657,7 +1665,7 @@ if (showLanding) return (
   if (chatProfile && tab === "messages") return (
     <div className="wrap">
       <style>{css}</style>
-      <ChatView profile={chatProfile} messages={messages[chatProfile.id] || []} onBack={() => setChatProfile(null)} onSend={send} />
+      <ChatView profile={chatProfile} messages={messages[chatProfile.id] || []} onBack={() => setChatProfile(null)} onSend={send} lang={appLang} />
     </div>
   );
   if (screen === "create-profile" && user) return (
@@ -1708,7 +1716,7 @@ if (showLanding) return (
             isLoggedIn={!!user} onLogin={() => { setViewProfile(null); openLogin(); }}
             isOwnProfile={!!user && viewProfile.id === user.id}
             onEdit={() => { setViewProfile(null); setScreen("create-profile"); }}
-            currentUserId={user?.id} />
+            currentUserId={user?.id} lang={appLang} />
         ) : tab === "browse" ? (
           <>
             {!user && (
@@ -1826,7 +1834,7 @@ if (showLanding) return (
         ) : (
           <>
             <div className="sec-head"><h2>{t.dashboard.yourMessages}</h2></div>
-            <MatchesTab matches={matched} onOpenChat={p => { setChatProfile(p); setTab("messages"); }} />
+            <MatchesTab matches={matched} onOpenChat={p => { setChatProfile(p); setTab("messages"); }} lang={appLang} />
           </>
         )}
       </div>
