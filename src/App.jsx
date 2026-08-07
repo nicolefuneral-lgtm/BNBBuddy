@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { supabase, signUp, signIn, signOut, getProfile, upsertProfile, deleteProfile, getApprovedProfiles, getAllProfiles, uploadPhoto, sendMessage, getMessages, likeProfile, getLikes, getReviews, addReview } from "./supabase.js";
+import { TRANSLATIONS, LANGUAGES } from "./translations.js";
+import { APP_TRANSLATIONS } from "./app-translations.js";
 import LandingPage from "./LandingPage.jsx";
 // ⚠️ Verander dit wachtwoord naar iets eigens voordat je live gaat!
 const ADMIN_EMAIL = "bnb@bnbbuddy.eu";
@@ -608,13 +610,16 @@ function MatchesTab({ matches, onOpenChat }) {
 }
 
 // ── MULTI SELECT ──────────────────────────────────────────────────────────────
-function MultiSelect({ options, selected, onToggle, max }) {
+function MultiSelect({ options, selected, onToggle, max, placeholder = "Selecteer…", selectedSuffix = "geselecteerd" }) {
   const [open, setOpen] = useState(false);
+  // options can be plain strings, or {value,label} objects (for translated lists)
+  const norm = options.map(o => (typeof o === "string" ? { value: o, label: o } : o));
+  const labelFor = v => (norm.find(o => o.value === v) || {}).label ?? v;
   const summary = selected.length === 0
-    ? "Selecteer…"
+    ? placeholder
     : selected.length <= 2
-      ? selected.join(", ")
-      : `${selected.length} geselecteerd`;
+      ? selected.map(labelFor).join(", ")
+      : `${selected.length} ${selectedSuffix}`;
   return (
     <div>
       <button
@@ -631,10 +636,10 @@ function MultiSelect({ options, selected, onToggle, max }) {
       </button>
       {open && (
         <div className="ms" style={{ marginTop: 10 }}>
-          {options.map(o => {
-            const on = selected.includes(o);
+          {norm.map(o => {
+            const on = selected.includes(o.value);
             const disabled = max && !on && selected.length >= max;
-            return <button key={o} className={on ? "on" : ""} onClick={() => !disabled && onToggle(o)} style={{ opacity: disabled ? 0.4 : 1 }}>{o}</button>;
+            return <button key={o.value} className={on ? "on" : ""} onClick={() => !disabled && onToggle(o.value)} style={{ opacity: disabled ? 0.4 : 1 }}>{o.label}</button>;
           })}
         </div>
       )}
@@ -727,13 +732,13 @@ function PhotoStep({ avatar, photos, isOwner, onAvatar, onPhotos, focusX, focusY
 }
 
 // ── CREATE PROFILE ────────────────────────────────────────────────────────────
-function CreateProfile({ user, onDone, onClose }) {
+function CreateProfile({ user, onDone, onClose, lang = "nl", onLangChange }) {
   const isOwner = user.role === "owner";
   const STEPS = 6;
   const [step, setStep] = useState(1);
-  const titles = isOwner
-    ? ["Basisgegevens", "Jouw verhaal", "Jouw pand", "Voorzieningen & prijs", "Interesses", "Foto's"]
-    : ["Basisgegevens", "Jouw verhaal", "Travel plans", "Preferences", "Interesses", "Foto's"];
+  const at = APP_TRANSLATIONS[lang] || APP_TRANSLATIONS.nl;
+  const wt = at.wizard;
+  const titles = isOwner ? wt.titlesOwner : wt.titlesBuddy;
   const [form, setForm] = useState({
     tagline: user.tagline || "", bio: user.bio || "", city: user.city || "", country: user.country || "", age: user.age ? String(user.age) : "",
     languages: user.languages || [], interests: user.interests || [],
@@ -766,9 +771,19 @@ function CreateProfile({ user, onDone, onClose }) {
         {step > 1 && <button onClick={() => setStep(s => s - 1)} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#8A7968" }}>←</button>}
         <div>
           <div style={{ fontFamily: "'Prata',serif", fontSize: 18 }}>{titles[step - 1]}</div>
-          <div style={{ fontSize: 12, color: "#8A7968" }}>Stap {step} van {STEPS}</div>
+          <div style={{ fontSize: 12, color: "#8A7968" }}>{wt.stepOf.replace("{step}", step).replace("{total}", STEPS)}</div>
         </div>
-        <span className={`role-badge ${user.role}`} style={{ marginLeft: "auto" }}>{isOwner ? "🏡 Eigenaar" : "🎒 Buddy"}</span>
+        <span className={`role-badge ${user.role}`} style={{ marginLeft: "auto" }}>{isOwner ? wt.roleOwner : wt.roleBuddy}</span>
+        {onLangChange && (
+          <div style={{ display: "flex", gap: 2, marginLeft: 4 }}>
+            {LANGUAGES.map(l => (
+              <button key={l.code} onClick={() => onLangChange(l.code)} title={l.label}
+                style={{ background: "none", border: "none", cursor: "pointer", fontSize: 15, opacity: lang === l.code ? 1 : 0.35, padding: 2 }}>
+                {l.flag}
+              </button>
+            ))}
+          </div>
+        )}
         {onClose && <button onClick={onClose} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#8A7968", marginLeft: 8 }}>✕</button>}
       </div>
       <div style={{ padding: "24px 20px" }}>
@@ -780,19 +795,19 @@ function CreateProfile({ user, onDone, onClose }) {
 
         {step === 1 && (
           <div>
-            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Hoi {user.name}! 👋</h2>
-            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Laten we jouw {isOwner ? "host" : "Buddy"} profiel aanmaken.</p>
-            {!isOwner && <div className="field"><label>Jouw leeftijd</label><input type="number" placeholder="bijv. 28" value={form.age} onChange={e => set("age", e.target.value)} /></div>}
-            <div className="field"><label>Stad</label><input placeholder="bijv. Amsterdam" value={form.city} onChange={e => set("city", e.target.value)} /></div>
-            <div className="field"><label>Land</label><input placeholder="bijv. Nederland" value={form.country} onChange={e => set("country", e.target.value)} /></div>
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>{wt.step1.greeting.replace("{name}", user.name)}</h2>
+            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>{isOwner ? wt.step1.subtitleOwner : wt.step1.subtitleBuddy}</p>
+            {!isOwner && <div className="field"><label>{wt.step1.ageLabel}</label><input type="number" placeholder={wt.step1.agePlaceholder} value={form.age} onChange={e => set("age", e.target.value)} /></div>}
+            <div className="field"><label>{wt.step1.cityLabel}</label><input placeholder={wt.step1.cityPlaceholder} value={form.city} onChange={e => set("city", e.target.value)} /></div>
+            <div className="field"><label>{wt.step1.countryLabel}</label><input placeholder={wt.step1.countryPlaceholder} value={form.country} onChange={e => set("country", e.target.value)} /></div>
             {!isOwner && (
               <div className="field">
-                <label>Reis je alleen of met partner?</label>
+                <label>{wt.step1.partnerQuestion}</label>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                  {AANTAL_PERSONEN.map(a => <button key={a} onClick={() => set("aantalPersonen", a)} style={sb(a, form.aantalPersonen)}>{a}</button>)}
+                  {at.aantalPersonen.map(a => <button key={a.value} onClick={() => set("aantalPersonen", a.value)} style={sb(a.value, form.aantalPersonen)}>{a.label}</button>)}
                 </div>
                 {form.aantalPersonen === "Ik kom met partner" && (
-                  <input placeholder="Naam van je partner" value={form.partnerNaam} onChange={e => set("partnerNaam", e.target.value)}
+                  <input placeholder={wt.step1.partnerNamePlaceholder} value={form.partnerNaam} onChange={e => set("partnerNaam", e.target.value)}
                     style={{ marginTop: 10 }} />
                 )}
               </div>
@@ -802,16 +817,16 @@ function CreateProfile({ user, onDone, onClose }) {
 
         {step === 2 && (
           <div>
-            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Vertel je verhaal</h2>
-            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Dit is wat anderen op jouw profiel zien.</p>
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>{wt.step2.title}</h2>
+            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>{wt.step2.subtitle}</p>
             <div className="field">
-              <label>Pakkende zin over jou</label>
-              <input placeholder={isOwner ? "bijv. Gezellige kamers, mooie omgeving" : "bijv. Rustig reizen & sterke koffie"} value={form.tagline} onChange={e => set("tagline", e.target.value)} maxLength={60} />
+              <label>{wt.step2.taglineLabel}</label>
+              <input placeholder={isOwner ? wt.step2.taglinePlaceholderOwner : wt.step2.taglinePlaceholderBuddy} value={form.tagline} onChange={e => set("tagline", e.target.value)} maxLength={60} />
               <div style={{ fontSize: 11, color: "#8A7968", marginTop: 4 }}>{form.tagline.length}/60</div>
             </div>
             <div className="field">
-              <label>Over jou</label>
-              <textarea placeholder={isOwner ? "Vertel gasten over je pand…" : "Wat voor Buddy ben jij?…"} value={form.bio} onChange={e => set("bio", e.target.value)} rows={5} maxLength={400}
+              <label>{wt.step2.bioLabel}</label>
+              <textarea placeholder={isOwner ? wt.step2.bioPlaceholderOwner : wt.step2.bioPlaceholderBuddy} value={form.bio} onChange={e => set("bio", e.target.value)} rows={5} maxLength={400}
                 style={{ width: "100%", padding: "13px 16px", border: "1.5px solid #F2E4CC", borderRadius: 14, background: "white", fontFamily: "'DM Sans',sans-serif", fontSize: 14, outline: "none", resize: "none", lineHeight: 1.6 }} />
               <div style={{ fontSize: 11, color: "#8A7968", marginTop: 4 }}>{form.bio.length}/400</div>
             </div>
@@ -820,37 +835,37 @@ function CreateProfile({ user, onDone, onClose }) {
 
         {step === 3 && isOwner && (
           <div>
-            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Jouw pand</h2>
-            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Vertel gasten wat je aanbiedt.</p>
-            <div className="field"><label>Naam van het pand</label><input placeholder="bijv. Casa Sabor" value={form.propertyName} onChange={e => set("propertyName", e.target.value)} /></div>
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>{wt.step3Owner.title}</h2>
+            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>{wt.step3Owner.subtitle}</p>
+            <div className="field"><label>{wt.step3Owner.propertyNameLabel}</label><input placeholder={wt.step3Owner.propertyNamePlaceholder} value={form.propertyName} onChange={e => set("propertyName", e.target.value)} /></div>
             <div className="field">
-              <label>Type pand</label>
+              <label>{wt.step3Owner.propertyTypeLabel}</label>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {PROPERTY_TYPES.map(t => <button key={t} onClick={() => set("propertyType", t)} style={sb(t, form.propertyType)}>{t}</button>)}
+                {at.propertyTypes.map(pt => <button key={pt.value} onClick={() => set("propertyType", pt.value)} style={sb(pt.value, form.propertyType)}>{pt.label}</button>)}
               </div>
             </div>
-            <div className="field"><label>Number of rooms</label><input type="number" min="1" placeholder="bijv. 3" value={form.rooms} onChange={e => set("rooms", e.target.value)} /></div>
+            <div className="field"><label>{wt.step3Owner.roomsLabel}</label><input type="number" min="1" placeholder={wt.step3Owner.roomsPlaceholder} value={form.rooms} onChange={e => set("rooms", e.target.value)} /></div>
             <div className="field">
-              <label>Prijs per nacht (€) — van / tot</label>
+              <label>{wt.step3Owner.priceLabel}</label>
               <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                <input type="number" placeholder="Van" value={form.priceVan} onChange={e => set("priceVan", e.target.value)} style={{ flex: 1 }} />
+                <input type="number" placeholder={wt.step3Owner.pricePlaceholderFrom} value={form.priceVan} onChange={e => set("priceVan", e.target.value)} style={{ flex: 1 }} />
                 <span style={{ color: "#8A7968" }}>–</span>
-                <input type="number" placeholder="Tot" value={form.priceTot} onChange={e => set("priceTot", e.target.value)} style={{ flex: 1 }} />
+                <input type="number" placeholder={wt.step3Owner.pricePlaceholderTo} value={form.priceTot} onChange={e => set("priceTot", e.target.value)} style={{ flex: 1 }} />
               </div>
             </div>
-            <div className="field"><label>Huisregels (optioneel)</label><input placeholder="bijv. Niet roken, inchecken na 15:00" value={form.houseRules} onChange={e => set("houseRules", e.target.value)} /></div>
+            <div className="field"><label>{wt.step3Owner.houseRulesLabel}</label><input placeholder={wt.step3Owner.houseRulesPlaceholder} value={form.houseRules} onChange={e => set("houseRules", e.target.value)} /></div>
           </div>
         )}
 
         {step === 3 && !isOwner && (
           <div>
-            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Bestemming</h2>
-            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Welke bestemmingen hebben jouw voorkeur?</p>
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>{wt.step3Buddy.title}</h2>
+            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>{wt.step3Buddy.subtitle}</p>
             {[0, 1, 2].map(i => (
               <div className="field" key={i}>
-                <label>Bestemming {i + 1}{i > 0 ? " (optioneel)" : ""}</label>
+                <label>{wt.step3Buddy.destinationLabel} {i + 1}{i > 0 ? wt.step3Buddy.destinationOptional : ""}</label>
                 <input
-                  placeholder="bijv. Lissabon, Portugal"
+                  placeholder={wt.step3Buddy.destinationPlaceholder}
                   value={form.bestemmingen[i] || ""}
                   onChange={e => {
                     const arr = [...form.bestemmingen];
@@ -861,69 +876,69 @@ function CreateProfile({ user, onDone, onClose }) {
               </div>
             ))}
             <div className="field">
-              <label>Vaardigheden (wat breng jij mee)</label>
-              <MultiSelect options={VAARDIGHEDEN} selected={form.vaardigheden} onToggle={v => tog("vaardigheden", v)} />
+              <label>{wt.step3Buddy.vaardighedenLabel}</label>
+              <MultiSelect options={at.vaardigheden} selected={form.vaardigheden} onToggle={v => tog("vaardigheden", v)} placeholder={wt.selectPlaceholder} selectedSuffix={wt.selectedSuffix} />
             </div>
           </div>
         )}
 
         {step === 4 && isOwner && (
           <div>
-            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Voorzieningen & beschikbaarheid</h2>
-            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Wat bied je gasten aan?</p>
-            <MultiSelect options={AMENITIES_LIST} selected={form.amenities} onToggle={v => tog("amenities", v)} />
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>{wt.step4Owner.title}</h2>
+            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>{wt.step4Owner.subtitle}</p>
+            <MultiSelect options={at.amenities} selected={form.amenities} onToggle={v => tog("amenities", v)} placeholder={wt.selectPlaceholder} selectedSuffix={wt.selectedSuffix} />
 
             <div className="field" style={{ marginTop: 24 }}>
-              <label>Beschikbaar van</label>
+              <label>{wt.step4Owner.availableFromLabel}</label>
               <input type="date" value={form.beschikbaarVan} onChange={e => set("beschikbaarVan", e.target.value)} disabled={form.flexibeleData} style={{ opacity: form.flexibeleData ? 0.5 : 1 }} />
             </div>
             <div className="field">
-              <label>Beschikbaar tot</label>
+              <label>{wt.step4Owner.availableToLabel}</label>
               <input type="date" value={form.beschikbaarTot} onChange={e => set("beschikbaarTot", e.target.value)} disabled={form.flexibeleData} style={{ opacity: form.flexibeleData ? 0.5 : 1 }} />
             </div>
             <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "#2C2C2C", cursor: "pointer", marginTop: 4 }}>
               <input type="checkbox" checked={form.flexibeleData} onChange={e => set("flexibeleData", e.target.checked)} style={{ width: "auto" }} />
-              Mijn beschikbaarheid is flexibel
+              {wt.step4Owner.flexibleLabel}
             </label>
           </div>
         )}
 
         {step === 4 && !isOwner && (
           <div>
-            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Beschikbaarheid</h2>
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>{wt.step4Buddy.title}</h2>
             <div className="field">
-              <label>Beschikbaar van</label>
+              <label>{wt.step4Buddy.availableFromLabel}</label>
               <input type="date" value={form.beschikbaarVan} onChange={e => set("beschikbaarVan", e.target.value)} disabled={form.flexibeleData} style={{ opacity: form.flexibeleData ? 0.5 : 1 }} />
             </div>
             <div className="field">
-              <label>Beschikbaar tot</label>
+              <label>{wt.step4Buddy.availableToLabel}</label>
               <input type="date" value={form.beschikbaarTot} onChange={e => set("beschikbaarTot", e.target.value)} disabled={form.flexibeleData} style={{ opacity: form.flexibeleData ? 0.5 : 1 }} />
             </div>
             <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "#2C2C2C", cursor: "pointer", marginTop: 4, marginBottom: 8 }}>
               <input type="checkbox" checked={form.flexibeleData} onChange={e => set("flexibeleData", e.target.checked)} style={{ width: "auto" }} />
-              Mijn data zijn flexibel
+              {wt.step4Buddy.flexibleLabel}
             </label>
             <div className="field" style={{ marginTop: 20 }}>
-              <label>Maanden</label>
-              <MultiSelect options={MAANDEN} selected={form.maanden} onToggle={v => tog("maanden", v)} />
+              <label>{wt.step4Buddy.maandenLabel}</label>
+              <MultiSelect options={at.maanden} selected={form.maanden} onToggle={v => tog("maanden", v)} placeholder={wt.selectPlaceholder} selectedSuffix={wt.selectedSuffix} />
             </div>
           </div>
         )}
 
         {step === 5 && (
           <div>
-            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>Bijna klaar!</h2>
-            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>Voeg je talen en interesses toe.</p>
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>{wt.step5.title}</h2>
+            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 24 }}>{wt.step5.subtitle}</p>
             <div className="field">
-              <label>Talen die je spreekt</label>
-              <MultiSelect options={LANGUAGES_LIST} selected={form.languages} onToggle={v => tog("languages", v)} />
-              <input placeholder="Overige taal..." value={form.overigeTaal} onChange={e => set("overigeTaal", e.target.value)}
+              <label>{wt.step5.languagesLabel}</label>
+              <MultiSelect options={at.languagesList} selected={form.languages} onToggle={v => tog("languages", v)} placeholder={wt.selectPlaceholder} selectedSuffix={wt.selectedSuffix} />
+              <input placeholder={wt.step5.otherLanguagePlaceholder} value={form.overigeTaal} onChange={e => set("overigeTaal", e.target.value)}
                 style={{ marginTop: 10, width: "100%", padding: "10px 16px", border: "1.5px solid #F2E4CC", borderRadius: 14, fontFamily: "'DM Sans',sans-serif", fontSize: 14, outline: "none" }} />
             </div>
             <div className="field" style={{ marginTop: 20 }}>
-              <label>Interesses (kies max. 6)</label>
-              <MultiSelect options={INTERESTS_LIST} selected={form.interests} onToggle={v => tog("interests", v)} max={6} />
-              <input placeholder="Overige interesse..." value={form.overigeInteresse} onChange={e => set("overigeInteresse", e.target.value)}
+              <label>{wt.step5.interestsLabel}</label>
+              <MultiSelect options={at.interestsList} selected={form.interests} onToggle={v => tog("interests", v)} max={6} placeholder={wt.selectPlaceholder} selectedSuffix={wt.selectedSuffix} />
+              <input placeholder={wt.step5.otherInterestPlaceholder} value={form.overigeInteresse} onChange={e => set("overigeInteresse", e.target.value)}
                 style={{ marginTop: 10, width: "100%", padding: "10px 16px", border: "1.5px solid #F2E4CC", borderRadius: 14, fontFamily: "'DM Sans',sans-serif", fontSize: 14, outline: "none" }} />
             </div>
           </div>
@@ -937,10 +952,10 @@ function CreateProfile({ user, onDone, onClose }) {
         )}
 
         <div style={{ marginTop: 32, display: "flex", gap: 12 }}>
-          {step > 1 && <button className="btn-ghost" onClick={() => setStep(s => s - 1)} style={{ flex: 1 }}>← Terug</button>}
+          {step > 1 && <button className="btn-ghost" onClick={() => setStep(s => s - 1)} style={{ flex: 1 }}>{wt.back}</button>}
           {step < STEPS
-            ? <button className="btn-main" onClick={() => ok() && setStep(s => s + 1)} style={{ flex: 2, opacity: ok() ? 1 : 0.45 }}>Verder →</button>
-            : <button className="btn-main" onClick={() => onDone(form)} style={{ flex: 2 }}>Profiel indienen 🎉</button>
+            ? <button className="btn-main" onClick={() => ok() && setStep(s => s + 1)} style={{ flex: 2, opacity: ok() ? 1 : 0.45 }}>{wt.next}</button>
+            : <button className="btn-main" onClick={() => onDone(form)} style={{ flex: 2 }}>{wt.submit}</button>
           }
         </div>
       </div>
@@ -1316,6 +1331,14 @@ export default function App() {
   const [dbProfiles, setDbProfiles] = useState([]);
   const [loadingProfiles, setLoadingProfiles] = useState(true);
   const [isAdminRoute, setIsAdminRoute] = useState(() => window.location.hash === "#admin");
+  const [appLang, setAppLang] = useState(() => {
+    try { return localStorage.getItem("bnbbuddy_lang") || "nl"; } catch (e) { return "nl"; }
+  });
+  const changeAppLang = (code) => {
+    setAppLang(code);
+    try { localStorage.setItem("bnbbuddy_lang", code); } catch (e) {}
+  };
+  const t = APP_TRANSLATIONS[appLang] || APP_TRANSLATIONS.nl;
   const [showLanding, setShowLanding] = useState(() => {
   try {
     if (window.location.hash === "#admin") return false;
@@ -1553,6 +1576,10 @@ if (showLanding) return (
     <style>{css}</style>
     <LandingPage
       onEnterApp={(role, mode) => {
+        try {
+          const savedLang = localStorage.getItem("bnbbuddy_lang");
+          if (savedLang) setAppLang(savedLang);
+        } catch (e) {}
         setShowLanding(false);
         if (mode === "login") openLogin();
         else openSignup();
@@ -1582,7 +1609,7 @@ if (showLanding) return (
     </div>
   );
   if (screen === "create-profile" && user) return (
-    <div className="wrap"><style>{css}</style><CreateProfile user={user} onDone={profileDone} onClose={() => setScreen("browse")} /></div>
+    <div className="wrap"><style>{css}</style><CreateProfile user={user} onDone={profileDone} onClose={() => setScreen("browse")} lang={appLang} onLangChange={changeAppLang} /></div>
   );
   if (screen === "under-review" && user) return (
     <div className="wrap"><style>{css}</style><UnderReview user={user} onBrowse={() => setScreen("browse")} /></div>
