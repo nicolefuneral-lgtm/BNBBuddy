@@ -738,7 +738,7 @@ function PhotoStep({ avatar, photos, isOwner, onAvatar, onPhotos, focusX, focusY
         <div style={{ marginBottom: 28 }}>
           <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 8 }}>Focuspunt op kaartjes</div>
           <p style={{ fontSize: 12, color: "#8A7968", marginBottom: 10 }}>Sleep de schuifregelaars zodat je gezicht goed in beeld blijft op de profielkaart.</p>
-          <div style={{ borderRadius: 14, overflow: "hidden", height: 150, marginBottom: 10 }}>
+          <div style={{ borderRadius: 14, overflow: "hidden", height: 150, marginBottom: 10, maxWidth: 380, margin: "0 auto 10px" }}>
             <img src={avatar} alt="voorbeeld" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: `${focusX}% ${focusY}%` }} />
           </div>
           <input
