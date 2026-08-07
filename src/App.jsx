@@ -1760,7 +1760,7 @@ if (showLanding) return (
           if (savedLang) setAppLang(savedLang);
         } catch (e) {}
         setShowLanding(false);
-        if (mode === "resume") return;
+        if (mode === "resume" || mode === "browse") return;
         if (mode === "login") openLogin();
         else openSignup();
       }}
