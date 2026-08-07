@@ -40,7 +40,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .pill.active{background:#C4622D;color:white;border-color:#C4622D;}
 .card{margin:0 20px 16px;border-radius:20px;overflow:hidden;background:white;box-shadow:0 2px 16px rgba(0,0,0,0.07);cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;display:flex;flex-direction:column;}
 .card:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(0,0,0,0.11);}
-.card-img{position:relative;height:150px;overflow:hidden;}
+.card-img{position:relative;aspect-ratio:1/1;overflow:hidden;}
 .card-img img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform 0.4s;}
 .card:hover .card-img img{transform:scale(1.03);}
 .card-overlay{position:absolute;bottom:0;left:0;right:0;padding:20px 16px 14px;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 100%);color:white;}
@@ -50,7 +50,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .role-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:12px;}
 .role-badge.owner{background:#EAF2FF;color:#2563EB;}
 .role-badge.buddy{background:#FEF3EC;color:#C4622D;}
-.card-body{padding:14px 16px 16px;position:relative;flex:1;display:flex;flex-direction:column;}
+.card-body{padding:14px 16px 16px;position:relative;flex:1;display:flex;flex-direction:column;margin-top:-46px;background:rgba(255,255,255,0.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top-left-radius:18px;border-top-right-radius:18px;}
 .card-tagline{font-size:14px;color:#8A7968;font-style:italic;}
 .snap-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
 .snap{font-size:12px;font-weight:500;padding:4px 10px;border-radius:10px;}
@@ -738,7 +738,7 @@ function PhotoStep({ avatar, photos, isOwner, onAvatar, onPhotos, focusX, focusY
         <div style={{ marginBottom: 28 }}>
           <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 8 }}>Focuspunt op kaartjes</div>
           <p style={{ fontSize: 12, color: "#8A7968", marginBottom: 10 }}>Sleep de schuifregelaars zodat je gezicht goed in beeld blijft op de profielkaart.</p>
-          <div style={{ borderRadius: 14, overflow: "hidden", height: 150, marginBottom: 10, maxWidth: 380, margin: "0 auto 10px" }}>
+          <div style={{ borderRadius: 14, overflow: "hidden", aspectRatio: "1 / 1", marginBottom: 10, maxWidth: 300, margin: "0 auto 10px" }}>
             <img src={avatar} alt="voorbeeld" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: `${focusX}% ${focusY}%` }} />
           </div>
           <input
