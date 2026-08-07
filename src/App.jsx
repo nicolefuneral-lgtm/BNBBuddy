@@ -794,12 +794,14 @@ function PhotoStep({ avatar, photos, isOwner, onAvatar, onPhotos, focusX, focusY
 // ── CREATE PROFILE ────────────────────────────────────────────────────────────
 function CreateProfile({ user, onDone, onClose, lang = "nl", onLangChange }) {
   const isOwner = user.role === "owner";
-  const STEPS = 6;
+  const STEPS = 7;
   const [step, setStep] = useState(1);
   const at = APP_TRANSLATIONS[lang] || APP_TRANSLATIONS.nl;
   const wt = at.wizard;
   const titles = isOwner ? wt.titlesOwner : wt.titlesBuddy;
-  const [form, setForm] = useState({
+  const draftKey = `bnbbuddy_draft_${user.id}`;
+  const [showSaved, setShowSaved] = useState(false);
+  const initialForm = {
     tagline: user.tagline || "", bio: user.bio || "", city: user.city || "", country: user.country || "", age: user.age ? String(user.age) : "",
     languages: user.languages || [], interests: user.interests || [],
     vaardigheden: user.vaardigheden || [], bestemmingen: user.bestemmingen ? [...user.bestemmingen.split(",").map(s => s.trim()), "", "", ""].slice(0, 3) : ["", "", ""], tripDuration: user.trip_duration || "", maanden: user.maanden || [], aantalPersonen: user.aantal_personen || "", partnerNaam: user.partner_naam || "", overigeTaal: user.overige_taal || "", overigeInteresse: user.overige_interesse || "",
@@ -809,7 +811,40 @@ function CreateProfile({ user, onDone, onClose, lang = "nl", onLangChange }) {
     photos: (user.photos || []).filter(p => p.type === "gallery").map(p => p.url),
     focusY: user.focus_y ?? 25,
     focusX: user.focus_x ?? 50,
+  };
+  const [form, setForm] = useState(() => {
+    try {
+      const raw = localStorage.getItem(draftKey);
+      if (raw) {
+        const draft = JSON.parse(raw);
+        return { ...initialForm, ...draft.form };
+      }
+    } catch (e) {}
+    return initialForm;
   });
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(draftKey);
+      if (raw) {
+        const draft = JSON.parse(raw);
+        if (draft.step) setStep(draft.step);
+      }
+    } catch (e) {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      try {
+        // avatar/photos zijn base64 en te groot voor localStorage — niet meesturen
+        const { avatar, photos, ...rest } = form;
+        localStorage.setItem(draftKey, JSON.stringify({ form: rest, step }));
+        setShowSaved(true);
+        setTimeout(() => setShowSaved(false), 1500);
+      } catch (e) {}
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [form, step, draftKey]);
+  const clearDraft = () => { try { localStorage.removeItem(draftKey); } catch (e) {} };
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
   const tog = (k, v) => setForm(f => ({ ...f, [k]: f[k].includes(v) ? f[k].filter(x => x !== v) : [...f[k], v] }));
   const ok = () => {
@@ -844,6 +879,7 @@ function CreateProfile({ user, onDone, onClose, lang = "nl", onLangChange }) {
             ))}
           </div>
         )}
+        {showSaved && <span style={{ fontSize: 11, color: "#7A9E7E", marginLeft: 8, whiteSpace: "nowrap" }}>✓ {wt.preview.draftSaved}</span>}
         {onClose && <button onClick={onClose} style={{ background: "none", border: "none", fontSize: 20, cursor: "pointer", color: "#8A7968", marginLeft: 8 }}>✕</button>}
       </div>
       <div style={{ padding: "24px 20px" }}>
@@ -1011,11 +1047,92 @@ function CreateProfile({ user, onDone, onClose, lang = "nl", onLangChange }) {
             focusX={form.focusX} onFocusXChange={v => set("focusX", v)} />
         )}
 
+        {step === 7 && (
+          <div>
+            <h2 style={{ fontFamily: "'Prata',serif", fontSize: 22, fontWeight: 700, marginBottom: 6 }}>{wt.preview.title}</h2>
+            <p style={{ fontSize: 14, color: "#8A7968", marginBottom: 20 }}>{wt.preview.subtitle}</p>
+
+            <div style={{ display: "flex", gap: 14, alignItems: "center", marginBottom: 16 }}>
+              {form.avatar
+                ? <img src={form.avatar} alt={user.name} style={{ width: 72, height: 72, borderRadius: "50%", objectFit: "cover", objectPosition: `${form.focusX}% ${form.focusY}%` }} />
+                : <div style={{ width: 72, height: 72, borderRadius: "50%", background: "#F2E4CC" }} />}
+              <div>
+                <div style={{ fontFamily: "'Prata',serif", fontSize: 20, fontWeight: 700 }}>{user.name}{!isOwner && form.age ? `, ${form.age}` : ""}</div>
+                <div style={{ fontSize: 13, color: "#8A7968" }}>{[form.city, form.country].filter(Boolean).join(" · ")}</div>
+                {form.tagline && <div style={{ fontSize: 13, color: "#C4622D", fontStyle: "italic", marginTop: 2 }}>"{form.tagline}"</div>}
+              </div>
+            </div>
+
+            <div className="stat-row">
+              {isOwner ? (
+                <>
+                  <div className="stat"><div className="sl">{at.profile.propertyLabel}</div><div className="sv">{labelForValue(at.propertyTypes, form.propertyType) || "—"}</div></div>
+                  <div className="stat"><div className="sl">{at.profile.roomsLabel}</div><div className="sv">{form.rooms || "—"}</div></div>
+                  <div className="stat"><div className="sl">{at.profile.priceLabel}</div><div className="sv">{form.priceVan && form.priceTot ? `€${form.priceVan}–€${form.priceTot}` : "—"}</div></div>
+                </>
+              ) : (
+                <>
+                  <div className="stat"><div className="sl">{at.profile.destinationLabel}</div><div className="sv">{form.bestemmingen.filter(Boolean).join(", ") || "—"}</div></div>
+                  <div className="stat"><div className="sl">{at.profile.monthsLabel}</div><div className="sv">{form.maanden.length > 0 ? form.maanden.map(m => labelForValue(at.maanden, m)).join(", ") : "—"}</div></div>
+                  <div className="stat"><div className="sl">{at.profile.peopleLabel}</div><div className="sv">{form.aantalPersonen ? labelForValue(at.aantalPersonen, form.aantalPersonen) : "—"}</div></div>
+                </>
+              )}
+            </div>
+
+            {form.bio && (
+              <div className="prof-sec" style={{ marginTop: 16 }}>
+                <h4>{wt.preview.aboutLabel}</h4>
+                <p style={{ fontSize: 14, lineHeight: 1.7 }}>{form.bio}</p>
+              </div>
+            )}
+
+            {(isOwner ? form.amenities : form.vaardigheden).length > 0 && (
+              <div className="prof-sec" style={{ marginTop: 16 }}>
+                <h4>{isOwner ? wt.preview.amenitiesLabel : wt.step3Buddy.vaardighedenLabel}</h4>
+                <div className="tags">
+                  {(isOwner ? form.amenities : form.vaardigheden).map(v => (
+                    <span className="tag" key={v}>{labelForValue(isOwner ? at.amenities : at.vaardigheden, v)}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {form.languages.length > 0 && (
+              <div className="prof-sec" style={{ marginTop: 16 }}>
+                <h4>{wt.preview.languagesLabel}</h4>
+                <div className="tags">{form.languages.map(l => <span className="tag" key={l}>{labelForValue(at.languagesList, l)}</span>)}</div>
+              </div>
+            )}
+
+            {form.interests.length > 0 && (
+              <div className="prof-sec" style={{ marginTop: 16 }}>
+                <h4>{wt.preview.interestsLabel}</h4>
+                <div className="tags">{form.interests.map(t => <span className="tag" key={t}>{labelForValue(at.interestsList, t)}</span>)}</div>
+              </div>
+            )}
+
+            <div className="prof-sec" style={{ marginTop: 16 }}>
+              <h4>{wt.preview.photosLabel}</h4>
+              {form.photos.length > 0 ? (
+                <div style={{ display: "flex", gap: 10, marginTop: 10, flexWrap: "wrap" }}>
+                  {form.photos.map((p, i) => (
+                    <img key={i} src={p} alt="" style={{ width: "calc(33% - 7px)", aspectRatio: "1", objectFit: "cover", borderRadius: 12 }} />
+                  ))}
+                </div>
+              ) : (
+                <p style={{ fontSize: 13, color: "#8A7968", fontStyle: "italic" }}>{wt.preview.noPhotosYet}</p>
+              )}
+            </div>
+
+            <button className="btn-ghost" onClick={() => setStep(1)} style={{ marginTop: 20, width: "100%" }}>{wt.preview.editBtn}</button>
+          </div>
+        )}
+
         <div style={{ marginTop: 32, display: "flex", gap: 12 }}>
           {step > 1 && <button className="btn-ghost" onClick={() => setStep(s => s - 1)} style={{ flex: 1 }}>{wt.back}</button>}
           {step < STEPS
             ? <button className="btn-main" onClick={() => ok() && setStep(s => s + 1)} style={{ flex: 2, opacity: ok() ? 1 : 0.45 }}>{wt.next}</button>
-            : <button className="btn-main" onClick={() => onDone(form)} style={{ flex: 2 }}>{wt.submit}</button>
+            : <button className="btn-main" onClick={() => { clearDraft(); onDone(form); }} style={{ flex: 2 }}>{wt.submit}</button>
           }
         </div>
       </div>
