@@ -38,7 +38,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .filter-pills{display:flex;gap:8px;padding:0 20px 14px;overflow-x:auto;scrollbar-width:none;}
 .pill{flex-shrink:0;padding:8px 16px;border-radius:24px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;background:white;color:#8A7968;border:1.5px solid #F2E4CC;transition:all 0.2s;}
 .pill.active{background:#C4622D;color:white;border-color:#C4622D;}
-.card{margin:0 20px 16px;border-radius:20px;overflow:hidden;background:white;box-shadow:0 2px 16px rgba(0,0,0,0.07);cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;display:flex;flex-direction:column;}
+.card{margin:0;border-radius:20px;overflow:hidden;background:white;box-shadow:0 2px 16px rgba(0,0,0,0.07);cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;display:flex;flex-direction:column;}
 .card:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(0,0,0,0.11);}
 .card-img{position:relative;aspect-ratio:1/1;overflow:hidden;}
 .card-img img{width:100%;height:100%;object-fit:cover;object-position:center 25%;transition:transform 0.4s;}
@@ -148,6 +148,7 @@ body{font-family:'DM Sans',sans-serif;background:#FDF6EC;color:#2C2C2C;min-heigh
 .review-box{background:white;border-radius:20px;padding:20px 24px;width:100%;margin-bottom:28px;box-shadow:0 2px 16px rgba(0,0,0,0.07);}
 .review-step{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
 .review-num{width:22px;height:22px;border-radius:50%;background:#F2E4CC;color:#C4622D;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.profile-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:0 16px 24px;}
 @media(min-width:768px){
   .wrap{max-width:100%;display:flex;flex-direction:column;min-height:100vh;}
   .nav{max-width:100%;padding:0 32px;height:64px;}
@@ -1733,6 +1734,12 @@ const lockAdmin = async () => {
       if (p.aantalPersonen && p.aantalPersonen !== filterPersonen) return false;
     }
     return true;
+  });
+  const PINNED_EMAIL = "nicolefuneral+test6@gmail.com";
+  filtered.sort((a, b) => {
+    const aPinned = a.email === PINNED_EMAIL ? 1 : 0;
+    const bPinned = b.email === PINNED_EMAIL ? 1 : 0;
+    return bPinned - aPinned;
   });
 
   const aantalFilters = (zoekText ? 1 : 0) + filterVaardigheden.length + filterTalen.length + (filterVan ? 1 : 0) + (filterPersonen ? 1 : 0);
