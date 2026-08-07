@@ -231,7 +231,67 @@ function GlobeIcon({ size = 13 }) {
 }
 
 // ── AUTH MODAL ────────────────────────────────────────────────────────────────
-function AuthModal({ onClose, onLogin, onSignupSuccess, initialMode = "login" }) {
+const AUTH_TEXT = {
+  nl: {
+    welcomeBack: "Welkom terug", joinTitle: "Word lid van BnbBuddy",
+    subLogin: "Log in om volledige profielen te zien en te chatten",
+    subSignup: "Vertel ons wie je bent om te beginnen",
+    iAmA: "Ik ben een…",
+    ownerTitle: "BnB Eigenaar", ownerDesc: "Ik verhuur en wil verbinding maken met de juiste gasten",
+    buddyTitle: "Buddy", buddyDesc: "Ik ben een reiziger op zoek naar verblijf of reisgezelschap",
+    selectRole: "Selecteer een rol om door te gaan",
+    nameLabel: "Jouw naam", namePlaceholder: "Voornaam",
+    emailLabel: "Email",
+    passwordLabel: "Wachtwoord",
+    loading: "Even geduld…", loginBtn: "Inloggen", signupBtn: "Account aanmaken",
+    newHere: "Nieuw hier? ", haveAccount: "Al een account? ",
+  },
+  en: {
+    welcomeBack: "Welcome back", joinTitle: "Join BnbBuddy",
+    subLogin: "Log in to see full profiles and chat",
+    subSignup: "Tell us who you are to get started",
+    iAmA: "I am a…",
+    ownerTitle: "BnB Owner", ownerDesc: "I rent out and want to connect with the right guests",
+    buddyTitle: "Buddy", buddyDesc: "I'm a traveller looking for a stay or travel companion",
+    selectRole: "Select a role to continue",
+    nameLabel: "Your name", namePlaceholder: "First name",
+    emailLabel: "Email",
+    passwordLabel: "Password",
+    loading: "One moment…", loginBtn: "Log in", signupBtn: "Create account",
+    newHere: "New here? ", haveAccount: "Already have an account? ",
+  },
+  de: {
+    welcomeBack: "Willkommen zurück", joinTitle: "Werde Mitglied bei BnbBuddy",
+    subLogin: "Melde dich an, um vollständige Profile zu sehen und zu chatten",
+    subSignup: "Erzähl uns, wer du bist, um loszulegen",
+    iAmA: "Ich bin…",
+    ownerTitle: "BnB-Eigentümer", ownerDesc: "Ich vermiete und möchte mit den richtigen Gästen in Kontakt kommen",
+    buddyTitle: "Buddy", buddyDesc: "Ich bin Reisende(r) und suche eine Unterkunft oder Reisebegleitung",
+    selectRole: "Wähle eine Rolle, um fortzufahren",
+    nameLabel: "Dein Name", namePlaceholder: "Vorname",
+    emailLabel: "E-Mail",
+    passwordLabel: "Passwort",
+    loading: "Einen Moment…", loginBtn: "Anmelden", signupBtn: "Konto erstellen",
+    newHere: "Neu hier? ", haveAccount: "Schon ein Konto? ",
+  },
+  fr: {
+    welcomeBack: "Content de te revoir", joinTitle: "Rejoins BnbBuddy",
+    subLogin: "Connecte-toi pour voir les profils complets et discuter",
+    subSignup: "Dis-nous qui tu es pour commencer",
+    iAmA: "Je suis…",
+    ownerTitle: "Propriétaire BnB", ownerDesc: "Je loue et je veux entrer en contact avec les bons invités",
+    buddyTitle: "Buddy", buddyDesc: "Je suis un voyageur à la recherche d'un séjour ou d'un compagnon de voyage",
+    selectRole: "Sélectionne un rôle pour continuer",
+    nameLabel: "Ton nom", namePlaceholder: "Prénom",
+    emailLabel: "Email",
+    passwordLabel: "Mot de passe",
+    loading: "Un instant…", loginBtn: "Se connecter", signupBtn: "Créer un compte",
+    newHere: "Nouveau ici ? ", haveAccount: "Déjà un compte ? ",
+  },
+};
+
+function AuthModal({ onClose, onLogin, onSignupSuccess, initialMode = "login", lang = "nl" }) {
+  const at = AUTH_TEXT[lang] || AUTH_TEXT.nl;
   const [mode, setMode] = useState(initialMode);
   const [role, setRole] = useState(null);
   const [name, setName] = useState("");
@@ -276,32 +336,32 @@ function AuthModal({ onClose, onLogin, onSignupSuccess, initialMode = "login" })
     <div className="modal-bg" onClick={onClose}>
       <div className="modal" onClick={e => e.stopPropagation()}>
         <div className="modal-handle" />
-        <h2>{mode === "login" ? "Welkom terug" : "Word lid van BnbBuddy"}</h2>
-        <p className="sub">{mode === "login" ? "Log in om volledige profielen te zien en te chatten" : "Vertel ons wie je bent om te beginnen"}</p>
+        <h2>{mode === "login" ? at.welcomeBack : at.joinTitle}</h2>
+        <p className="sub">{mode === "login" ? at.subLogin : at.subSignup}</p>
         {mode === "signup" && (
           <>
-            <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 10 }}>Ik ben een…</div>
+            <div style={{ fontSize: 12, fontWeight: 500, color: "#8A7968", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 10 }}>{at.iAmA}</div>
             <div className="role-cards">
               <div className={`role-card ${role === "owner" ? "sel" : ""}`} onClick={() => setRole("owner")}>
                 <div className="rck">✓</div>
                 <div className="ri">🏡</div>
-                <div className="rt">BnB Eigenaar</div>
-                <div className="rd">Ik verhuur en wil verbinding maken met de juiste gasten</div>
+                <div className="rt">{at.ownerTitle}</div>
+                <div className="rd">{at.ownerDesc}</div>
               </div>
               <div className={`role-card ${role === "buddy" ? "sel" : ""}`} onClick={() => setRole("buddy")}>
                 <div className="rck">✓</div>
                 <div className="ri">🎒</div>
-                <div className="rt">Buddy</div>
-                <div className="rd">I'm a traveller looking for a stay or travel companion</div>
+                <div className="rt">{at.buddyTitle}</div>
+                <div className="rd">{at.buddyDesc}</div>
               </div>
             </div>
-            {!role && <div style={{ fontSize: 12, color: "#C4622D", marginBottom: 8 }}>Selecteer een rol om door te gaan</div>}
-            <div className="field"><label>Jouw naam</label><input placeholder="Voornaam" value={name} onChange={e => setName(e.target.value)} /></div>
+            {!role && <div style={{ fontSize: 12, color: "#C4622D", marginBottom: 8 }}>{at.selectRole}</div>}
+            <div className="field"><label>{at.nameLabel}</label><input placeholder={at.namePlaceholder} value={name} onChange={e => setName(e.target.value)} /></div>
           </>
         )}
-        <div className="field"><label>Email</label><input type="email" placeholder="you@email.com" value={email} onChange={e => setEmail(e.target.value)} /></div>
+        <div className="field"><label>{at.emailLabel}</label><input type="email" placeholder="you@email.com" value={email} onChange={e => setEmail(e.target.value)} /></div>
         <div className="field">
-          <label>Wachtwoord</label>
+          <label>{at.passwordLabel}</label>
           <div style={{ position: "relative" }}>
             <input
               type={showPw ? "text" : "password"}
@@ -325,12 +385,12 @@ function AuthModal({ onClose, onLogin, onSignupSuccess, initialMode = "login" })
         </div>
         {error && <div style={{ fontSize: 13, color: "#C4622D", marginBottom: 8, padding: "8px 12px", background: "#FEF3EC", borderRadius: 8 }}>{error}</div>}
         <button className="btn-main" onClick={submit} style={{ opacity: (mode === "signup" && !role) || loading ? 0.5 : 1 }}>
-          {loading ? "Even geduld…" : mode === "login" ? "Inloggen" : "Account aanmaken"} →
+          {loading ? at.loading : mode === "login" ? at.loginBtn : at.signupBtn} →
         </button>
         <div className="modal-toggle">
-          {mode === "login" ? "Nieuw hier? " : "Al een account? "}
+          {mode === "login" ? at.newHere : at.haveAccount}
           <button onClick={() => { setMode(mode === "login" ? "signup" : "login"); setRole(null); }}>
-            {mode === "login" ? "Account aanmaken" : "Inloggen"}
+            {mode === "login" ? at.signupBtn : at.loginBtn}
           </button>
         </div>
       </div>
@@ -1779,7 +1839,7 @@ if (showLanding) return (
         )}
       </div>
 
-      {showAuth && <AuthModal onClose={() => setShowAuth(false)} onLogin={login} onSignupSuccess={handleSignupSuccess} initialMode={authMode} />}
+      {showAuth && <AuthModal onClose={() => setShowAuth(false)} onLogin={login} onSignupSuccess={handleSignupSuccess} initialMode={authMode} lang={appLang} />}
     </div>
   );
 }
