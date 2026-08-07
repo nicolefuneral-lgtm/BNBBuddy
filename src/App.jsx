@@ -1635,17 +1635,21 @@ if (showLanding) return (
   <div className="wrap" style={{ maxWidth: "100%" }}>
     <style>{css}</style>
     <LandingPage
+      isLoggedIn={!!user}
+      userName={user?.name}
       onEnterApp={(role, mode) => {
         try {
           const savedLang = localStorage.getItem("bnbbuddy_lang");
           if (savedLang) setAppLang(savedLang);
         } catch (e) {}
         setShowLanding(false);
+        if (mode === "resume") return;
         if (mode === "login") openLogin();
         else openSignup();
       }}
     />
   </div>
+
 );
 
   if (checkEmailAddress) return (
