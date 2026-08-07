@@ -10,86 +10,6 @@ const C = {
   muted: "#8A7968", white: "#FFFFFF", blush: "#F4C9A8",
 };
 
-const PROFILES = [
-  {
-    id: 1, name: "Sofia", age: 28, city: "Amsterdam", country: "🇳🇱 Netherlands",
-    tagline: "Slow travel & strong coffee", role: "buddy", verified: true,
-    bio: "I've been living out of a suitcase for 3 years — not because I'm lost, but because I keep finding places worth staying. looking for a travel buddy who appreciates farmers markets over tourist traps.",
-    interests: ["Hiking", "Photography", "Local cuisine", "Jazz bars"],
-    languages: ["English", "Dutch", "Spanish"],
-    avatar: "https://i.pravatar.cc/400?img=47",
-    photos: ["https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=80","https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=400&q=80"],
-    travelStyle: "Slow explorer", nextDestination: "Lisbon, Portugal",
-    tripDuration: "2–4 weeks", budget: "Mid-range", lookingFor: "Co-traveller & local host",
-  },
-  {
-    id: 2, name: "Marcus", age: 31, city: "Berlin", country: "🇩🇪 Germany",
-    tagline: "Cosy rooms, big adventures nearby", role: "owner", verified: true,
-    bio: "Former software engineer who turned a 200-year-old farmhouse into a boutique BnB. Every guest gets a hand-written local map and a jar of homemade jam.",
-    interests: ["Rock climbing", "Street art", "Tech meetups", "Cycling"],
-    languages: ["English", "German", "Portuguese"],
-    avatar: "https://i.pravatar.cc/400?img=68",
-    photos: ["https://images.unsplash.com/photo-1527004013197-933c4bb611b3?w=400&q=80","https://images.unsplash.com/photo-1501555088652-021faa106b9b?w=400&q=80"],
-    propertyName: "Farmhaus am See", propertyType: "Farmhouse B&B",
-    rooms: 3, pricePerNight: "€65–€90",
-    amenities: ["Garden", "Bike rental", "Breakfast included", "EV charger"],
-    hostingSince: "2021",
-  },
-  {
-    id: 3, name: "Yuki", age: 26, city: "Tokyo", country: "🇯🇵 Japan",
-    tagline: "Ramen routes & mountain huts", role: "buddy", verified: false,
-    bio: "I work remotely as a designer and spend half my year in Japan, the other half wherever the seasons are best. I love quiet moments — a misty mountain trail, a tiny ramen shop at midnight.",
-    interests: ["Onsen", "Illustration", "Night markets", "Bouldering"],
-    languages: ["Japanese", "English", "French"],
-    avatar: "https://i.pravatar.cc/400?img=49",
-    photos: ["https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&q=80","https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=400&q=80"],
-    travelStyle: "Mindful wanderer", nextDestination: "Kyoto → Osaka",
-    tripDuration: "1–2 weeks", budget: "Budget-friendly", lookingFor: "Female travel companion",
-  },
-  {
-    id: 4, name: "Diego", age: 34, city: "Buenos Aires", country: "🇦🇷 Argentina",
-    tagline: "Casa con sabor — a home with flavour", role: "owner", verified: true,
-    bio: "Chef by trade, host by passion. I converted the ground floor of my colonial home into a cosy guesthouse. Guests wake up to freshly baked medialunas and can join my cooking evenings.",
-    interests: ["Cooking", "Dance", "Trekking", "Wine"],
-    languages: ["Spanish", "English", "Italian"],
-    avatar: "https://i.pravatar.cc/400?img=57",
-    photos: ["https://images.unsplash.com/photo-1483347756197-71ef80e95f73?w=400&q=80","https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?w=400&q=80"],
-    propertyName: "Casa Sabor", propertyType: "Colonial Guesthouse",
-    rooms: 2, pricePerNight: "$40–$60",
-    amenities: ["Home-cooked breakfast", "Cooking classes", "Rooftop terrace", "City tours"],
-    hostingSince: "2019",
-  },
-  {
-    id: 5, name: "Amara", age: 29, city: "Lagos", country: "🇳🇬 Nigeria",
-    tagline: "Sunsets & spontaneity", role: "buddy", verified: true,
-    bio: "Marketing consultant who's learned that the world looks different from every timezone. I prefer street food over fine dining, local buses over Ubers, and unplanned afternoons over packed itineraries.",
-    interests: ["Music festivals", "Surfing", "Writing", "Afrobeats"],
-    languages: ["English", "Yoruba", "French"],
-    avatar: "https://i.pravatar.cc/400?img=45",
-    photos: ["https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=400&q=80","https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=400&q=80"],
-    travelStyle: "Spontaneous roamer", nextDestination: "Dakar, Senegal",
-    tripDuration: "10–14 days", budget: "Flexible", lookingFor: "Anyone adventurous!",
-  },
-  {
-    id: 6, name: "Lena", age: 27, city: "Stockholm", country: "🇸🇪 Sweden",
-    tagline: "A writer's retreat in the forest", role: "owner", verified: false,
-    bio: "Environmental researcher with a converted cabin on the edge of a pine forest. Ideal for solo travellers who need peace, or couples who want to hike and stargaze.",
-    interests: ["Ecology", "Nordic skiing", "Poetry readings", "Coffee ritual"],
-    languages: ["Swedish", "English", "German"],
-    avatar: "https://i.pravatar.cc/400?img=44",
-    photos: ["https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=400&q=80","https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80"],
-    propertyName: "Skogen Cabin", propertyType: "Forest Cabin",
-    rooms: 1, pricePerNight: "€80–€110",
-    amenities: ["Wood-fire sauna", "Forest trails", "Stargazing deck", "Full kitchen"],
-    hostingSince: "2022",
-  },
-];
-
-const MESSAGES_INIT = {
-  1: [{ from: "them", text: "Hey! Saw you're heading to Lisbon too 🌊" }, { from: "me", text: "Yes! End of October — perfect weather" }],
-  2: [{ from: "them", text: "Tbilisi is incredible — have you been?" }],
-  4: [{ from: "them", text: "I made kokotxas last week. You'd love it." }, { from: "me", text: "Send the recipe!! 😭" }],
-};
 
 const INTERESTS_LIST = ["Hiking","Photography","Cooking","Cycling","Surfing","Music","Art","Wine","Reading","Yoga","Dancing","Climbing","Nature","Nightlife","History","Markets"];
 const LANGUAGES_LIST = ["English","Dutch","German","French","Spanish","Italian","Portuguese","Japanese","Arabic","Swedish","Polish","Turkish"];
@@ -817,7 +737,7 @@ function CreateProfile({ user, onDone, onClose }) {
   const [form, setForm] = useState({
     tagline: user.tagline || "", bio: user.bio || "", city: user.city || "", country: user.country || "", age: user.age ? String(user.age) : "",
     languages: user.languages || [], interests: user.interests || [],
-    vaardigheden: user.vaardigheden || [], bestemmingen: user.bestemmingen ? [...user.bestemmingen.split(",").map(s => s.trim()), "", "", ""].slice(0, 3) : ["", "", ""], tripDuration: user.trip_duration || "", maanden: user.maanden || [], aantalPersonen: user.aantal_personen || "", overigeTaal: user.overige_taal || "", overigeInteresse: user.overige_interesse || "",
+    vaardigheden: user.vaardigheden || [], bestemmingen: user.bestemmingen ? [...user.bestemmingen.split(",").map(s => s.trim()), "", "", ""].slice(0, 3) : ["", "", ""], tripDuration: user.trip_duration || "", maanden: user.maanden || [], aantalPersonen: user.aantal_personen || "", partnerNaam: user.partner_naam || "", overigeTaal: user.overige_taal || "", overigeInteresse: user.overige_interesse || "",
     beschikbaarVan: user.beschikbaar_van || "", beschikbaarTot: user.beschikbaar_tot || "", flexibeleData: user.flexibele_data || false,
     propertyName: user.property_name || "", propertyType: user.property_type || "", rooms: user.rooms ? String(user.rooms) : "", priceVan: user.price_from ? String(user.price_from) : "", priceTot: user.price_to ? String(user.price_to) : "", amenities: user.amenities || [], houseRules: user.house_rules || "",
     avatar: user.avatar_url || user.avatar || null,
@@ -865,6 +785,18 @@ function CreateProfile({ user, onDone, onClose }) {
             {!isOwner && <div className="field"><label>Jouw leeftijd</label><input type="number" placeholder="bijv. 28" value={form.age} onChange={e => set("age", e.target.value)} /></div>}
             <div className="field"><label>Stad</label><input placeholder="bijv. Amsterdam" value={form.city} onChange={e => set("city", e.target.value)} /></div>
             <div className="field"><label>Land</label><input placeholder="bijv. Nederland" value={form.country} onChange={e => set("country", e.target.value)} /></div>
+            {!isOwner && (
+              <div className="field">
+                <label>Reis je alleen of met partner?</label>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  {AANTAL_PERSONEN.map(a => <button key={a} onClick={() => set("aantalPersonen", a)} style={sb(a, form.aantalPersonen)}>{a}</button>)}
+                </div>
+                {form.aantalPersonen === "Ik kom met partner" && (
+                  <input placeholder="Naam van je partner" value={form.partnerNaam} onChange={e => set("partnerNaam", e.target.value)}
+                    style={{ marginTop: 10 }} />
+                )}
+              </div>
+            )}
           </div>
         )}
 
@@ -974,12 +906,6 @@ function CreateProfile({ user, onDone, onClose }) {
             <div className="field" style={{ marginTop: 20 }}>
               <label>Maanden</label>
               <MultiSelect options={MAANDEN} selected={form.maanden} onToggle={v => tog("maanden", v)} />
-            </div>
-            <div className="field" style={{ marginTop: 20 }}>
-              <label>Aantal personen</label>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {AANTAL_PERSONEN.map(a => <button key={a} onClick={() => set("aantalPersonen", a)} style={sb(a, form.aantalPersonen)}>{a}</button>)}
-              </div>
             </div>
           </div>
         )}
@@ -1375,7 +1301,7 @@ export default function App() {
   const [tab, setTab] = useState("browse");
   const [viewProfile, setViewProfile] = useState(null);
   const [chatProfile, setChatProfile] = useState(null);
-  const [messages, setMessages] = useState(MESSAGES_INIT);
+  const [messages, setMessages] = useState({});
   const [likes, setLikes] = useState([]);
   const [roleFilter, setRoleFilter] = useState("all");
   const [zoekText, setZoekText] = useState("");
@@ -1483,7 +1409,7 @@ const lockAdmin = async () => {
     });
   }, []);
 
-  const allProfiles = dbProfiles.length > 0 ? dbProfiles : PROFILES;
+  const allProfiles = dbProfiles;
 
   const login = u => { setUser(u); setShowAuth(false); if (u.isNew) setScreen("create-profile"); };
   const handleLogout = async () => {
@@ -1514,6 +1440,7 @@ const lockAdmin = async () => {
           flexibele_data: form.flexibeleData,
           maanden: form.maanden,
           aantal_personen: form.aantalPersonen,
+          partner_naam: form.partnerNaam,
           overige_taal: form.overigeTaal,
           overige_interesse: form.overigeInteresse,
           property_name: form.propertyName,
