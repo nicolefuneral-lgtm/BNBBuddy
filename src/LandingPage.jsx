@@ -112,7 +112,13 @@ const IMG = {
 };
 
 export default function LandingPage({ onEnterApp }) {
-  const [lang, setLang] = useState("nl");
+  const [lang, setLang] = useState(() => {
+    try { return localStorage.getItem("bnbbuddy_lang") || "nl"; } catch (e) { return "nl"; }
+  });
+  const changeLang = (code) => {
+    setLang(code);
+    try { localStorage.setItem("bnbbuddy_lang", code); } catch (e) {}
+  };
   const [page, setPage] = useState("owner"); // "owner" | "buddy"
   const [contactForm, setContactForm] = useState({
     salutation: "", firstName: "", lastName: "", role: "",
@@ -169,7 +175,7 @@ export default function LandingPage({ onEnterApp }) {
         <div className="lp-actions">
           <div className="lp-lang">
             {LANGUAGES.map(l => (
-              <button key={l.code} className={lang === l.code ? "on" : ""} onClick={() => setLang(l.code)} title={l.label}>
+              <button key={l.code} className={lang === l.code ? "on" : ""} onClick={() => changeLang(l.code)} title={l.label}>
                 {l.flag}
               </button>
             ))}
