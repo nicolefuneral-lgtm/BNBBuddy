@@ -111,7 +111,7 @@ const IMG = {
   ],
 };
 
-export default function LandingPage({ onEnterApp }) {
+export default function LandingPage({ onEnterApp, isLoggedIn, userName }) {
   const [lang, setLang] = useState(() => {
     try { return localStorage.getItem("bnbbuddy_lang") || "nl"; } catch (e) { return "nl"; }
   });
@@ -152,7 +152,8 @@ export default function LandingPage({ onEnterApp }) {
   };
 
   const handleCta = () => {
-    // Navigeer naar de app en open direct de aanmeld-flow met de juiste rol.
+    // Al ingelogd: gewoon terug naar de app. Anders: aanmeld-flow met de juiste rol.
+    if (isLoggedIn) { onEnterApp?.(null, "resume"); return; }
     onEnterApp?.(page === "owner" ? "owner" : "buddy");
   };
 
@@ -180,8 +181,14 @@ export default function LandingPage({ onEnterApp }) {
               </button>
             ))}
           </div>
-          <button className="lp-btn-nav" onClick={() => onEnterApp?.(null, "login")}>{t.nav.login}</button>
-          <button className="lp-btn-nav primary" onClick={() => onEnterApp?.(null, "signup")}>{t.nav.signup}</button>
+          {isLoggedIn ? (
+            <button className="lp-btn-nav primary" onClick={() => onEnterApp?.(null, "resume")}>{t.nav.backToApp}</button>
+          ) : (
+            <>
+              <button className="lp-btn-nav" onClick={() => onEnterApp?.(null, "login")}>{t.nav.login}</button>
+              <button className="lp-btn-nav primary" onClick={() => onEnterApp?.(null, "signup")}>{t.nav.signup}</button>
+            </>
+          )}
         </div>
       </div>
 
