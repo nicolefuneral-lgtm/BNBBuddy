@@ -112,8 +112,8 @@ const WIZARD_TEXT = {
   nl: {
     roleOwner: "🏡 Eigenaar", roleBuddy: "🎒 Buddy",
     stepOf: "Stap {step} van {total}",
-    titlesOwner: ["Basisgegevens", "Jouw verhaal", "Jouw pand", "Voorzieningen & prijs", "Interesses", "Foto's"],
-    titlesBuddy: ["Basisgegevens", "Jouw verhaal", "Reisplannen", "Voorkeuren", "Interesses", "Foto's"],
+    titlesOwner: ["Basisgegevens", "Jouw verhaal", "Jouw pand", "Voorzieningen & prijs", "Interesses", "Foto's", "Voorbeeld"],
+    titlesBuddy: ["Basisgegevens", "Jouw verhaal", "Reisplannen", "Voorkeuren", "Interesses", "Foto's", "Voorbeeld"],
     back: "← Terug", next: "Verder →", submit: "Profiel indienen 🎉",
     selectPlaceholder: "Selecteer…", selectedSuffix: "geselecteerd",
     step1: {
@@ -165,12 +165,18 @@ const WIZARD_TEXT = {
       languagesLabel: "Talen die je spreekt", otherLanguagePlaceholder: "Overige taal...",
       interestsLabel: "Interesses (kies max. 6)", otherInterestPlaceholder: "Overige interesse...",
     },
+    preview: {
+      title: "Zo ziet jouw profiel eruit", subtitle: "Controleer alles voordat je indient. Je kunt nog terug om iets aan te passen.",
+      editBtn: "← Wijzigen", aboutLabel: "Over jou", languagesLabel: "Talen", interestsLabel: "Interesses",
+      photosLabel: "Foto's", noPhotosYet: "Nog geen foto's toegevoegd",
+      draftSaved: "Concept automatisch opgeslagen", amenitiesLabel: "Voorzieningen",
+    },
   },
   en: {
     roleOwner: "🏡 Owner", roleBuddy: "🎒 Buddy",
     stepOf: "Step {step} of {total}",
-    titlesOwner: ["Basics", "Your story", "Your property", "Amenities & price", "Interests", "Photos"],
-    titlesBuddy: ["Basics", "Your story", "Travel plans", "Preferences", "Interests", "Photos"],
+    titlesOwner: ["Basics", "Your story", "Your property", "Amenities & price", "Interests", "Photos", "Preview"],
+    titlesBuddy: ["Basics", "Your story", "Travel plans", "Preferences", "Interests", "Photos", "Preview"],
     back: "← Back", next: "Next →", submit: "Submit profile 🎉",
     selectPlaceholder: "Select…", selectedSuffix: "selected",
     step1: {
@@ -222,12 +228,18 @@ const WIZARD_TEXT = {
       languagesLabel: "Languages you speak", otherLanguagePlaceholder: "Other language...",
       interestsLabel: "Interests (choose up to 6)", otherInterestPlaceholder: "Other interest...",
     },
+    preview: {
+      title: "Here's what your profile looks like", subtitle: "Check everything before you submit. You can still go back to change something.",
+      editBtn: "← Edit", aboutLabel: "About you", languagesLabel: "Languages", interestsLabel: "Interests",
+      photosLabel: "Photos", noPhotosYet: "No photos added yet",
+      draftSaved: "Draft saved automatically", amenitiesLabel: "Amenities",
+    },
   },
   de: {
     roleOwner: "🏡 Eigentümer", roleBuddy: "🎒 Buddy",
     stepOf: "Schritt {step} von {total}",
-    titlesOwner: ["Grunddaten", "Deine Geschichte", "Deine Unterkunft", "Ausstattung & Preis", "Interessen", "Fotos"],
-    titlesBuddy: ["Grunddaten", "Deine Geschichte", "Reisepläne", "Vorlieben", "Interessen", "Fotos"],
+    titlesOwner: ["Grunddaten", "Deine Geschichte", "Deine Unterkunft", "Ausstattung & Preis", "Interessen", "Fotos", "Vorschau"],
+    titlesBuddy: ["Grunddaten", "Deine Geschichte", "Reisepläne", "Vorlieben", "Interessen", "Fotos", "Vorschau"],
     back: "← Zurück", next: "Weiter →", submit: "Profil einreichen 🎉",
     selectPlaceholder: "Auswählen…", selectedSuffix: "ausgewählt",
     step1: {
@@ -279,12 +291,18 @@ const WIZARD_TEXT = {
       languagesLabel: "Sprachen, die du sprichst", otherLanguagePlaceholder: "Andere Sprache...",
       interestsLabel: "Interessen (max. 6 wählen)", otherInterestPlaceholder: "Anderes Interesse...",
     },
+    preview: {
+      title: "So sieht dein Profil aus", subtitle: "Prüfe alles, bevor du einreichst. Du kannst noch zurückgehen, um etwas zu ändern.",
+      editBtn: "← Ändern", aboutLabel: "Über dich", languagesLabel: "Sprachen", interestsLabel: "Interessen",
+      photosLabel: "Fotos", noPhotosYet: "Noch keine Fotos hinzugefügt",
+      draftSaved: "Entwurf automatisch gespeichert", amenitiesLabel: "Ausstattung",
+    },
   },
   fr: {
     roleOwner: "🏡 Propriétaire", roleBuddy: "🎒 Buddy",
     stepOf: "Étape {step} sur {total}",
-    titlesOwner: ["Infos de base", "Ton histoire", "Ton logement", "Équipements & prix", "Intérêts", "Photos"],
-    titlesBuddy: ["Infos de base", "Ton histoire", "Projets de voyage", "Préférences", "Intérêts", "Photos"],
+    titlesOwner: ["Infos de base", "Ton histoire", "Ton logement", "Équipements & prix", "Intérêts", "Photos", "Aperçu"],
+    titlesBuddy: ["Infos de base", "Ton histoire", "Projets de voyage", "Préférences", "Intérêts", "Photos", "Aperçu"],
     back: "← Retour", next: "Suivant →", submit: "Envoyer le profil 🎉",
     selectPlaceholder: "Sélectionner…", selectedSuffix: "sélectionné(s)",
     step1: {
@@ -335,6 +353,12 @@ const WIZARD_TEXT = {
       title: "Presque fini !", subtitle: "Ajoute tes langues et centres d'intérêt.",
       languagesLabel: "Langues que tu parles", otherLanguagePlaceholder: "Autre langue...",
       interestsLabel: "Centres d'intérêt (max. 6)", otherInterestPlaceholder: "Autre intérêt...",
+    },
+    preview: {
+      title: "Voici à quoi ressemble ton profil", subtitle: "Vérifie tout avant d'envoyer. Tu peux encore revenir en arrière pour modifier quelque chose.",
+      editBtn: "← Modifier", aboutLabel: "À propos de toi", languagesLabel: "Langues", interestsLabel: "Centres d'intérêt",
+      photosLabel: "Photos", noPhotosYet: "Aucune photo ajoutée pour l'instant",
+      draftSaved: "Brouillon enregistré automatiquement", amenitiesLabel: "Équipements",
     },
   },
 };
