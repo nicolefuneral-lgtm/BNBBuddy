@@ -17,6 +17,7 @@ export const TRANSLATIONS = {
       whatsapp: "WhatsApp ons",
       login: "Log in",
       signup: "Word gratis lid",
+      backToApp: "Terug naar app",
     },
     shared: {
       contactCta: "Neem contact op",
@@ -103,6 +104,7 @@ export const TRANSLATIONS = {
       whatsapp: "WhatsApp us",
       login: "Log in",
       signup: "Join for free",
+      backToApp: "Back to app",
     },
     shared: {
       contactCta: "Contact us",
@@ -189,6 +191,7 @@ export const TRANSLATIONS = {
       whatsapp: "WhatsApp uns",
       login: "Einloggen",
       signup: "Kostenlos beitreten",
+      backToApp: "Zurück zur App",
     },
     shared: {
       contactCta: "Kontakt aufnehmen",
@@ -275,6 +278,7 @@ export const TRANSLATIONS = {
       whatsapp: "WhatsApp",
       login: "Se connecter",
       signup: "Inscription gratuite",
+      backToApp: "Retour à l'application",
     },
     shared: {
       contactCta: "Nous contacter",
