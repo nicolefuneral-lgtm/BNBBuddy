@@ -8,6 +8,9 @@ const C = {
   muted: "#8A7968", white: "#FFFFFF", blush: "#F4C9A8",
 };
 
+// Label voor het Pers-menu-item, per taal.
+const PERS_LABEL = { nl: "Pers", en: "Press", de: "Presse", fr: "Presse" };
+
 const landingCss = `
 .lp-wrap{max-width:100%;background:${C.cream};color:${C.charcoal};min-height:100vh;}
 .lp-nav{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:${C.cream};border-bottom:1px solid ${C.sand};position:sticky;top:0;z-index:50;flex-wrap:wrap;gap:10px;}
@@ -65,6 +68,8 @@ const landingCss = `
 .lp-footer .cols{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-bottom:20px;}
 .lp-footer .col h4{font-family:'Prata',serif;font-size:14px;margin-bottom:10px;color:white;}
 .lp-footer .col div{margin-bottom:6px;opacity:.85;}
+.lp-footer .col .link{background:none;border:none;color:${C.sand};font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;padding:0;opacity:.85;}
+.lp-footer .col .link:hover{opacity:1;text-decoration:underline;}
 .lp-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:900px;margin:0 auto 48px;padding:0 20px;}
 .lp-gallery img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px;}
 .lp-grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:900px;margin:0 auto;padding:0 20px 48px;}
@@ -128,6 +133,9 @@ export default function LandingPage({ onEnterApp, isLoggedIn, userName }) {
   const t = TRANSLATIONS[lang];
   const content = t[page];
 
+  // Naar de perspagina: zet de hash, App.jsx vangt dat op en toont Pers.jsx
+  const goToPers = () => { window.location.hash = "pers"; };
+
   const setField = (k, v) => setContactForm(f => ({ ...f, [k]: v }));
 
   const encode = (data) =>
@@ -182,10 +190,14 @@ export default function LandingPage({ onEnterApp, isLoggedIn, userName }) {
             ))}
           </div>
           {isLoggedIn ? (
-            <button className="lp-btn-nav primary" onClick={() => onEnterApp?.(null, "resume")}>{t.nav.backToApp}</button>
+            <>
+              <button className="lp-btn-nav" onClick={goToPers}>{PERS_LABEL[lang] || PERS_LABEL.nl}</button>
+              <button className="lp-btn-nav primary" onClick={() => onEnterApp?.(null, "resume")}>{t.nav.backToApp}</button>
+            </>
           ) : (
             <>
               <button className="lp-btn-nav" onClick={() => onEnterApp?.(null, "browse")}>{t.nav.browseProfiles}</button>
+              <button className="lp-btn-nav" onClick={goToPers}>{PERS_LABEL[lang] || PERS_LABEL.nl}</button>
               <button className="lp-btn-nav" onClick={() => onEnterApp?.(null, "login")}>{t.nav.login}</button>
               <button className="lp-btn-nav primary" onClick={() => onEnterApp?.(null, "signup")}>{t.nav.signup}</button>
             </>
@@ -400,6 +412,7 @@ export default function LandingPage({ onEnterApp, isLoggedIn, userName }) {
           <div className="col">
             <h4>{t.shared.footerPages}</h4>
             <div>{t.shared.footerHome}</div>
+            <div><button className="link" onClick={goToPers}>{PERS_LABEL[lang] || PERS_LABEL.nl}</button></div>
             <div>{t.shared.footerContactLink}</div>
             <div>{t.shared.footerPrivacy}</div>
           </div>
