@@ -3,6 +3,7 @@ import { supabase, signUp, signIn, signOut, getProfile, upsertProfile, deletePro
 import { TRANSLATIONS, LANGUAGES } from "./translations.js";
 import { APP_TRANSLATIONS, labelForValue } from "./app-translations.js";
 import LandingPage from "./LandingPage.jsx";
+import Pers from "./components/Pers.jsx";
 // ⚠️ Verander dit wachtwoord naar iets eigens voordat je live gaat!
 const ADMIN_EMAIL = "bnb@bnbbuddy.eu";
 
@@ -1509,6 +1510,7 @@ export default function App() {
   const [dbProfiles, setDbProfiles] = useState([]);
   const [loadingProfiles, setLoadingProfiles] = useState(true);
   const [isAdminRoute, setIsAdminRoute] = useState(() => window.location.hash === "#admin");
+  const [isPersRoute, setIsPersRoute] = useState(() => window.location.hash === "#pers");
   const [appLang, setAppLang] = useState(() => {
     try { return localStorage.getItem("bnbbuddy_lang") || "nl"; } catch (e) { return "nl"; }
   });
@@ -1520,6 +1522,7 @@ export default function App() {
   const [showLanding, setShowLanding] = useState(() => {
   try {
     if (window.location.hash === "#admin") return false;
+    if (window.location.hash === "#pers") return false;
     if (window.location.pathname.startsWith("/app")) return false;
   } catch (e) {}
   return true;
@@ -1529,7 +1532,10 @@ export default function App() {
   });
 
   useEffect(() => {
-    const onHashChange = () => setIsAdminRoute(window.location.hash === "#admin");
+    const onHashChange = () => {
+      setIsAdminRoute(window.location.hash === "#admin");
+      setIsPersRoute(window.location.hash === "#pers");
+    };
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
@@ -1755,6 +1761,18 @@ const lockAdmin = async () => {
       {adminUnlocked ? <AdminPanel onLock={lockAdmin} /> : <AdminGate onUnlock={unlockAdmin} />}
     </div>
   );
+
+  if (isPersRoute) return (
+    <div className="wrap" style={{ maxWidth: "100%" }}>
+      <style>{css}</style>
+      <Pers onTerug={() => {
+        window.history.replaceState(null, "", window.location.pathname);
+        setIsPersRoute(false);
+        setShowLanding(true);
+      }} />
+    </div>
+  );
+
 if (showLanding) return (
   <div className="wrap" style={{ maxWidth: "100%" }}>
     <style>{css}</style>
